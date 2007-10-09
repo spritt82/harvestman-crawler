@@ -60,6 +60,9 @@ class Hget(HarvestMan):
     def grab_url(self, url):
         """ Download URL """
 
+        # Reset progress object
+        self._cfg.reset_progress()
+
         # monitor = datamgr.HarvestManUrlThreadPoolMonitor()
         # monitor.start()
         
@@ -70,7 +73,7 @@ class Hget(HarvestMan):
             conn.set_data_mode(self._pool.get_data_mode())
             
             try:
-                print 'Downloading URL',url,'...'
+                print '\nDownloading URL',url,'...'
                 urlobj = urlparser.HarvestManUrlParser(url)
                 ret = conn.url_to_file(urlobj)
             except urlparser.HarvestManUrlParserError, e:
@@ -218,34 +221,31 @@ class Hget(HarvestMan):
     def hget(self):
         """ Download all URLs """
 
-        dmgr = GetObject('datamanager')
-        dmgr.initialize()
-        self._pool = dmgr.get_url_threadpool()
-
-        try:
-            arg = self._cfg.urls[0]
-        except IndexError, e:
+        if len(self._cfg.urls)==0:
             print 'Error: No input URL/file given. Run with -h or no arguments to see usage.\n'
             return -1
 
-        # Check if the argument is a file, if so
-        # download URLs specified in the file.
-        if os.path.isfile(arg):
-            # Open it, read URL per line and schedule download
-            print 'Input file %s found, scheduling download of URLs...' % arg
-            try:
-                for line in file(arg):
-                    url = line.strip()
-                    print ''
-                    self.grab_url(url)
-                    # Reset progress object
-                    self._cfg.reset_progress()
-            except IOError, e:
-                print 'Error:',e
-            except Exception, e:
-                raise
-        else:
-            self.grab_url(arg)
+        dmgr = GetObject('datamanager')
+        dmgr.initialize()
+        self._pool = dmgr.get_url_threadpool()
+            
+        for arg in self._cfg.urls:
+            # Check if the argument is a file, if so
+            # download URLs specified in the file.
+            if os.path.isfile(arg):
+                # Open it, read URL per line and schedule download
+                print 'Input file %s found, scheduling download of URLs...' % arg
+                try:
+                    for line in file(arg):
+                        url = line.strip()
+                        print ''
+                        self.grab_url(url)
+                except IOError, e:
+                    print 'Error:',e
+                except Exception, e:
+                    raise
+            else:
+                self.grab_url(arg)
         
     def main(self):
         """ Main routine """

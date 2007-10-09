@@ -1857,9 +1857,25 @@ class HarvestManUrlConnector(object):
             n, filename = 1, urlobj.get_filename()
 
         origfilename = filename
+
+        if self._cfg.hgetoutdir != '.':
+            outdir = self._cfg.hgetoutdir
+            if not os.path.isdir(outdir):
+                try:
+                    os.makedirs(outdir)
+                    # If an output director is specified, strip any directory
+                    # part from the filename
+                    filename = os.path.join(outdir, os.path.split(filename)[1]) 
+                except OSError, e:
+                    print 'Error in creating directory',e
+            else:
+                filename = os.path.join(outdir, os.path.split(filename)[1])                 
+
+        origfilepath = filename
+        
         # filename.#n like wget.
         while os.path.isfile(filename):
-            filename = ''.join((origfilename,'.',str(n)))
+            filename = ''.join((origfilepath,'.',str(n)))
             n += 1
 
         currtmpfiles = []
@@ -1953,19 +1969,6 @@ class HarvestManUrlConnector(object):
         
         status = 0
 
-        if self._cfg.hgetoutdir != '.':
-            outdir = self._cfg.hgetoutdir
-            if not os.path.isdir(outdir):
-                try:
-                    os.makedirs(outdir)
-                    # If an output director is specified, strip any directory
-                    # part from the filename
-                    filename = os.path.join(outdir, os.path.split(filename)[1]) 
-                except OSError, e:
-                    print 'Error in creating directory',e
-            else:
-                filename = os.path.join(outdir, os.path.split(filename)[1])                 
-                    
         if ret==2:
             # Trying multipart download...
             pool = GetObject('datamanager').get_url_threadpool()
