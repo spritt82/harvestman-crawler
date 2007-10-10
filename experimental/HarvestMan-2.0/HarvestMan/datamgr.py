@@ -107,6 +107,9 @@ class HarvestManDataManager(object):
             self._urlThreadPool.spawn_threads()
         else:
             self._urlThreadPool = None
+
+        # Load any mirrors
+        mirrors.load_mirrors()
         
     def get_state(self):
         """ Return a snapshot of the current state of this
@@ -242,7 +245,7 @@ class HarvestManDataManager(object):
                 if not content.has_key('data'):
                     return ret
                 else:
-                    urladta = content['data']
+                    urldata = content['data']
                     if urldata:
                         # Write file
                         extrainfo("Updating file from cache=>", fileloc)
@@ -748,7 +751,7 @@ class HarvestManDataManager(object):
         except KeyError:
             self._serversdict[domain] = {'accept-ranges': True}
 
-        if mirrors.supported_server(urlobj):
+        if mirrors.mirrors_available(urlobj):
             return mirrors.download_multipart_url(urlobj, clength, self._cfg.numparts, self._urlThreadPool)
         
         parts = self._cfg.numparts
@@ -769,6 +772,8 @@ class HarvestManDataManager(object):
             curr = pcsizes[x]
             next = curr + prev
             urlobject = urlobjects[x]
+            # Set mirror_url attribute
+            newurlobj.mirror_url = orig_url            
             urlobject.trymultipart = True
             urlobject.clength = clength
             urlobject.range = xrange(prev, next)

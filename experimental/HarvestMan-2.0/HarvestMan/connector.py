@@ -1298,7 +1298,7 @@ class HarvestManUrlConnector(object):
                     # Only set tmpfname if this is a fresh download.
                     if self._tmpfname=='':
                         if not self._cfg.hgetnotemp:
-                            tmpd = os.path.join(GetMyTempDir(), str(abs(hash(urlobj.get_full_url()))))
+                            tmpd = os.path.join(GetMyTempDir(), str(abs(hash(urlobj.mirror_url))))
                         else:
                             tmpd = '.'
                             
@@ -1673,6 +1673,7 @@ class HarvestManUrlConnector(object):
         if self._cfg.nocrawl:
             return self.connect2(urlobj)
         else:
+            print 'there'
             url = urlobj.get_full_url()
             # See if this URL is in cache, then get its lmt time & data
             dmgr=GetObject('datamanager')
@@ -1972,28 +1973,36 @@ class HarvestManUrlConnector(object):
         if ret==2:
             # Trying multipart download...
             pool = GetObject('datamanager').get_url_threadpool()
-            while not pool.get_multipart_download_status(urlobj):
+            while True:
+                multi_status = pool.get_multipart_download_status(urlobj)
+                if multi_status in (1, -1): break
                 time.sleep(1.0)
+                
             end = time.time()
 
-            print 'Data download completed.'
-            if self._mode==1:
-                data = pool.get_multipart_url_data(urlobj)
-                self._data = data
-                if self._data: status = 1
-                
-            elif self._mode==0:
-                # Get url info
-                infolist = pool.get_multipart_url_info(urlobj)
-                infolist.sort()
-                # Get filenames
-                tmpflist = [item[1] for item in infolist]
-                # print tmpflist
-                # Temp file name
-                self._tmpfname = filename + '.tmp'
+            if multi_status==1:
+                print 'Data download completed.'
+                if self._mode==1:
+                    data = pool.get_multipart_url_data(urlobj)
+                    self._data = data
+                    if self._data: status = 1
+                    
+                elif self._mode==0:
+                    # Get url info
+                    infolist = pool.get_multipart_url_info(urlobj)
+                    infolist.sort()
+                    # Get filenames
+                    tmpflist = [item[1] for item in infolist]
+                    # print tmpflist
+                    # Temp file name
+                    self._tmpfname = filename + '.tmp'
 
-                if self.write_data_from_tempfiles(tmpflist, self._tmpfname)==0:
-                    status = 1
+                    if self.write_data_from_tempfiles(tmpflist, self._tmpfname)==0:
+                        status = 1
+                        
+            elif multi_status == -1:
+                print 'Data download could not be completed.'
+                
         else:
             if self._data or self._datalen:
                 status = 1

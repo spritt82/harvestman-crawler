@@ -183,7 +183,9 @@ class HarvestManUrlThread(threading.Thread):
             # print 'Connector returned',self,url_obj.get_full_url()
             # This has a different return value.
             # 0 indicates data was downloaded fine.
+            # -1 indicates failure...
             if res==0: res=1
+            elif res==-1: res = 0
             
             if mode == 0:
                 self._urltmpfile = self._conn.get_tmpfname()
@@ -377,6 +379,9 @@ class HarvestManUrlThreadPool(Queue):
         # Status of URLs being downloaded in
         # multipart. Keys are URLs
         self._multipartstatus = {}
+        # Flag that is set when one of the threads
+        # in a multipart download fails
+        self._multiparterror = False
         # Number of parts
         self._parts = self._cfg.numparts
         # Data mode
@@ -533,8 +538,8 @@ class HarvestManUrlThreadPool(Queue):
 
             # See if this was a multi-part download
             if urlObj.trymultipart:
-                # print 'Thread %s reported with data range (%d-%d)!' % (thread, urlObj.range[0], urlObj.range[-1])
-                if thread.get_status()==1:
+                status = thread.get_status()
+                if status==1:
                     # print 'Thread %s reported %s' % (thread, urlObj.get_full_url())
                     # For flush mode, get the filename
                     # for memory mode, get the data
@@ -577,8 +582,14 @@ class HarvestManUrlThreadPool(Queue):
                         else:
                             pass
 
-                        self._multipartstatus[index] = True
-
+                        self._multipartstatus[index] = 1
+                elif status==0:
+                    # Currently when a thread reports an error, we abort the download
+                    # In future, we can inspect whether the error is fatal or not
+                    # and resume download in another thread etc...
+                    logconsole('Thread %s reported error: %s' % (thread.getName(), thread.get_error().get('msg', '<Unknown Error>')))
+                    self._multiparterror = True
+                        
             # if the thread failed, update failure stats on the data manager
             dmgr = GetObject('datamanager')
 
@@ -733,7 +744,11 @@ class HarvestManUrlThreadPool(Queue):
     def get_multipart_download_status(self, url):
         """ Get status of multipart downloads """
 
-        return self._multipartstatus.get(url.index, False)
+        # If a thread has failed, signal exit
+        if self._multiparterror:
+            return -1
+        else:
+            return self._multipartstatus.get(url.index, 0)
 
     def get_multipart_url_data(self, url):
         """ Return data for multipart downloads """
