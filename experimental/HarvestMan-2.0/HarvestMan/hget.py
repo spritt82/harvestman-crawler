@@ -45,6 +45,7 @@ import urlparser
 import config
 import logger
 import datamgr
+import urlthread
 
 from common.common import *
 from harvestmanklass import HarvestMan
@@ -63,8 +64,8 @@ class Hget(HarvestMan):
         # Reset progress object
         self._cfg.reset_progress()
 
-        # monitor = datamgr.HarvestManUrlThreadPoolMonitor()
-        # monitor.start()
+        monitor = urlthread.HarvestManUrlThreadPoolMonitor(self._pool)
+        monitor.start()
         
         try:
             # print self._cfg.requests, self._cfg.connections
@@ -86,7 +87,7 @@ class Hget(HarvestMan):
         except KeyboardInterrupt, e:
             self.clean_up(conn, urlobj)
             
-        # monitor.stop()
+        monitor.stop()
 
     def clean_up(self, conn, urlobj, exception=None):
 

@@ -273,7 +273,7 @@ class DataReader(tg.Thread):
     
     def stop(self):
         self._flag = True
-        
+
 class HarvestManNetworkConnector(object):
     """ This class keeps the internet settings and configures
     the network. """
@@ -578,6 +578,23 @@ class HarvestManNetworkConnector(object):
         
     def get_socket_errors(self):
         return self._sockerrs
+
+class HarvestManUrlError(object):
+
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self):
+        self.number = 0
+        self.msg = ''
+        self.fatal = False
+        self.errclass = ''
+
+    def __str__(self):
+        return ''.join((str(self.errclass),' ', str(self.number),': ',self.msg))
+
+    def reset(self):
+        self.initialize()
         
 class HarvestManUrlConnector(object):
     """ Class which helps to connect to the internet """
@@ -597,11 +614,8 @@ class HarvestManUrlConnector(object):
         self._data = ''
         # length of data downloaded
         self._datalen = 0
-        # error dictionary
-        self._error={ 'msg' : '',
-                      'number': 0,
-                      'fatal' : False
-                      }
+        # error object
+        self._error = HarvestManUrlError()
         # time to wait before reconnect
         # in case of failed connections
         self._sleeptime = 0.5
@@ -691,7 +705,7 @@ class HarvestManUrlConnector(object):
 
         self.connect(url, None, True, self._cfg.retryfailed )
         # return the file like object
-        if self._error['fatal']:
+        if self._error.fatal:
             return None
         else:
             return self._freq
@@ -701,7 +715,7 @@ class HarvestManUrlConnector(object):
 
         self.connect(url, None, False, 0)
         # return the file like object
-        if self._error['fatal']:
+        if self._error.fatal:
             return None
         else:
             return self._freq
@@ -737,7 +751,7 @@ class HarvestManUrlConnector(object):
         # Reset the http headers
         self._headers.clear()
         
-        while self._numtries <= retries and not self._error['fatal']:
+        while self._numtries <= retries and not self._error.fatal:
 
             # Reset status
             self._status = 0
@@ -745,9 +759,7 @@ class HarvestManUrlConnector(object):
             errnum = 0
             try:
                 # Reset error
-                self._error = { 'number' : 0,
-                                 'msg' : '',
-                                 'fatal' : False }
+                self._error.reset()
 
                 self._numtries += 1
 
@@ -905,25 +917,26 @@ class HarvestManUrlConnector(object):
                 try:
                     errbasic, errdescn = (str(e)).split(':',1)
                     parts = errbasic.strip().split()
-                    self._error['number'] = int(parts[-1])
-                    self._error['msg'] = errdescn.strip()
+                    self._error.number = int(parts[-1])
+                    self._error.msg = errdescn.strip()
+                    self._error.errclass = "HTTPError"
                 except:
                     pass
 
-                if self._error['msg']:
-                    extrainfo(self._error['msg'], '=> ',urltofetch)
+                if self._error.msg:
+                    extrainfo(self._error.msg, '=> ',urltofetch)
                 else:
                     extrainfo('HTTPError:',urltofetch)
 
                 try:
-                    errnum = int(self._error['number'])
+                    errnum = int(self._error.number)
                 except:
                     pass
 
                 if errnum==304:
                     # Page not modified
                     three_oh_four = True
-                    self._error['fatal'] = False
+                    self._error.fatal = False
                     # Need to do this to ensure that the crawler
                     # proceeds further!
                     content_type = self.get_content_type()
@@ -933,24 +946,25 @@ class HarvestManUrlConnector(object):
                     self._proxy_query(1, 1)
                 elif errnum == 503: # Service unavailable
                     rulesmgr.add_to_filter(urltofetch)
-                    self._error['fatal']=True                        
+                    self._error.fatal = True                        
                 elif errnum == 504: # Gateway timeout
                     rulesmgr.add_to_filter(urltofetch)
-                    self._error['fatal']=True                        
+                    self._error.fatal = True                        
                 elif errnum in range(500, 505): # Server error
-                    self._error['fatal']=True
+                    self._error.fatal =True
                 elif errnum == 404:
                     # Link not found, this might
                     # be a file wrongly fetched as directory
                     # Add to filter
                     rulesmgr.add_to_filter(urltofetch)
-                    self._error['fatal']=True
+                    self._error.fatal = True
                 elif errnum == 401: # Site authentication required
-                    self._error['fatal']=True
+                    self._error.fatal = True
                     break
 
             except urllib2.URLError, e:
                 errdescn = ''
+                self._error.errclass = "URLError"
                 
                 try:
                     errbasic, errdescn = (str(e)).split(':',1)
@@ -964,21 +978,21 @@ class HarvestManUrlConnector(object):
                         pass
 
                 try:
-                    self._error['number'] = int(parts[-1])
+                    self._error.number = int(parts[-1])
                 except:
                     pass
                 
                 if errdescn:
-                    self._error['msg'] = errdescn
+                    self._error.msg = errdescn
                 #else:
                 #    print 'errdescn is null!'
 
-                if self._error['msg']:
-                    extrainfo(self._error['msg'], '=> ',urltofetch)
+                if self._error.msg:
+                    extrainfo(self._error.msg, '=> ',urltofetch)
                 else:
                     extrainfo('URLError:',urltofetch)
 
-                errnum = self._error['number']
+                errnum = self._error.number
                 if errnum == 10049 or errnum == 10061: # Proxy server error
                     self._proxy_query(1, 1)
                 elif errnum == 10055:
@@ -992,38 +1006,44 @@ class HarvestManUrlConnector(object):
                         self.network_conn.decrement_socket_errors(4)
 
             except IOError, e:
-                self._error['number'] = URL_IO_ERROR
-                self._error['fatal']=True
-                self._error['msg'] = str(e)                    
+                self._error.number = URL_IO_ERROR
+                self._error.fatal=True
+                self._error.msg = str(e)
+                self._error.errclass = "IOError"                
                 # Generated by invalid ftp hosts and
                 # other reasons,
                 # bug(url: http://www.gnu.org/software/emacs/emacs-paper.html)
                 extrainfo(e ,'=> ',urltofetch)
 
             except BadStatusLine, e:
-                self._error['number'] = URL_BADSTATUSLINE
-                self._error['msg'] = str(e)
+                self._error.number = URL_BADSTATUSLINE
+                self._error.msg = str(e)
+                self._error.errclass = "BadStatusLine"
                 extrainfo(e, '=> ',urltofetch)
 
             except TypeError, e:
-                self._error['number'] = URL_TYPE_ERROR
-                self._error['msg'] = str(e)
+                self._error.number = URL_TYPE_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "TypeError"                
                 extrainfo(e, '=> ',urltofetch)
                 
             except ValueError, e:
-                self._error['number'] = URL_VALUE_ERROR
-                self._error['msg'] = str(e)                    
+                self._error.number = URL_VALUE_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "ValueError"                
                 extrainfo(e, '=> ',urltofetch)
 
             except AssertionError, e:
-                self._error['number'] = URL_ASSERTION_ERROR
-                self._error['msg'] = str(e)
+                self._error.number = URL_ASSERTION_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "AssertionError"                
                 extrainfo(e ,'=> ',urltofetch)
 
             except socket.error, e:
-                self._error['msg'] = str(e)
-                self._error['number'] = URL_SOCKET_ERROR
-                errmsg = self._error['msg']
+                self._error.msg = str(e)
+                self._error.number = URL_SOCKET_ERROR
+                self._error.errclass = "SocketError"                
+                errmsg = self._error.msg
 
                 extrainfo('Socket Error: ', errmsg,'=> ',urltofetch)
 
@@ -1038,9 +1058,10 @@ class HarvestManUrlConnector(object):
                         self._cfg.connections -= 1
                         self.network_conn.decrement_socket_errors(4)
             except Exception, e:
-                self._error['msg'] = str(e)
-                self._error['number'] = URL_GENERAL_ERROR
-                errmsg = self._error['msg']
+                self._error.msg = str(e)
+                self._error.number = URL_GENERAL_ERROR
+                self._error.errclass = "GeneralError"                
+                errmsg = self._error.msg
             
                 extrainfo('General Error: ', errmsg,'=> ',urltofetch)
                 
@@ -1051,8 +1072,8 @@ class HarvestManUrlConnector(object):
         if data: self._data = data
 
         if url_obj and url_obj.status != 0:
-            url_obj.status = self._error['number']
-            url_obj.fatal = self._error['fatal']
+            url_obj.status = self._error.number
+            url_obj.fatal = self._error.fatal
 
         # If three_oh_four, return ok
         if three_oh_four:
@@ -1148,7 +1169,7 @@ class HarvestManUrlConnector(object):
         dmgr = GetObject('datamanager')
 
         # print self, urltofetch
-        while self._numtries <= retries and not self._error['fatal']:
+        while self._numtries <= retries and not self._error.fatal:
 
             # Reset status
             self._status = 0
@@ -1156,9 +1177,7 @@ class HarvestManUrlConnector(object):
             errnum = 0
             try:
                 # Reset error
-                self._error = { 'number' : 0,
-                                 'msg' : '',
-                                 'fatal' : False }
+                self._error.reset()
 
                 self._numtries += 1
 
@@ -1298,7 +1317,12 @@ class HarvestManUrlConnector(object):
                     # Only set tmpfname if this is a fresh download.
                     if self._tmpfname=='':
                         if not self._cfg.hgetnotemp:
-                            tmpd = os.path.join(GetMyTempDir(), str(abs(hash(urlobj.mirror_url))))
+                            if urlobj.trymultipart:
+                                localurl = urlobj.mirror_url.get_full_url()
+                            else:
+                                localurl = urlobj.get_full_url()
+                                
+                            tmpd = os.path.join(GetMyTempDir(), str(abs(hash(localurl))))
                         else:
                             tmpd = '.'
                             
@@ -1402,23 +1426,27 @@ class HarvestManUrlConnector(object):
                     
                 break
 
+            #except Exception, e:
+            #    print e
+                
             except urllib2.HTTPError, e:
 
                 try:
                     errbasic, errdescn = (str(e)).split(':',1)
                     parts = errbasic.strip().split()
-                    self._error['number'] = int(parts[-1])
-                    self._error['msg'] = errdescn.strip()
+                    self._error.number = int(parts[-1])
+                    self._error.msg = errdescn.strip()
+                    self._error.errclass = "HTTPError"                    
                 except:
                     pass
 
-                if self._error['msg']:
-                    moreinfo(self._error['msg'], '=> ',urltofetch)
+                if self._error.msg:
+                    moreinfo(self._error.msg, '=> ',urltofetch)
                 else:
                     moreinfo('HTTPError:',urltofetch)
 
                 try:
-                    errnum = int(self._error['number'])
+                    errnum = int(self._error.number)
                 except:
                     pass
 
@@ -1426,20 +1454,21 @@ class HarvestManUrlConnector(object):
                 if errnum == 407: # Proxy authentication required
                     self._proxy_query(1, 1)
                 elif errnum == 503: # Service unavailable
-                    self._error['fatal']=True                        
+                    self._error.fatal=True                        
                 elif errnum == 504: # Gateway timeout
-                    self._error['fatal']=True                        
+                    self._error.fatal=True                        
                 elif errnum in range(500, 505): # Server error
-                    self._error['fatal']=True
+                    self._error.fatal=True
                 elif errnum == 404:
-                    self._error['fatal']=True
+                    self._error.fatal=True
                 elif errnum == 401: # Site authentication required
-                    self._error['fatal']=True
+                    self._error.fatal=True
                     break
 
             except urllib2.URLError, e:
                 errdescn = ''
-                
+                self._error.errclass = "URLError"
+                    
                 try:
                     errbasic, errdescn = (str(e)).split(':',1)
                     parts = errbasic.split()                            
@@ -1452,62 +1481,69 @@ class HarvestManUrlConnector(object):
                         pass
 
                 try:
-                    self._error['number'] = int(parts[-1])
+                    self._error.number = int(parts[-1])
                 except:
                     pass
                 
                 if errdescn:
-                    self._error['msg'] = errdescn
+                    self._error.msg = errdescn
 
-                if self._error['msg']:
-                    moreinfo(self._error['msg'], '=> ',urltofetch)
+                if self._error.msg:
+                    moreinfo(self._error.msg, '=> ',urltofetch)
                 else:
                     moreinfo('URLError:',urltofetch)
 
-                errnum = self._error['number']
+                errnum = self._error.number
                 if errnum == 10049 or errnum == 10061: # Proxy server error
                     self._proxy_query(1, 1)
 
             except IOError, e:
-                self._error['number'] = URL_IO_ERROR
-                self._error['fatal']=True
-                self._error['msg'] = str(e)                    
+                self._error.number = URL_IO_ERROR
+                self._error.fatal=True
+                self._error.errclass = "IOError"                                    
+                self._error.msg = str(e)                    
                 # Generated by invalid ftp hosts and
                 # other reasons,
                 # bug(url: http://www.gnu.org/software/emacs/emacs-paper.html)
                 moreinfo(e,'=>',urltofetch)
 
             except BadStatusLine, e:
-                self._error['number'] = URL_BADSTATUSLINE
-                self._error['msg'] = str(e)
+                self._error.number = URL_BADSTATUSLINE
+                self._error.msg = str(e)
+                self._error.errclass = "BadStatusLine"                                    
                 extrainfo(e, '=> ',urltofetch)
 
             except TypeError, e:
-                self._error['number'] = URL_TYPE_ERROR
-                self._error['msg'] = str(e)
+                self._error.number = URL_TYPE_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "TypeError"                                    
                 extrainfo(e, '=> ',urltofetch)
                 
             except ValueError, e:
-                self._error['number'] = URL_VALUE_ERROR
-                self._error['msg'] = str(e)                    
+                self._error.number = URL_VALUE_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "ValueError"                                    
                 extrainfo(e, '=> ',urltofetch)
 
             except AssertionError, e:
-                self._error['number'] = URL_ASSERTION_ERROR
-                self._error['msg'] = str(e)
+                self._error.number = URL_ASSERTION_ERROR
+                self._error.msg = str(e)
+                self._error.errclass = "AssertionError"                                    
                 extrainfo(e ,'=> ',urltofetch)
 
             except socket.error, e:
-                self._error['number'] = URL_SOCKET_ERROR                
-                self._error['msg'] = str(e)
-                errmsg = self._error['msg']
+                self._error.number = URL_SOCKET_ERROR                
+                self._error.msg = str(e)
+                self._error.errclass = "SocketError"                                    
+                errmsg = self._error.msg
 
                 extrainfo('Socket Error: ',errmsg,'=> ',urltofetch)
 
             except DataReaderException, e:
-                self._error['number'] = DATA_READER_EXCEPTION                
-                self._error['msg'] = str(e)
-                errmsg = self._error['msg']
+                self._error.number = DATA_READER_EXCEPTION                
+                self._error.msg = str(e)
+                self._error.errclass = "DataReaderException"                                    
+                errmsg = self._error.msg
 
                 extrainfo('DataReaderException: ',errmsg,'=> ',urltofetch)
                 
@@ -2008,8 +2044,8 @@ class HarvestManUrlConnector(object):
                 status = 1
 
         if status==0:
-            if self._error.get('msg'):
-                print 'Error:',self._error.get('msg')
+            if self._error.msg:
+                print 'Error:',self._error.msg
             print 'Download of URL',url ,'not completed.\n'
             return 0
         
@@ -2140,10 +2176,7 @@ class HarvestManUrlConnector(object):
         # length of data downloaded
         self._datalen = 0
         # error dictionary
-        self._error={ 'msg' : '',
-                      'number': 0,
-                      'fatal' : False
-                      }
+        self._error.reset()
         # Http header for current connection
         self._headers = CaselessDict()
         # Elasped time for reading data

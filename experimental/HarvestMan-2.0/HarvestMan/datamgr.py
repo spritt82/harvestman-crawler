@@ -494,6 +494,8 @@ class HarvestManDataManager(object):
     def post_download_setup(self):
         """ Actions to perform after project is complete """
 
+        print 'Called by',tg.currentThread()
+        
         # Clear event to block all threads
         self._evt.clear()
         
@@ -746,6 +748,8 @@ class HarvestManDataManager(object):
         # First add entry of this domain in
         # dictionary, if not there
         domain = urlobj.get_full_domain()
+        orig_url = urlobj.get_full_url()
+        
         try:
             self._serversdict[domain]
         except KeyError:
@@ -773,7 +777,7 @@ class HarvestManDataManager(object):
             next = curr + prev
             urlobject = urlobjects[x]
             # Set mirror_url attribute
-            newurlobj.mirror_url = orig_url            
+            urlobject.mirror_url = urlobj
             urlobject.trymultipart = True
             urlobject.clength = clength
             urlobject.range = xrange(prev, next)
