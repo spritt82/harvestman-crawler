@@ -1367,10 +1367,10 @@ class HarvestManUrlConnector(object):
                             self._reader.readNext()
 
                         # Get number of active worker threads...
-                        nthreads = dmgr.get_url_threadpool().get_busy_count()
+                        nthreads = dmgr.get_url_threadpool().get_busy_figure()
                         # If no active worker threads, then there is at least
                         # the main thread which is active
-                        if nthreads==0: nthreads = 1
+                        # if nthreads==0: nthreads = 1
 
                         # Check if there was any exception in the reader thread
                         # If there is an exception when the reader is running as
@@ -1386,7 +1386,7 @@ class HarvestManUrlConnector(object):
                             if per2 and showprogress:
                                 prog.setScreenWidth(prog.getScreenWidth())
                                 
-                                infostring = 'TC: %d' % nthreads + \
+                                infostring = 'TC: %s' % nthreads + \
                                              ' BW: %4.2fK/s' % float(bw/1024.0) + \
                                              ' ETA: %s' % str(eta)
                                 

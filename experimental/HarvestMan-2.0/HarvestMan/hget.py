@@ -203,7 +203,7 @@ class Hget(HarvestMan):
         self._cfg.flushdata = not self._cfg.inmem
         # Set number of connections to two plus numparts
         self._cfg.connections = 2*self._cfg.numparts
-        self._cfg.requests = 2*self._cfg.numparts
+        # self._cfg.requests = 2*self._cfg.numparts
         # Thread pool size need to be only equal to numparts
         # self._cfg.threadpoolsize = self._cfg.numparts
         # Set verbosity

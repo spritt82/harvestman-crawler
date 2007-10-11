@@ -161,7 +161,7 @@ class HarvestManUrlThread(threading.Thread):
         url = url_obj.get_full_url()
 
         if not url_obj.trymultipart:
-            print 'Gewt URL=>',url,self
+            # print 'Gewt URL=>',url,self
             if url_obj.is_image():
                 moreinfo('Downloading image ...', url)
             else:
@@ -169,7 +169,7 @@ class HarvestManUrlThread(threading.Thread):
         else:
             startrange = url_obj.range[0]
             endrange = url_obj.range[-1]
-            print "Got URL",url,self
+            # print "Got URL",url,self
             moreinfo('%s: Downloading url %s, byte range(%d - %d)' % (str(self),url,startrange,endrange))
 
         conn_factory = GetObject('connectorfactory')
@@ -182,6 +182,7 @@ class HarvestManUrlThread(threading.Thread):
         if not url_obj.trymultipart:
             res = self._conn.save_url(url_obj)
         else:
+            print 'Downloading URL',url,self
             res = self._conn.wrapper_connect(url_obj)
             # print 'Connector returned',self,url_obj.get_full_url()
             # This has a different return value.
@@ -232,9 +233,12 @@ class HarvestManUrlThread(threading.Thread):
             try:
                 self._starttime=time.time()
 
+                print 'Waiting for next URL task',self
                 url_obj = self._pool.get_next_urltask()
 
-                if self._pool.check_duplicates(url_obj):
+                # Dont do duplicate checking for multipart...
+                if not url_obj.trymultipart and self._pool.check_duplicates(url_obj):
+                    print 'Is duplicate',url_obj.get_full_url()
                     continue
 
                 if not url_obj:
@@ -246,7 +250,7 @@ class HarvestManUrlThread(threading.Thread):
 
                 # Save reference
                 self._urlobject = url_obj
-                print 'Got url=>',url_obj.get_full_url()
+                # print 'Got url=>',url_obj.get_full_url()
                 
                 filename, url = url_obj.get_full_filename(), url_obj.get_full_url()
                 if not filename and not url:
@@ -498,7 +502,7 @@ class HarvestManUrlThreadPool(Queue):
     def push(self, urlObj):
         """ Push the url object and start downloading the url """
 
-        print 'Pushed',urlObj.get_full_url()
+        # print 'Pushed',urlObj.get_full_url()
         # unpack the tuple
         try:
             filename, url = urlObj.get_full_filename(), urlObj.get_full_url()
@@ -522,13 +526,14 @@ class HarvestManUrlThreadPool(Queue):
         # of 0 - 0.5 seconds
         # time.sleep(random.random()*0.5)
         try:
-            if len(self.buffer):
-                # Get last item from buffer
-                item = buffer.pop()
-                return item
-            else:
-                item = self.get()
-                return item
+            #if len(self.buffer):
+            #    # Get last item from buffer
+            #    item = buffer.pop()
+            #    return item
+            #else:
+            print 'Waiting to get item',threading.currentThread()
+            item = self.get()
+            return item
             
         except Empty:
             return None
@@ -598,7 +603,9 @@ class HarvestManUrlThreadPool(Queue):
                     # and resume download in another thread etc...
                     logconsole('Thread %s reported error => %s' % (thread.getName(), str(thread.get_error())))
                     if self._monitor:
+                        print 'Notifying failure',thread
                         self._monitor.notify_failure(urlObj)
+                        print 'Notified failure',thread
                         
             # if the thread failed, update failure stats on the data manager
             dmgr = GetObject('datamanager')
@@ -638,6 +645,15 @@ class HarvestManUrlThreadPool(Queue):
 
         return len(self.get_busy_threads())
 
+    def get_busy_figure(self):
+
+        s=''
+        for t in self._threads:
+            if t.is_busy():
+                s=s + t.getName().split('-')[-1] + ' '
+
+        return s
+            
     def locate_thread(self, url):
         """ Find a thread which downloaded a certain url """
 
@@ -823,6 +839,7 @@ class HarvestManUrlThreadPoolMonitor(threading.Thread):
         self._pool._monitor = self
         self.lock = threading.Lock()
         self._failedurls = []
+        self._listfailed = []
         self._flag = False
         # initialize threading
         threading.Thread.__init__(self, None, None, "Monitor")        
@@ -831,8 +848,9 @@ class HarvestManUrlThreadPoolMonitor(threading.Thread):
 
         while not self._flag:
             try:
-                self.lock.acquire()
                 urlobjs = []
+
+                self._failedurls = self._listfailed[:]
                 
                 for urlobj in self._failedurls:
                     # Reset URL to parent and try again...
@@ -848,20 +866,23 @@ class HarvestManUrlThreadPoolMonitor(threading.Thread):
                     else:
                         self._pool._multiparterror = True
 
+
+                self.lock.acquire()
+                
                 for url in urlobjs:
-                    self._failedurls.remove(url)
+                    self._listfailed.remove(url)
+
+                self.lock.release()
                     
                 time.sleep(0.1)
 
             finally:
-                self.lock.release()
-                
+                pass
+            
     def notify_failure(self, urlobj):
-        try:
-            self.lock.acquire()
-            self._failedurls.append(urlobj)
-        finally:
-            self.lock.release()
+        self.lock.acquire()
+        self._listfailed.append(urlobj)
+        self.lock.release()
 
     def stop(self):
         self._flag = True
