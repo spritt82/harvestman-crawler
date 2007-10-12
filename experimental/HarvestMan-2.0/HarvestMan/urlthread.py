@@ -86,7 +86,10 @@ class HarvestManUrlThread(threading.Thread):
         self._conn = None
         # initialize threading
         threading.Thread.__init__(self, None, None, name)
-        
+
+    def __str__(self):
+        return self.getName()
+    
     def get_error(self):
         """ Get error value of this thread """
 
@@ -182,7 +185,7 @@ class HarvestManUrlThread(threading.Thread):
         if not url_obj.trymultipart:
             res = self._conn.save_url(url_obj)
         else:
-            print 'Downloading URL',url,self
+            # print 'Downloading URL',url,self
             res = self._conn.wrapper_connect(url_obj)
             # print 'Connector returned',self,url_obj.get_full_url()
             # This has a different return value.
@@ -233,7 +236,7 @@ class HarvestManUrlThread(threading.Thread):
             try:
                 self._starttime=time.time()
 
-                print 'Waiting for next URL task',self
+                # print 'Waiting for next URL task',self
                 url_obj = self._pool.get_next_urltask()
 
                 # Dont do duplicate checking for multipart...
@@ -469,7 +472,7 @@ class HarvestManUrlThreadPool(Queue):
             fetcher.setDaemon(True)
             # Append this thread to the list of threads
             self._threads.append(fetcher)
-            print 'Starting thread',fetcher
+            # print 'Starting thread',fetcher
             debug('Starting thread',fetcher)
             fetcher.start()
 
@@ -515,9 +518,9 @@ class HarvestManUrlThreadPool(Queue):
             self.put( urlObj )
             # If this URL was multipart, mark it as such
             self._multipartstatus[url] = False
-            print "Pushed URL to queue", urlObj.get_full_url()
+            debug("Pushed URL to queue", urlObj.get_full_url())
         except Full:
-            print "Thread queue full, appending to buffer", urlObj.get_full_url()
+            debug("Thread queue full, appending to buffer", urlObj.get_full_url())
             self.buffer.append(urlObj)
         
     def get_next_urltask(self):
@@ -526,14 +529,14 @@ class HarvestManUrlThreadPool(Queue):
         # of 0 - 0.5 seconds
         # time.sleep(random.random()*0.5)
         try:
-            #if len(self.buffer):
-            #    # Get last item from buffer
-            #    item = buffer.pop()
-            #    return item
-            #else:
-            print 'Waiting to get item',threading.currentThread()
-            item = self.get()
-            return item
+            if len(self.buffer):
+                # Get last item from buffer
+                item = buffer.pop()
+                return item
+            else:
+                # print 'Waiting to get item',threading.currentThread()
+                item = self.get()
+                return item
             
         except Empty:
             return None
@@ -554,7 +557,7 @@ class HarvestManUrlThreadPool(Queue):
             if urlObj.trymultipart:
                 status = thread.get_status()
                 if status==1:
-                    # print 'Thread %s reported %s' % (thread, urlObj.get_full_url())
+                    moreinfo('Thread %s reported %s' % (thread, urlObj.get_full_url()))
                     # For flush mode, get the filename
                     # for memory mode, get the data
                     flushmode = self._cfg.flushdata
@@ -562,9 +565,21 @@ class HarvestManUrlThreadPool(Queue):
                     fname, data = '',''
                     if flushmode:
                         fname = thread.get_tmpfname()
+                        datalen = os.path.getsize(fname)
                     else:
                         data = thread.get_data()
+                        datalen = len(data)
+                        
 
+                    # See if the data was downloaded fully...,else reschedule this piece
+                    expected = (urlObj.range[-1] - urlObj.range[0]) + 1
+                    if datalen != expected:
+                        moreinfo("Thread %s did only a partial download, rescheduling this piece..." % thread)
+                        if self._monitor:
+                            # print 'Notifying failure',thread
+                            self._monitor.notify_failure(urlObj)
+                            return
+                        
                     index = urlObj.index
 
                     if index in self._multipartdata:
@@ -601,11 +616,11 @@ class HarvestManUrlThreadPool(Queue):
                     # Currently when a thread reports an error, we abort the download
                     # In future, we can inspect whether the error is fatal or not
                     # and resume download in another thread etc...
-                    logconsole('Thread %s reported error => %s' % (thread.getName(), str(thread.get_error())))
+                    moreinfo('Thread %s reported error => %s' % (str(thread), str(thread.get_error())))
                     if self._monitor:
-                        print 'Notifying failure',thread
+                        # print 'Notifying failure',thread
                         self._monitor.notify_failure(urlObj)
-                        print 'Notified failure',thread
+                        # print 'Notified failure',thread
                         
             # if the thread failed, update failure stats on the data manager
             dmgr = GetObject('datamanager')
@@ -848,6 +863,7 @@ class HarvestManUrlThreadPoolMonitor(threading.Thread):
 
         while not self._flag:
             try:
+                self.lock.acquire()
                 urlobjs = []
 
                 self._failedurls = self._listfailed[:]
@@ -856,24 +872,27 @@ class HarvestManUrlThreadPoolMonitor(threading.Thread):
                     # Reset URL to parent and try again...
                     if urlobj.mirrored:
                         # Try getting a new mirror URL
+                        # moreinfo("Trying to get new mirror URL...")
                         new_urlobj = mirrors.get_different_mirror_url(urlobj)
-                        print 'New URL OBJ=>',new_urlobj
+                        
                         if new_urlobj:
+                            moreinfo("New mirror URL=>", new_urlobj.get_full_url())
                             urlobjs.append(urlobj)
                             self._pool.push(new_urlobj)
                         else:
-                            self.pool._multiparterror = True
+                            logconsole('Could not find new working mirror. Exiting...')
+                            self._pool._multiparterror = True
+                            self._listfailed = []
+                            break
                     else:
+                        logconsole("URL is not mirrored, so no new mirrors to try. Exiting...")
                         self._pool._multiparterror = True
+                        break
 
-
-                self.lock.acquire()
-                
                 for url in urlobjs:
                     self._listfailed.remove(url)
 
                 self.lock.release()
-                    
                 time.sleep(0.1)
 
             finally:

@@ -186,7 +186,9 @@ class Hget(HarvestMan):
         # Init Config Object
         InitConfig(config.HarvestManStateObject)
         # Initialize logger object
-        InitLogger(logger.HarvestManLogger)
+        log = InitLogger(logger.HarvestManLogger)
+        # Set logging format to plain
+        log.setPlainFormat()
         
         SetUserAgent(self.USER_AGENT)
 
@@ -203,14 +205,11 @@ class Hget(HarvestMan):
         self._cfg.flushdata = not self._cfg.inmem
         # Set number of connections to two plus numparts
         self._cfg.connections = 2*self._cfg.numparts
+        # Set socket timeout to a very low value
+        self._cfg.socktimeout = 30.0
         # self._cfg.requests = 2*self._cfg.numparts
-        # Thread pool size need to be only equal to numparts
-        # self._cfg.threadpoolsize = self._cfg.numparts
-        # Set verbosity
-        # print self._cfg.hgetverbose
         if self._cfg.hgetverbose:
-            self._cfg.verbosity=2
-            self._cfg.verbosities
+            self._cfg.verbosity=logger.MOREINFO
         else:
             self._cfg.verbosity = 1
 

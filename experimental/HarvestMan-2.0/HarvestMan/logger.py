@@ -39,20 +39,21 @@ class HandlerFactory(object):
         
     createHandle = staticmethod(createHandle)
 
+
+
+# Useful macros for setting
+# the log level.
+    
+DISABLE = 0
+INFO = 1
+MOREINFO  = 2
+EXTRAINFO = 3
+DEBUG   = 4
+MOREDEBUG = 5
         
 class HarvestManLogger(object):
     """ A customizable logging class for HarvestMan with different
     levels of logging support """
-
-    # Useful macros for setting
-    # the log level.
-    
-    DISABLE = 0
-    INFO = 1
-    MOREINFO  = 2
-    EXTRAINFO = 3
-    DEBUG   = 4
-    MOREDEBUG = 5
 
     # Dictionary from levels to level names
     _namemap = { 0: 'DISABLE',
@@ -177,6 +178,13 @@ class HarvestManLogger(object):
         else:
             pass
 
+    def setPlainFormat(self):
+        """ Set format to displaying messages-only without any timestamps etc """
+
+        formatter = logging.Formatter('%(message)s')
+        for h in self._logger.handlers:
+            h.setFormatter(formatter)
+        
     def info(self, msg, *args):
         """ Perform logging at the INFO level """
 
@@ -236,7 +244,7 @@ class HarvestManLogger(object):
             pass
         except IOError, e:
             pass
-        
+
     def getDefaultLogger(cls):
         """ Return the default logger instance """
 

@@ -29,6 +29,8 @@ mymirrors = []
 
 # List of current mirrors in use
 current_mirrors = []
+# List of used mirrors
+used_mirrors = []
 
 def load_mirrors():
     """ Load mirror information from the mirror file """
@@ -77,22 +79,29 @@ def create_multipart_urls(urlobj, numparts):
     elif mymirrors:
         # Get relative path of the URL w.r.t root        
         relpath = urlobj.get_relative_url()
+        if relpath[0] == '/':
+            relpath = relpath[1:]
         mirrors = mymirrors
         
     # Get a random list of servers
-    global current_mirrors
-    current_mirrors = random.sample(mirrors, numparts)
+    global current_mirrors, used_mirrors
+    
+    current_mirrors = mirrors[:numparts]
+    used_mirrors = current_mirrors[:]
     
     orig_url = urlobj.get_full_url()
     
     for x in range(numparts):
         # urlobjects.append(copy.deepcopy(urlobj))
-        newurlobj = urlparser.HarvestManUrlParser(relpath,baseurl=current_mirrors[x])
+        baseurlobj = urlparser.HarvestManUrlParser(current_mirrors[x])
+        baseurlobj.set_directory_url()
+        
+        newurlobj = urlparser.HarvestManUrlParser(relpath,baseurl=baseurlobj)
         # Set mirror_url attribute
         newurlobj.mirror_url = urlobj
         # Set another attribute indicating the mirror is different
         newurlobj.mirrored = True
-        print "Mirror URL %d=> %s" % (x+1, newurlobj.get_full_url())
+        logconsole("Mirror URL %d=> %s" % (x+1, newurlobj.get_full_url()))
         urlobjects.append(newurlobj)
 
     return urlobjects
@@ -140,19 +149,21 @@ def get_different_mirror():
 def get_different_mirror_url(urlobj):
 
     global current_mirrors
+    global used_mirrors
     
     mirrors = get_mirrors(urlobj)
     # Get the difference of the 2 sets
-    newmirrors = list(set(mirrors).difference(set(current_mirrors)))
+    newmirrors = list(set(mirrors).difference(set(used_mirrors)))
     # print 'New mirrors=>',newmirrors
-    
-    # Get a random one out of it...
-    new_mirror = random.sample(newmirrors, 1)[0]
-    # Remove the old mirror and replace it with new mirror in
-    # current_mirrors
-    if new_mirror:
+
+    if newmirrors:
+        # Get a random one out of it...
+        new_mirror = newmirrors[0]
+        # Remove the old mirror and replace it with new mirror in
+        # current_mirrors
         current_mirrors.remove(urlobj.baseurl.origurl)
         current_mirrors.append(new_mirror)
+        used_mirrors.append(new_mirror)
     else:
         return None
             
@@ -165,8 +176,13 @@ def get_different_mirror_url(urlobj):
     else:
         # Get relative path of the URL w.r.t root        
         relpath = orig_urlobj.get_relative_url()
+        if relpath[0] == '/':
+            relpath = relpath[1:]
 
-    newurlobj = urlparser.HarvestManUrlParser(relpath,baseurl=new_mirror)
+    baseurlobj = urlparser.HarvestManUrlParser(new_mirror)
+    baseurlobj.set_directory_url()
+        
+    newurlobj = urlparser.HarvestManUrlParser(relpath,baseurl=baseurlobj)            
     # Set mirror_url attribute
     newurlobj.mirror_url = orig_urlobj
     # Set another attribute indicating the mirror is different
@@ -175,6 +191,5 @@ def get_different_mirror_url(urlobj):
     newurlobj.clength = urlobj.clength
     newurlobj.range = urlobj.range
     newurlobj.mindex = urlobj.mindex
-    print "New Mirror URL => %s" % newurlobj.get_full_url()
     
     return newurlobj
