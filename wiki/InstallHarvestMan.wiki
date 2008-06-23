@@ -1,0 +1,16 @@
+#summary How to download and install Harvestman-crawler
+#labels Phase-Deploy
+
+= Check out code from svn =
+ * First you need to checkout version of harvestman from repository.
+ * You will need '''subversion''' program to do that. When subversion is installed run this command:
+{{{
+svn checkout http://harvestman-crawler.googlecode.com/svn/trunk/ harvestman-crawler
+}}}
+
+= Install harvestman =
+ * Go into the harvestman folder, and run setup file.
+{{{
+cd harvestman-crawler/HarvestMan/
+python setup.py install
+}}}
