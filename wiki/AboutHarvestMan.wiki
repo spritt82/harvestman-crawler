@@ -1,0 +1,12 @@
+#summary Description of "HarvestMan"
+#labels Phase-Deploy
+
+= What is HarvestMan =
+
+HarvestMan is an open source, multi-threaded, modular, extensible web crawler program/framework in pure Python.
+
+HarvestMan can be used to download files from websites, according to a number of user-specified rules. The latest version of HarvestMan supports as much as 60 plus customization options. HarvestMan is a console (command-line) application.
+
+HarvestMan is the only open source, multithreaded web-crawler program written in the Python language. HarvestMan is released under the GNU General Public License.
+
+3
