@@ -1,4 +1,4 @@
-#summary Description of "HarvestMan"
+#summary About "HarvestMan"
 #labels Phase-Deploy
 
 = What is HarvestMan =
@@ -9,4 +9,10 @@ HarvestMan can be used to download files from websites, according to a number of
 
 HarvestMan is the only open source, multithreaded web-crawler program written in the Python language. HarvestMan is released under the GNU General Public License.
 
-3
+= History of HarvestMan =
+ 1. Harvestman crawler was initially started by xxx in 19xx/200x by zzzz.
+ 1. First version was released by uuuu in 200x. 
+ 1. Developer x,y,z have moved on and new development started with uuu.
+ 1. Version 2.0 of Harvetman was realeased in 200x.
+ 1. Current Version of HarvestMan is maintained by Anand Balachandran Pillai.
+ 1. In June of 2008 Lukasz Szybalski has join the team.
