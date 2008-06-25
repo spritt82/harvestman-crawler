@@ -11,7 +11,7 @@ HarvestMan is the only open source, multithreaded web-crawler program written in
 
 = History of HarvestMan =
  1. Harvestman crawler was initially started by Anand B Pillai in July 2003.
- 1. First version (0.8) was released by Anand in July 30
+ 1. First version (0.8) was released by Anand in July 2003.
  1. Released on freshmeat (1.3) on Dec 2003
  1. Project chosen as crawler for the [http://www.eiao.net EIAO] web accessibility observatory in early 2005. EIAO chose version 1.4, which then underwent several minor releases.
  1. Most recent release is 1.4.6, released on Sep 2005.
