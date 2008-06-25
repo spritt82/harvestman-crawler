@@ -27,4 +27,4 @@ HarvestMan is the only open source, multithreaded web-crawler program written in
  1. In June 2008, Lukasz Szybalski joins the team.
 
 == Future of HarvestMan ==
- 1. 2.0 version will be released in Sep 2008 with thousands of changes.
+ 1. 2.0 version will be released in Sep 2008 with thousands of changes. It is a new program when compared to 1.x releases.
