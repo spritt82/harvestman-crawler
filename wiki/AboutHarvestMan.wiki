@@ -10,7 +10,8 @@ HarvestMan can be used to download files from websites, according to a number of
 HarvestMan is the only open source, multithreaded web-crawler program written in the Python language. HarvestMan is released under the GNU General Public License.
 
 = History of HarvestMan =
- 1. Harvestman crawler was initially started by Anand B Pillai in July 2003.
+ 1. Harvestman crawler was started by Anand B Pillai in June 2003 as a hobby project to develop a personal web crawler in Python, along with Nirmal Chidambaram.
+ 1. Nirmal writes the original code in mid June 2003(one module, single threaded crawler) which Anand improves substantially and develops into a multithreaded crawler.
  1. First version (0.8) was released by Anand in July 2003.
  1. Released on freshmeat (1.3) on Dec 2003
  1. Project chosen as crawler for the [http://www.eiao.net EIAO] web accessibility observatory in early 2005. EIAO chose version 1.4, which then underwent several minor releases.
