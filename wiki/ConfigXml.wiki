@@ -1,0 +1,25 @@
+#summary Configuration Options for HarvestMan.
+#labels Phase-Implementation
+
+
+== maxbandwidth ==
+MaxBandwidth controls the speed of crawling. The throttling of bandwidth is used when we are downloading huge amount of data from host. MaxBandwidh should prevent user from "Denial Of Service" that one could impose on the crawled server. By using this configuration variable you can limit your download speed to 5kb per second. With this speed the host should not have any problems serving your crawl and be able to proceed with its normal operations. 
+
+Place the paramter in '''control''' element under '''limits''' section.
+Here is a sample XML element including this new param.
+{{{
+<control>
+....
+   <limits>
+       <maxextservers value="0"/>
+       <maxextdirs value="0"/>
+       <maxfiles value="100"/>
+       <maxfilesize value="5242880"/>
+       <connections value="5"/>
+       <maxbandwidth value="5.0" />
+       <timelimit value="-1"/>
+   </limits>
+...
+</control>
+}}}
+The value needs to be specified in kb/sec , not in bytes/sec .
