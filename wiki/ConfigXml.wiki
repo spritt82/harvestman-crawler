@@ -3,7 +3,7 @@
 
 
 == maxbandwidth ==
-MaxBandwidth controls the speed of crawling. The throttling of bandwidth is used when we are downloading huge amount of data from host. MaxBandwidh should prevent user from "Denial Of Service" that one could impose on the crawled server. By using this configuration variable you can limit your download speed to 5kb per second. With this speed the host should not have any problems serving your crawl and be able to proceed with its normal operations. 
+MaxBandwidth controls the speed of crawling. The throttling of bandwidth is used when we are downloading huge amount of data from a host. MaxBandwidh should prevent user from "Denial Of Service" that one could impose on the crawled server. By using this configuration variable you can limit your download speed to 5kb per second. With this speed the host should not have any problems serving your crawl and be able to proceed with its normal operations. 
 
 Place the paramter in *control* element under *limits* section.
 Here is a sample XML element including this new param.
@@ -22,4 +22,35 @@ Here is a sample XML element including this new param.
 ...
 </control>
 }}}
-The value needs to be specified in kb/sec , not in bytes/sec .
+
+*The value needs to be specified in kb/sec , not in bytes/sec.*
+
+== maxbytes ==
+MaxBytes controls how many bytes your crawl will download. The max bytes is used when we are downloading huge amount of data from a host, and in conjunction with MaxBandwidh we want to limit how much data we download. By using this configuration variable with maxbandwidth you can set your crawl to download 10mb at 5kb/s. With this fine grained control of your download size and speed the host should not have any problems serving your crawl and be able to proceed with its normal operations. 
+
+Place the paramter in *control* element under *limits* section.
+Here is a sample XML element including this new param.
+{{{
+<control>
+....
+   <limits>
+       <maxextservers value="0"/>
+       <maxextdirs value="0"/>
+       <maxfiles value="100"/>
+       <maxfilesize value="5242880"/>
+       <connections value="5"/>
+       <maxbandwidth value="5.0" />
+       <maxbytes value="10mb"/>
+       <timelimit value="-1"/>
+   </limits>
+...
+</control>
+}}}
+
+* The value accepts plain numbers(assumes bytes), KB, MB and GB. *
+{{{
+<maxbytes value="5000" /> - End crawl at 5000 bytes
+<maxbytes value="10kb" /> - End crawl at 10kb 
+<maxbytes value="50MB" /> - End crawl at 50 MB.
+<maxbytes value="1GB" /> - End crawl at 1 GB.
+}}}
