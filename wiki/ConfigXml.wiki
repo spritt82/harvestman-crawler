@@ -1,6 +1,21 @@
 #summary Configuration Options for HarvestMan.
 #labels Phase-Implementation
 
+= Harvestman config.xml =
+== Configuration File Structure ==
+
+The configuration file has different categories inside that split the configuration options into different sections. At present, the configuration file has the following namespaces:
+
+ # *project* - This section holds the options related to the current HarvestMan project
+ # *network* - This section holds the configuration options related to your network connection
+ # *download* - This section holds configuration option that affect your downloads in a generic way
+ # *control* - This section is similar to the above one, but holds options that affect your downloads in a much more specific way. This is a kind of 'tweak' section, that allows you to exert more fine-grained control over your projects.
+ # *system* - This section controls the threading options, regional (locale) options and any other options related to Python interpreter and your computer.
+ # *indexer* - This section holds variables related to how the files are processed after downloading. Right now it holds variables related to localizing links.
+ # *files* - This section holds variables that control the files created by HarvestMan namely error log, message log and an optional url log.
+ # *display* - This holds a single variable related to creating a browser page for all HarvestMan projects on your computer. 
+
+== Control Section  ==
 === fetchlevel ===
 
 HarvestMan defines five fetchlevels with values ranging from 0 - 4 inclusive. These define the rules for the download of files in different servers other the server of the starting URL. In general *increasing a fetch level allows the program to crawl more files* on the Internet.
