@@ -9,6 +9,14 @@ svn checkout http://harvestman-crawler.googlecode.com/svn/trunk/ harvestman-craw
 }}}
 
 = Install harvestman =
+
+== Requirements ==
+ *Harvestman requires:
+ 
+ 1. python2.4 or higher. (python2.3 untested)
+ 1. python-dev package
+
+== setup harvestman ==
  * Go into the harvestman folder, and run setup file.
 {{{
 cd harvestman-crawler/HarvestMan/
