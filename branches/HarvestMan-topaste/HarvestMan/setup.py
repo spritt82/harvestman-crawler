@@ -37,18 +37,17 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
                  'harvestman.test',
                  'harvestman.dev',
                  'harvestman.tools'],
-      package_data = {'harvestman' : ['ui/templates/*.html', 'ui/templates/content/*']}
-
+      package_data = {'harvestman' : ['ui/templates/*.html', 'ui/templates/content/*']},
       include_package_data=True,
       zip_safe=False,
       install_requires=[
       "sgmlop >= 1.1.1",
       "pyparsing >= 1.4.8",
-      "webpy >= 0.23",
+      "web.py >= 0.23",
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       [console_scripts]
-        harvestman = apps.harvestman:run
+        harvestman = harvestman.apps.harvestman:run
       """,
       )
