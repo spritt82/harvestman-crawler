@@ -679,6 +679,15 @@ if __name__=="__main__":
     spider.main()
     #pycallgraph.make_dot_graph('harvestman.png')
     
+def run():
+    """Main function to run created for scritpcommand in setuptools"""
+    spider = HarvestMan()
+    spider.initialize()
+    #import pycallgraph
+    #pycallgraph.start_trace(filter_func=callgraph_filter)
+    spider.main()
+    #pycallgraph.make_dot_graph('harvestman.png')
+    
 
                
         
