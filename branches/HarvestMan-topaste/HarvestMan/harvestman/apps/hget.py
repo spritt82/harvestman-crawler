@@ -317,4 +317,8 @@ class Hget(HarvestMan):
 if __name__ == "__main__":
     h = Hget()
     h.main()
+
+def run():
+    h = Hget()
+    h.main()
     
