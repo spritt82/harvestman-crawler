@@ -26,18 +26,20 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       author_email='abpillai at gmail dot com',
       url='http://code.google.com/p/harvestman-crawler/',
       license='GPLv2',
-      #packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-      package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
-      packages = ['harvestman',
-                 'harvestman.apps',
-                 'harvestman.lib',
-                 'harvestman.lib.common',
-                 'harvestman.lib.js',
-                 'harvestman.ext',
-                 'harvestman.test',
-                 'harvestman.dev',
-                 'harvestman.tools'
-                 ],
+      #find_packages replaces package_dir and packages
+      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      #package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
+      #packages = ['harvestman',
+      #           'harvestman.apps',
+      #           'harvestman.lib',
+      #           'harvestman.lib.common',
+      #           'harvestman.lib.js',
+      #           'harvestman.ext',
+      #           'harvestman.test',
+      #           'harvestman.dev',
+      #           'harvestman.tools'
+      #           ],
+      #Package_data is for none-py files
       package_data = {'harvestman' : ['ui/templates/*.html', 'ui/templates/content/*']},
       include_package_data=True,
       zip_safe=False,
