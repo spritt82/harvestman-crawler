@@ -87,7 +87,7 @@ import copy
 import signal
 import locale
 
-from event import HarvestManEvent
+from harvestman.lib.event import HarvestManEvent
 from appbase import HarvestManAppBase
 
 from harvestman.lib.common.common import *
