@@ -51,7 +51,7 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       ],
       entry_points="""
       [console_scripts]
-        harvestman = harvestman.apps.harvestman:run
+        harvestman = harvestman.apps.harvestman_run:run
         hget = harvestman.apps.hget:run
       """,
       )

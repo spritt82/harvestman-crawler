@@ -34,7 +34,7 @@ harvestman/apps/config-nltk-book.xml
 harvestman/apps/config-sample.xml
 harvestman/apps/config-template.xml
 harvestman/apps/config.xml
-harvestman/apps/harvestman.py
+harvestman/apps/harvestman_run.py
 harvestman/apps/harvestmanimp.py
 harvestman/apps/hget.py
 harvestman/apps/samples/Readme.txt

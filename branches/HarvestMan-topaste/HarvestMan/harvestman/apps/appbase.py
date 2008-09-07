@@ -15,10 +15,10 @@ import sys, os
 import __init__
 import atexit
 
-from lib import config
-from lib import logger
+from harvestman.lib import config
+from harvestman.lib import logger
 
-from lib.common.common import *
+from harvestman.lib.common.common import *
 
 class HarvestManAppBase(object):
     """ Base application class for applications using the HarvestMan framework """
