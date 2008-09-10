@@ -38,7 +38,6 @@
    Copyright (C) 2004 Anand B Pillai.                              
 
 """
-
 __version__ = '2.0 b1'
 __author__ = 'Anand B Pillai'
 
@@ -67,6 +66,7 @@ import re
 import configparser
 import options
 import urlparser
+import __main__
 
 from common.optionparser import *
 from common.macros import *
@@ -221,7 +221,7 @@ class HarvestManStateObject(dict, Singleton):
         mydir = os.path.dirname(globals()["__file__"])
         global module_path
         module_path = os.path.dirname(mydir)
-            
+        
         self._init1()
         self._init2()
         self.set_system_params()
@@ -1287,10 +1287,15 @@ class HarvestManStateObject(dict, Singleton):
 
     def set_system_params(self):
         """ Sets config file/directory parameters for all users """
-
+        
         # Directory for system wide configuration files...
         if os.name == 'posix':
-            self.etcdir = '/etc/harvestman'
+            #We might have to use find_packager() if somebody will use py2app py2exe
+            #print os.path.split(os.path.dirname(__main__.__file__))[0]
+            basefolder=os.path.split(os.path.dirname(__main__.__file__))[0]
+            #print os.path.join(basefolder, 'etc', 'harvestman', 'config.xml')
+            self.etcdir=os.path.join(basefolder, 'etc', 'harvestman')
+            #self.etcdir = '/etc/harvestman'
         elif os.name == 'nt':
             self.etcdir = os.path.join(os.environ.get("ALLUSERSPROFILE"),
                                        "Application Data", "HarvestMan", "conf")

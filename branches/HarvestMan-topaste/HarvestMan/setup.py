@@ -55,3 +55,29 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
         hget = harvestman.apps.hget:run
       """,
       )
+
+print os.path
+
+from harvestman.lib.config import HarvestManStateObject
+cfg = HarvestManStateObject()
+
+etcdir = cfg.etcdir
+print 'Creating basic configuration in %s...' % etcdir
+
+# If using sgmlop parser set htmlparser option to 1...
+conf_data = cfg.generate_system_configuration()
+
+if not os.path.isdir(etcdir):
+    try:
+        os.makedirs(etcdir)
+    except OSError, e:
+        print e
+        sys.exit(1)
+
+if os.path.isdir(etcdir):
+    etcfile = os.path.join(etcdir, 'config.xml')
+    open(etcfile, 'w').write(conf_data)
+    print 'done.'
+else:
+    print 'Could not create system configuration!'
+
