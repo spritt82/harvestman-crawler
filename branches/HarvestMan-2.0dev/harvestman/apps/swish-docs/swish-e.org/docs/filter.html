@@ -1,0 +1,962 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+    ***** GENERATED FILE *** DO NOT EDIT DIRECTLY - any changes will be LOST ******
+
+    swish-e.org mockup based on http://www.oswd.org/design/1773/prosimii/index2.html 
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="../swish.css" media="screen" title="swish css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+        <link rel="Prev" href="../docs/spider.html" />
+    
+        <link rel="Up" href="../docs/index.html" />
+    
+        <link rel="Start" href="../index.html" />
+    
+        <link rel="First" href="../docs/readme.html" />
+    
+
+    <title>Swish-e :: SWISH::Filter - Perl extension for filtering documents with Swish-e</title>
+
+
+  </head>
+
+
+<body>
+    
+
+    <!-- noindex -->
+
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+        <span>Related Sites:</span>
+            <a href="http://swishewiki.org/" title="swishe wiki">swish-e wiki</a> |
+            <a href="http://www.xmlsoft.org/" title="libxml2 home page">libxml2</a> |
+            <a href="http://www.zlib.net/" title="zlib home page">zlib</a> |
+            <a href="http://www.foolabs.com/xpdf/" title="xpdf home page">xpdf</a> |
+            <a href="http://dev.swish-e.org/browser" title="browse source code">Subversion</a>
+      </div>
+
+      <div class="midHeader">
+        <h1 class="headerTitle" lang="la">Swish-e</h1>
+        <div class="headerSubTitle">Simple Web Indexing System for Humans - Enhanced</div>
+
+        <br class="doNotDisplay doNotPrint" />
+
+        <div class="headerLinks">
+          <span class="doNotDisplay">Tools:</span>
+
+              <!-- don't know what platform, so link to download page -->
+
+              <a href="../download/index.html">download latest version</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- index -->
+
+<!-- noindex -->
+<div class="subHeader">
+    <table width='100%'>
+        <tr>
+            <td align='left'>
+                <a href="../index.html">home</a> |
+                <a href="../support.html">support</a> |
+                <a href="../download/index.html">download</a>
+            </td>
+
+
+            
+            <td align='right'>
+
+                <form method="get"
+                    action="../search/index.html"
+                    enctype="application/x-www-form-urlencoded"
+                    class="srchform">
+
+                    <label for="searchfield">Search for</label>
+                    <input maxlength="200" value="" id="searchfield" size="30" name="query" type="text" alt="Search input field" />
+                    <input value="search" name="submit" type="submit" class='button' />
+                </form>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+<!-- index -->
+
+
+<div id="body-area" class="clearfix">
+
+    <div id="content-area">
+
+        <div id="main-copy">
+            
+            
+            
+            
+<h1>SWISH::Filter - Perl extension for filtering documents with Swish-e</h1>
+Swish-e version 2.4.5
+
+
+
+    <!-- noindex -->
+
+    
+        <h2>Table of Contents</h2>
+        <div class="toc">
+            
+    <ul class="toc">
+        
+            <li>
+                <a href="#synopsis">SYNOPSIS</a>
+                
+            </li>
+        
+            <li>
+                <a href="#description">DESCRIPTION</a>
+                
+            </li>
+        
+            <li>
+                <a href="#methods">METHODS</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#swish_filter_new_options">SWISH::Filter-&gt;new Options</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#writing_filters">WRITING FILTERS</a>
+                
+            </li>
+        
+            <li>
+                <a href="#swish_filter_document_methods">SWISH::Filter::document Methods</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#methods_used_by_end_users_and_filter_authors">Methods used by end-users and filter authors</a>
+                
+            </li>
+        
+            <li>
+                <a href="#methods_used_by_filter_authors">Methods used by filter authors</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#swish_filters__base">SWISH::Filters::_BASE</a>
+                
+            </li>
+        
+            <li>
+                <a href="#testing">TESTING</a>
+                
+            </li>
+        
+            <li>
+                <a href="#support">SUPPORT</a>
+                
+            </li>
+        
+            <li>
+                <a href="#bugs_todo_items_and_other_notes">Bugs, todo items, and other notes</a>
+                
+            </li>
+        
+            <li>
+                <a href="#author">AUTHOR</a>
+                
+            </li>
+        
+            <li>
+                <a href="#copyright">COPYRIGHT</a>
+                
+            </li>
+        
+    </ul>
+
+        </div>
+    
+    <!-- index -->
+
+
+
+
+
+<hr />
+
+
+    <div class="sub-section">
+        
+<h1><a name="synopsis"></a>SYNOPSIS</h1>
+
+<pre class="pre-section">  use SWISH::Filter;
+
+  # load available filters into memory
+  my $filter = SWISH::Filter-&gt;new;
+
+  # convert a document
+
+  my $doc = $filter-&gt;convert(
+        document     =&gt; \$scalar_ref,  # path or ref to a doc
+        content_type =&gt; $content_type, # content type if doc reference
+        name         =&gt; $real_path,    # optional name for this file (useful for debugging)
+        user_data    =&gt; $whatever,     # optional data to make available to filters
+   );
+
+  return unless $doc;  # empty doc, zero size, or no filters installed
+
+  # Was the document converted by a filter?
+  my $was_filtered = $doc-&gt;was_filtered;
+
+  # Skip if the file is not text
+  return if $doc-&gt;is_binary;
+
+  # Print out the doc
+  my $doc_ref = $doc-&gt;fetch_doc;
+  print $$doc_ref;
+
+  # Fetch the final content type of the document
+  my $content_type = $doc-&gt;content_type;
+
+  # Fetch Swish-e parser type (TXT*, XML*, HTML*, or undefined)
+  my $doc_type = $doc-&gt;swish_parser_type;</pre>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="description"></a>DESCRIPTION</h1>
+
+<p>SWISH::Filter provides a unified way to convert documents into a type that
+Swish-e can index.  Individual filters are installed as separate perl modules.
+For example, there might be a filter that converts from PDF format to HTML
+format.</p>
+<p>Note that this is just a framework for filtering documents.  Additional helper
+programs or Perl module may need to be installed to use SWISH::Filter to filter
+documents.  For example, to filter PDF documents you must install the Xpdf
+package.</p>
+<p>The filters are automatically loaded when <code>SWISH::Filters-&gt;new()</code> is
+called.  Filters define a type and priority that determines the processing
+order of the filter.  Filters are processed in this sort order until a filter
+accepts the document for filtering. The filter uses the document's content type
+to determine if the filter should handle the current document.  The
+content-type is determined by the files suffix if not supplied by the calling
+program.</p>
+<p>The individual filters are not designed to be used as separate modules.  All
+access to the filters is through this SWISH::Filter module.</p>
+<p>Normally, once a document is filtered processing stops.  Filters can filter the
+document and then set a flag saying that filtering should continue (for example
+a filter that uncompresses a MS Word document before passing on to the filter
+that converts from MS Word to text).  All this should be transparent to the end
+user.  So, filters can be pipe-lined.</p>
+<p>The idea of SWISH::Filter is that new filters can be created, and then
+downloaded and installed to provide new filtering capabilities.  For example,
+if you needed to index MS Excel documents you might be able to download a
+filter from the Swish-e site and magically next time you run indexing MS Excel
+docs would be indexed.</p>
+<p>The SWISH::Filter setup can be used with -S prog or -S http.  It works best
+with the -S prog method because the filter modules only need to be loaded and
+compiled one time.  The -S prog program <i>spider.pl</i> will automatically use
+SWISH::Filter when spidering with default settings (using "default" as the
+first parameter to spider.pl).</p>
+<p>The -S http indexing method uses a Perl helper script called <i>swishspider</i>.
+<i>swishspider</i> has been updated to work with SWISH::Filter, but (unlike
+spider.pl) does not contain a "use lib" line to point to the location of
+SWISH::Filter.  This means that by default <i>swishspider</i> will <b>not</b> use
+SWISH::Filter for filtering.  The reason for this is because <i>swishspider</i>
+runs for every URL fetched, and loading the Filters for each document can be
+slow.  The recommended way of spidering is using -S prog with spider.pl, but if
+-S http is desired the way to enable SWISH::Filter is to set PERL5LIB before
+running swish so that <i>swishspider</i> will be able to locate the SWISH::Filter
+module.  Here's one way to set the PERL5LIB with the bash shell:</p>
+<pre class="pre-section">  $ export PERL5LIB=`swish-filter-test -path`</pre>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="methods"></a>METHODS</h1>
+
+<ul>
+<li><a name="item__filter"></a><a name="_filter"></a><b>$filter = SWISH::Filter-&gt;new()</b>
+<p>This creates a SWISH::Filter object.  You may pass in options as a list or a hash reference.</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="swish_filter_new_options"></a>SWISH::Filter-E&lt;gt&gt;new Options</h2>
+
+<p>There is currently only one option that can be passed in to new():</p>
+<ul>
+<li><a name="item_ignore_filters"></a><a name="ignore_filters"></a><b>ignore_filters</b>
+<p>Pass in a reference to a list of filter names to ignore.  For example, if you have two filters installed
+"Pdf2HTML" and "Pdf2XML" and want to avoid using "Pdf2XML":</p>
+<pre class="pre-section">    my $filter = SWISH::Filter-&gt;new( ignore_filters =&gt; ['Pdf2XML'];</pre>
+</li>
+<li><a name="item__doc_object"></a><a name="_doc_object"></a><b>$doc_object = $filter-&gt;convert();</b>
+<p>This method filters a document.  Returns an object of the class SWISH::Filter::document
+or undefined if passed in an empty document, a filename that cannot be read off disk, or
+if no filters have been loaded.</p>
+<p>SWISH::Filter::document methods listed below can be called on the object to, for
+example, check if the document was filtered and to fetch the document content (filtered or
+not).</p>
+<p>You must pass in a hash (or hash reference) of parameters to the convert() method.  The
+possible parameters are:</p>
+<ul>
+<li><a name="item_document"></a><a name="document"></a><b>document</b>
+<p>This can be either a path to a file, or a scalar reference to a document in memory.
+This is required.</p>
+</li>
+<li><a name="item_content_type"></a><a name="content_type"></a><b>content_type</b>
+<p>The MIME type of the document.  This is only required when passing in a scalar
+reference to a document. The content type string is what the filters use to
+match a document type.</p>
+<p>When passing in a file name and <code>content_type</code> is not set, then the content type will
+be determined from the file's extension by using the MIME::Types Perl module (available on CPAN).</p>
+</li>
+<li><a name="item_name"></a><a name="name"></a><b>name</b>
+<p>Optional name to pass in to filters that will be used in error and warning messages.</p>
+</li>
+<li><a name="item_user_data"></a><a name="user_data"></a><b>user_data</b>
+<p>Optional data structure that all filters may access.
+This can be fetched in a filter by:</p>
+<pre class="pre-section">    my $user_data = $doc_object-&gt;user_data;</pre>
+<p>And used in the filter as:</p>
+<pre class="pre-section">    if ( ref $user_data &amp;&amp; $user_data-&gt;{pdf2html}{title} ) {
+       ...
+    }</pre>
+<p>It's up to the filter author to use a unique first-level hash key for a given filter.</p>
+</li>
+</ul>
+<p>Example of using the convert() method:</p>
+<pre class="pre-section">    $doc_object = $filter-&gt;convert(
+        document     =&gt; $doc_ref,
+        content-type =&gt; 'application/pdf',
+    );</pre>
+</li>
+<li><a name="item__filter_mywarn_"></a><a name="_filter_mywarn_"></a><b>$filter-&gt;mywarn()</b>
+<p>Internal function used for writing warning messages to STDERR if
+$ENV{FILTER_DEBUG} is set.  Set the environment variable FILTER_DEBUG before
+running to see extra messages while processing.</p>
+</li>
+<li><a name="item__filters"></a><a name="_filters"></a><b>@filters = $filter-&gt;filter_list;</b>
+<p>Returns a list of filter objects installed.</p>
+</li>
+<li><a name="item__filter"></a><a name="_filter"></a><b>@filter = $filter-&gt;can_filter( $content_type );</b>
+<p>This is useful for testing to see if a mimetype might be handled by SWISH::Filter
+wihtout having to pass in a document.  Helpful if doing HEAD requests.</p>
+<p>Returns an array of filters that can handle this type of document</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="writing_filters"></a>WRITING FILTERS</h1>
+
+<p>Filters are standard perl modules that are installed into the SWISH::Filters name space.
+Filters are not complicated -- see the existing filters for examples.</p>
+<p>Each filter defines the content-types (or mimetypes) that it can handle.  These
+are specified as a list of regular expressions to match against the document's
+content-type.  If one of the mimetypes of a filter match the incoming
+document's content-type the filter is called.  The filter can then either
+filter the content or return undefined indicating that it decided not to
+filter the document for some reason.  If the document is converted the filter
+returns either a reference to a scalar of the content or a file name where the
+content is stored.  The filter also must change the content-type of the document
+to reflect the new document.</p>
+<p>Filters typically use external programs or modules to do that actual work of
+converting a document from one type to another.  For example, programs in the
+Xpdf packages are used for converting PDF files.  The filter can (and should)
+test for those programs in its new() method.</p>
+<p>Filters also can define a type and priority.  These attributes are used
+to set the order filters are tested for a content-type match.  This allows
+you to have more than one filter that can work on the same content-type.</p>
+<p>If a filter calls die() then the filter is removed from the chain and will not be
+called again <i>during the same run</i>.  Calling die when running with -S http or
+-S fs has no effect since the program is run once per document.</p>
+<p>Once a filter returns something other than undef no more filters will be
+called.  If the filter calls $filter-&gt;set_continue then processing will
+continue as if the file was not filtered.  For example, a filter can uncompress
+data and then set $filter-&gt;set_continue and let other filters process the
+document.</p>
+<p>This is the list of methods the filter should or may define (as specificed):</p>
+<ul>
+<li><a name="item_new_"></a><a name="new_"></a><b>new()  * required *</b>
+<p>This method returns either an object which provides access to the filter, or undefined
+if the filter is not to be used.</p>
+<p>The new() method is a good place to check for required modules or helper programs.
+Returning undefined prevents the filter from being included in the filter chain.</p>
+<p>The new method must return a blessed hash reference.  The only required attribute
+is <b>mimetypes</b>.  This attribute must contain a reference to an array of regular
+expressions used for matching the content-type of the document passed in.</p>
+<p>Example:</p>
+<pre class="pre-section">    sub new {
+        my ( $class ) = @_;
+
+        # List of regular expressions
+        my @mimetypes = (
+            qr[application/(x-)?msword],
+            qr[application/worddoc],
+        );
+
+        my %settings = (
+            mimetypes   =&gt; \@mimetypes,
+
+            # Optional settings
+            priority    =&gt; 20,
+            type        =&gt; 2,
+        );
+
+        return bless \%settings, $class;
+    }</pre>
+<p>The attribute "mimetypes" returns an array reference to a list of regular
+expressions.  Those patterns are matched against each document's content type.</p>
+</li>
+<li><a name="item_filter_"></a><a name="filter_"></a><b>filter() * required *</b>
+<p>This is the function that does the work of converting a document from one content type
+to another.  The function is passed the document object.  See document object methods
+listed below for what methods may be called on a document.</p>
+<p>The function can return undefined (or any false value) to indicate that the
+filter did not want to process the document.  Other filters will then be tested for
+a content type match.</p>
+<p>If the document is filtered then the filter must set the new document's content
+type (if it changed) and return either a file name where the document can be found or
+a reference to a scalar containing the document.</p>
+</li>
+<li><a name="item_type_"></a><a name="type_"></a><b>type()</b>
+<p>Returns a number. Filters are sorted (for processing in a specific order)
+and this number is simply the primary key used in sorting.  If not specified
+the filter's type used for sorting is 2.</p>
+<p>This is an optional method.  You can also set the type in your new() constructor
+as shown above.</p>
+</li>
+<li><a name="item_priority_"></a><a name="priority_"></a><b>priority()</b>
+<p>Returns a number.  Filters are sorted (for processing in a specific order)
+and this number is simply the secondary key used in sorting.  If not specified
+the filter's priority is 50.</p>
+<p>This is an optional method.  You can also set the priority in your new() constructor
+as shown above.</p>
+</li>
+</ul>
+<p>Again, the point of the type() and priority() methods is to allow setting the sort order
+of the filters.  Useful if you have two filters for filtering the same content-type,
+but prefer to use one over the other.  Neither are required.</p>
+<p>Here's a module to convert MS Word documents using the program "catdoc":</p>
+<pre class="pre-section">    package SWISH::Filters::Doc2txt;
+    use vars qw/ $VERSION /;
+
+    $VERSION = '0.02';
+
+    sub new {
+        my ( $class ) = @_;
+
+        my $self = bless {
+            mimetypes   =&gt; [ qr!application/(x-)?msword! ],
+            priority    =&gt; 50,
+        }, $class;
+
+        # check for helpers
+        return $self-&gt;set_programs( 'catdoc' );
+
+    }
+
+    sub filter {
+        my ( $self, $doc ) = @_;
+
+        my $content = $self-&gt;run_catdoc( $doc-&gt;fetch_filename ) || return;
+
+        # update the document's content type
+        $filter-&gt;set_content_type( 'text/plain' );
+
+        # return the document
+        return \$content;
+    }
+    1;</pre>
+<p>The new() constructor creates a blessed hash which contains an array reference
+of mimetypes patterns that this filter accepts.  The priority sets this
+filter to run after any other filters that might handle the same type of content.
+The <i>set_programs()</i> function says that we need to call a program called "catdoc".
+The function either returns $self or undefined if catdoc could not be found.
+The <i>set_programs()</i> function creates a new method for running catdoc.</p>
+<p>The filter function runs catdoc passing in the name of the file (if the file is in memory
+a temporary file is created).  That <i>run_catdoc()</i> function was created by the
+<i>set_programs()</i> call above.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="swish_filter_document_methods"></a>SWISH::Filter::document Methods</h1>
+
+<p>These methods are available to Filter authors, and also provide access to the
+document after calling the convert() method to end-users of SWISH::Filter.</p>
+<p>End users of SWISH::Filter will use a subset of these methods.  Mostly:</p>
+<pre class="pre-section">   $doc_object-&gt;fetch_doc      # and alias for fetch_document_reference()
+   $doc_object-&gt;was_filtered   # true the document was filtered
+   $doc_object-&gt;content_type   # document's current content type (mime type)
+   $doc_object-&gt;swish_parser_type # returns a parser type to use with Swish-e -S prog method
+   $doc_object-&gt;is_binary      # returns $content_type !~ m[^text/];</pre>
+<p>These methods are also available to the individual filter modules.  The filter's "filter"
+function is also passed a SWISH::Filter::document object.  Method calls may be made on this
+object to check the document's current content type, or to fetch the document as either a
+file name or a reference to a scalar containing the document content.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="methods_used_by_end_users_and_filter_authors"></a>Methods used by end-users and filter authors</h2>
+
+<ul>
+<li><a name="item__doc_ref"></a><a name="_doc_ref"></a><b>$doc_ref = $doc_object-&gt;fetch_doc_reference;</b>
+<p>Returns a scalar reference to the document.  This can be used when the filter
+can operate on the document in memory (or if an external program expects the input
+to be from standard input).</p>
+<p>If the file is currently on disk then it will be read into memory.  If the file was stored
+in a temporary file on disk the file will be deleted once read into memory.
+The file will be read in binmode if $doc-&gt;is_binary is true.</p>
+<p>Note that $doc_object-&gt;fetch_doc is an alias.</p>
+</li>
+<li><a name="item__was_filtered"></a><a name="_was_filtered"></a><b>$was_filtered = $doc_object-&gt;was_filtered</b>
+<p>Returns true if some filter processed the document</p>
+</li>
+<li><a name="item__content_type"></a><a name="_content_type"></a><b>$content_type = $doc_object-&gt;content_type;</b>
+<p>Fetches the current content type for the document.</p>
+<p>Example:</p>
+<pre class="pre-section">    return unless $filter-&gt;content_type =~ m!application/pdf!;</pre>
+</li>
+<li><a name="item__type"></a><a name="_type"></a><b>$type = $doc_object-&gt;swish_parser_type</b>
+<p>Returns a parser type based on the content type</p>
+</li>
+<li><a name="item__doc_object_is_binary"></a><a name="_doc_object_is_binary"></a><b>$doc_object-&gt;is_binary</b>
+<p>Returns true if the document's content-type does not match "text/".</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="methods_used_by_filter_authors"></a>Methods used by filter authors</h2>
+
+<ul>
+<li><a name="item__file_name"></a><a name="_file_name"></a><b>$file_name = $doc_object-&gt;fetch_filename;</b>
+<p>Returns a path to the document as stored on disk.
+This name can be passed to external programs (e.g. catdoc) that expect input
+as a file name.</p>
+<p>If the document is currently in memory then a temporary file will be created.  Do not expect
+the file name passed to be the real path of the document.</p>
+<p>The file will be written in binmode if $doc-&gt;is_binary is true.</p>
+<p>This method is not normally used by end-users of SWISH::Filter.</p>
+</li>
+<li><a name="item__doc_object_set_continue_"></a><a name="_doc_object_set_continue_"></a><b>$doc_object-&gt;set_continue;</b>
+<p>Processing will continue to the next filter if this is set to a true value.
+This should be set for filters that change encodings or uncompress documents.</p>
+</li>
+<li><a name="item__doc_object_set_content_type_"></a><a name="_doc_object_set_content_type_"></a><b>$doc_object-&gt;set_content_type( $type );</b>
+<p>Sets the content type for a document.</p>
+</li>
+<li><a name="item__doc_object_name"></a><a name="_doc_object_name"></a><b>$doc_object-&gt;name</b>
+<p>Fetches the name of the current file.  This is useful for printing out the
+name of the file in an error message.
+This is the name passed in to the SWISH::Filter-&gt;convert method.
+It is optional and thus may not always be set.</p>
+<pre class="pre-section">    my $name = $doc_object-&gt;name || 'Unknown name';
+    warn "File '$name': failed to convert -- file may be corrupt\n";</pre>
+</li>
+<li><a name="item__doc_object_user_data"></a><a name="_doc_object_user_data"></a><b>$doc_object-&gt;user_data</b>
+<p>Fetches the the user_data passed in to the filter.
+This can be any data or data structure passed into SWISH::Filter-&gt;new.</p>
+<p>This is an easy way to pass special parameters into your filters.</p>
+<p>Example:</p>
+<pre class="pre-section">    my $data = $doc_object-&gt;user_data;
+    # see if a choice for the &lt;title&gt; was passed in
+    if ( ref $data eq 'HASH' &amp;&amp; $data-&gt;{pdf2html}{title_field}  {
+       ...
+       ...
+    }</pre>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="swish_filters__base"></a>SWISH::Filters::_BASE</h1>
+
+<p>Each filter is a subclass of SWISH::Filters::_BASE.  A number of methods
+are available by default (and some can be overridden).  Others are useful
+when writing your new() constructor.</p>
+<ul>
+<li><a name="item__self_type"></a><a name="_self_type"></a><b>$self-&gt;type</b>
+<p>This method fetches the type of the filter.  The value returned sets the
+primary sort key for sorting the filters.  You can override this in your
+filter, or just set it as an attribute in your object.  The default is 2.</p>
+<p>The idea of the "type" is to create groups of filters, if needed.
+For example, you might have a set of filters that are used for uncompressing
+some documents before passing on to another group for filtering.</p>
+</li>
+<li><a name="item__self_priority"></a><a name="_self_priority"></a><b>$self-&gt;priority</b>
+<p>This method fetches the priority of the filter.  The value returned sets the
+secondary sort key for sorting the filters.  You can override this in your
+filter, or just set it as an attribute in your object.  The default method
+returns 50.</p>
+<p>The priority is useful if you have multiple filters for the same content type that
+use different methods for filtering (say one uses wvWare and another uses catdoc for
+filtering MS Word files).  You might give the wvWare filter a lower priority number
+so it runs before the catdoc filter if both wvWare AND catdoc happen to be installed
+at the same time.</p>
+</li>
+<li><a name="item__types"></a><a name="_types"></a><b>@types = $self-&gt;mimetypes</b>
+<p>Returns the list of mimetypes (as regular expressions) set for the filter.</p>
+</li>
+<li><a name="item__pattern"></a><a name="_pattern"></a><b>$pattern = $self-&gt;can_filter_mimetype( $content_type )</b>
+<p>Returns true if passed in content type matches one of the filter's mimetypes
+Returns the pattern that matched.</p>
+</li>
+<li><a name="item_mywarn_"></a><a name="mywarn_"></a><b>mywarn( $message )</b>
+<p>method for printing out message if debugging is available</p>
+</li>
+<li><a name="item__boolean"></a><a name="_boolean"></a><b>$boolean = $self-&gt;set_programs( @program_list );</b>
+<p>Returns true if all the programs listed in @program_list are found
+and can be executed as the current user.  Creates a method for each
+program with the "run_" prefix.  Returns false is ANY program cannot
+be found.</p>
+<p>Actually, it returns $self, so you can make it the last statement in
+your constructor.</p>
+<p>So in your constructor you might do:</p>
+<pre class="pre-section">    return $self-&gt;set_programs( qw/ pdftotext pdfinfo / );</pre>
+<p>Then in your filter() method:</p>
+<pre class="pre-section">    my $content = $self-&gt;run_pdfinfo( $doc-&gt;fetch_filename, [options] );</pre>
+</li>
+<li><a name="item__path"></a><a name="_path"></a><b>$path = $self-&gt;find_binary( $prog );</b>
+<p>Use in a filter's new() method to test for a necesary program located in $PATH.
+Returns the path to the program or undefined if not found or does not pass the -x
+file test.</p>
+</li>
+<li><a name="item__bool"></a><a name="_bool"></a><b>$bool = $self-&gt;use_modules( @module_list );</b>
+<p>Attempts to load each of the module listed and calls its import() method.</p>
+<p>Use to test and load required modules within a filter without aborting.</p>
+<pre class="pre-section">    return unless $self-&gt;use_modules( qw/ Spreadsheet::ParseExcel  HTML::Entities / );</pre>
+<p>A warning message is displayed if the FILTER_DEBUG environment variable is true.
+Returns $self if no error.</p>
+</li>
+<li><a name="item__doc_ref"></a><a name="_doc_ref"></a><b>$doc_ref = $self-&gt;run_program( $program, @args );</b>
+<p>Runs $program with @args.  Must pass in @args.</p>
+<p>Under Windows calls IPC::Open2, which may pass data through the shell.  Double-quotes are
+escaped (backslashed) and each parameter is wrapped in double-quotes.</p>
+<p>On other platforms a fork and exec is used to avoid passing any data through the shell.
+Returns a reference to a scalar containing the output from your program, or dies.</p>
+<p>This method is intended to read output from a program that converts one format into text.
+The output is read back in text mode -- on systems like Windows this means \r\n (CRLF) will
+be convertet to \n.</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="testing"></a>TESTING</h1>
+
+<p>Filters can be tested with the <i>swish-filter-test</i> program.  Run:</p>
+<pre class="pre-section">   swish-filter-test -man</pre>
+<p>for documentation.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="support"></a>SUPPORT</h1>
+
+<p>Please contact the Swish-e discussion list.  <a href="http://swish-e.org">http://swish-e.org</a></p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="bugs_todo_items_and_other_notes"></a>Bugs, todo items, and other notes</h1>
+
+<p>TBD</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="author"></a>AUTHOR</h1>
+
+<p>Bill Moseley</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="copyright"></a>COPYRIGHT</h1>
+
+<p>This library is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div><!-- /#main-copy  -->
+
+    </div><!-- /#content-area -->
+
+
+    <div id="side-bar">
+        <!-- noindex -->
+<ul class="menu"><li class="">
+
+    <a class="menu" 
+    href="../index.html"
+    >home</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../news.html"
+    >news</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../download/index.html"
+    >download</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../license.html"
+    >license</a>
+
+</li><li class="menuparent">
+
+    <a class="menu" 
+    href="../docs/index.html"
+    >documentation</a>
+
+<!-- noindex -->
+<ul class="submenu"><li class="">
+
+    <a class="submenu" 
+    href="../docs/readme.html"
+     title="First time users">README</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/install.html"
+     title="Installation and usage overview">Install</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/changes.html"
+     title="Important changes from previous versions">Changes</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-config.html"
+     title="Directives that go in your Swish-e configuration file">Configuration</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-run.html"
+     title="Command line options for Swish-e binary">Running</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-search.html"
+     title="Swish-e's search language">Searching</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-faq.html"
+    >FAQ</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-bugs.html"
+    >Known issues</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-3.0.html"
+    >The Future</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-library.html"
+     title="Swish-e C API">C API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/api.html"
+     title="Perl interface to the Swish-e library">Perl API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish.cgi.html"
+     title="Example CGI/mod_perl script">Swish.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/search.cgi.html"
+     title="Example Perl script using SWISH::API">Search.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/spider.html"
+     title="The Swish-e HTTP spider">Spider.pl</a>
+
+</li><li class="">
+
+    <a class="thisfile" 
+    href="../docs/filter.html"
+     title="How to index non-text documents">Filters &#187;</a>
+
+</li></ul>
+<!-- index -->
+
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../support.html"
+    >support</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../discuss.html"
+     title="email list and list archive">discuss</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../graphics/index.html"
+    >graphics</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../scripts.html"
+    >related projects</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../devel/index.html"
+     title="CVS, daily builds and development documentation">development</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../who.html"
+    >who uses it</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../demos.html"
+    >demos</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../search/index.html"
+    >Search</a>
+
+</li></ul>
+<!-- index -->
+
+
+
+    </div><!-- /#side-bar -->
+
+
+</div><!-- /#body-area -->
+
+
+
+<div id="footer">
+    <!-- noindex -->
+<span class="doNotPrint">
+    Swish-e is distributed with <strong>no warranty</strong> under the terms of the <br />
+    <a href='http://swish-e.org/license.html'>Swish-e License</a>.<br />
+    Questions may be posted to the 
+    <a href="../discuss.html" title="email list and list archive">Swish-e Discussion list</a>.
+</span>
+
+
+
+<p>
+    <strong>URI &raquo;</strong> http://swish-e.org/ 
+    &bull;
+
+    <strong>Updated &raquo;</strong>Fri, 24 Jun 2005 12:47:15 UTC</p>
+<!-- index -->
+
+</div><!-- /#footer -->
+
+
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+    ***** GENERATED FILE *** DO NOT EDIT DIRECTLY - any changes will be LOST ******
+
+    swish-e.org mockup based on http://www.oswd.org/design/1773/prosimii/index2.html 
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="../swish.css" media="screen" title="swish css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+        <link rel="Last" href="../search/index.html" />
+    
+        <link rel="Prev" href="../license.html" />
+    
+        <link rel="Next" href="../support.html" />
+    
+        <link rel="Start" href="../index.html" />
+    
+        <link rel="First" href="../index.html" />
+    
+
+    <title>Swish-e :: Documentation Table of Contents</title>
+
+
+  </head>
+
+
+<body>
+    
+
+    <!-- noindex -->
+
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+        <span>Related Sites:</span>
+            <a href="http://swishewiki.org/" title="swishe wiki">swish-e wiki</a> |
+            <a href="http://www.xmlsoft.org/" title="libxml2 home page">libxml2</a> |
+            <a href="http://www.zlib.net/" title="zlib home page">zlib</a> |
+            <a href="http://www.foolabs.com/xpdf/" title="xpdf home page">xpdf</a> |
+            <a href="http://dev.swish-e.org/browser" title="browse source code">Subversion</a>
+      </div>
+
+      <div class="midHeader">
+        <h1 class="headerTitle" lang="la">Swish-e</h1>
+        <div class="headerSubTitle">Simple Web Indexing System for Humans - Enhanced</div>
+
+        <br class="doNotDisplay doNotPrint" />
+
+        <div class="headerLinks">
+          <span class="doNotDisplay">Tools:</span>
+
+              <!-- don't know what platform, so link to download page -->
+
+              <a href="../download/index.html">download latest version</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- index -->
+
+<!-- noindex -->
+<div class="subHeader">
+    <table width='100%'>
+        <tr>
+            <td align='left'>
+                <a href="../index.html">home</a> |
+                <a href="../support.html">support</a> |
+                <a href="../download/index.html">download</a>
+            </td>
+
+
+            
+            <td align='right'>
+
+                <form method="get"
+                    action="../search/index.html"
+                    enctype="application/x-www-form-urlencoded"
+                    class="srchform">
+
+                    <label for="searchfield">Search for</label>
+                    <input maxlength="200" value="" id="searchfield" size="30" name="query" type="text" alt="Search input field" />
+                    <input value="search" name="submit" type="submit" class='button' />
+                </form>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+<!-- index -->
+
+
+<div id="body-area" class="clearfix">
+
+    <div id="content-area">
+
+        <div id="main-copy">
+            
+            
+            
+            
+
+
+<!-- noindex -->
+
+<h1>Swish-e Documentation</h1>
+Version 2.4.5
+
+<h2>Table of Contents</h2>
+
+<ul class="toc">
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="readme.html">The Swish-e README File</a>
+
+        
+            <blockquote>
+                <p>
+                    Swish-e is <b>S</b>imple <b>W</b>eb <b>I</b>ndexing <b>S</b>ystem for <b>H</b>umans - <b>E</b>nhanced.
+Swish-e can quickly and easily index directories of files or remote web sites
+and search the generated indexes.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="install.html">INSTALL - Swish-e Installation Instructions</a>
+
+        
+            <blockquote>
+                <p>
+                    This document describes how to download, build,
+and install Swish-e from source.
+Also found below is a basic overview of using Swish-e to index documents,
+with pointers to other, more advanced examples.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="changes.html">CHANGES - List of revisions</a>
+
+        
+            <blockquote>
+                <p>
+                    This document contains list of bug fixes and feature additions to Swish-e.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-config.html">SWISH-CONFIG - Configuration File Directives</a>
+
+        
+            <blockquote>
+                <p>
+                    This document lists the available configuration directives available in
+Swish-e.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-run.html">SWISH-RUN - Running Swish-e and Command Line Switches</a>
+
+        
+            <blockquote>
+                <p>
+                    The Swish-e program is controlled by command line arguments (called
+<i>switches</i>).  Often, it is run manually from a shell (command
+prompt), or from a program such as a CGI script that passes the command
+line arguments to swish.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-search.html">SWISH-SEARCH - Swish-e Searching Instructions</a>
+
+        
+            <blockquote>
+                <p>
+                    This page describes the process of searching with Swish-e.  Please see
+the <i>SWISH-CONFIG</i> page for information the Swish-e
+configuration file directives, and <i>SWISH-RUN</i> for a complete
+list of command line arguments.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-faq.html">The Swish-e FAQ - Answers to Common Questions</a>
+
+        
+            <blockquote>
+                <p>
+                    List of commonly asked and answered questions.  Please review this
+document before asking questions on the Swish-e discussion list.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-bugs.html">SWISH-BUGS - List of bugs known in Swish-e</a>
+
+        
+            <blockquote>
+                <p>
+                    This file contains a list of bugs reported or known in Swish-e.  If
+you find a bug listed here you do not need to report it as a bug.  But feel
+free to bug the developers about it on the Swish-e discussion list.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-3.0.html">Proposed changes for Swish-e 3.0</a>
+
+        
+            <blockquote>
+                <p>
+                    This pages is intended to give users of Swish-e an idea of the changes
+to come, to foster discussion of the direction of Swish-e, and a place
+where developers can map out new ideas.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish-library.html">SWISH-LIBRARY - Interface to the Swish-e C library</a>
+
+        
+            <blockquote>
+                <p>
+                    The C library in an interface to the Swish-e search code.  It provides
+a way to embed Swish-e into your applications.
+This API is based on Swish-e version 2.3.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="api.html">SWISH::API - Perl interface to the Swish-e C Library</a>
+
+        
+            <blockquote>
+                <p>
+                    This module provides a Perl interface to the Swish-e search engine.
+This module allows embedding the swish-e search code into your application
+avoiding the need to fork to run the swish-e binary and to keep an index file
+open when running multiple queries.  This results in increased search performance.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="swish.cgi.html">swish.cgi -- Example Perl script for searching with the SWISH-E search engine.</a>
+
+        
+            <blockquote>
+                <p>
+                    <code>swish.cgi</code> is a CGI script for searching with the SWISH-E search
+engine version 2.1-dev and above.  It returns results a page at a
+time, with matching words from the source document highlighted,
+showing a few words of content on either side of the highlighted word.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="search.cgi.html">search.cgi -- Example Perl program for searching with Swish-e and SWISH::API</a>
+
+        
+            <blockquote>
+                <p>
+                    This is a very simple program that shows how to use the SWISH::API module
+in a CGI script or mod_perl handler using Template-Toolkit to generate
+output.  This program is intended for programmers that want to create a custom
+search script.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="spider.html">spider.pl - Example Perl program to spider web servers</a>
+
+        
+            <blockquote>
+                <p>
+                    <i>spider.pl</i> is a program for fetching documnts from a web server,
+and outputs the documents to STDOUT in a special format designed
+to be read by Swish-e.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    <li class="top-level">
+        <a href="filter.html">SWISH::Filter - Perl extension for filtering documents with Swish-e</a>
+
+        
+            <blockquote>
+                <p>
+                    SWISH::Filter provides a unified way to convert documents into a type that
+Swish-e can index.  Individual filters are installed as separate perl modules.
+For example, there might be a filter that converts from PDF format to HTML
+format.
+                </p>
+            </blockquote>
+        
+    </li>
+
+
+    
+    
+
+    
+    
+</ul>
+<!-- index -->
+
+
+
+        </div><!-- /#main-copy  -->
+
+    </div><!-- /#content-area -->
+
+
+    <div id="side-bar">
+        <!-- noindex -->
+<ul class="menu"><li class="">
+
+    <a class="menu" 
+    href="../index.html"
+    >home</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../news.html"
+    >news</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../download/index.html"
+    >download</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../license.html"
+    >license</a>
+
+</li><li class="menuparent">
+
+    <a class="thisfile" 
+    href="../docs/index.html"
+    >documentation &#187;</a>
+
+<!-- noindex -->
+<ul class="submenu"><li class="">
+
+    <a class="submenu" 
+    href="../docs/readme.html"
+     title="First time users">README</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/install.html"
+     title="Installation and usage overview">Install</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/changes.html"
+     title="Important changes from previous versions">Changes</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-config.html"
+     title="Directives that go in your Swish-e configuration file">Configuration</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-run.html"
+     title="Command line options for Swish-e binary">Running</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-search.html"
+     title="Swish-e's search language">Searching</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-faq.html"
+    >FAQ</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-bugs.html"
+    >Known issues</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-3.0.html"
+    >The Future</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-library.html"
+     title="Swish-e C API">C API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/api.html"
+     title="Perl interface to the Swish-e library">Perl API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish.cgi.html"
+     title="Example CGI/mod_perl script">Swish.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/search.cgi.html"
+     title="Example Perl script using SWISH::API">Search.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/spider.html"
+     title="The Swish-e HTTP spider">Spider.pl</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/filter.html"
+     title="How to index non-text documents">Filters</a>
+
+</li></ul>
+<!-- index -->
+
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../support.html"
+    >support</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../discuss.html"
+     title="email list and list archive">discuss</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../graphics/index.html"
+    >graphics</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../scripts.html"
+    >related projects</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../devel/index.html"
+     title="CVS, daily builds and development documentation">development</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../who.html"
+    >who uses it</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../demos.html"
+    >demos</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../search/index.html"
+    >Search</a>
+
+</li></ul>
+<!-- index -->
+
+
+
+    </div><!-- /#side-bar -->
+
+
+</div><!-- /#body-area -->
+
+
+
+<div id="footer">
+    <!-- noindex -->
+<span class="doNotPrint">
+    Swish-e is distributed with <strong>no warranty</strong> under the terms of the <br />
+    <a href='http://swish-e.org/license.html'>Swish-e License</a>.<br />
+    Questions may be posted to the 
+    <a href="../discuss.html" title="email list and list archive">Swish-e Discussion list</a>.
+</span>
+
+
+
+<p>
+    <strong>URI &raquo;</strong> http://swish-e.org/ 
+    &bull;
+
+    <strong>Generated &raquo;</strong>Sun, 13 Jul 2008 02:40:13 UTC</p>
+<!-- index -->
+
+</div><!-- /#footer -->
+
+
+</body>
+</html>

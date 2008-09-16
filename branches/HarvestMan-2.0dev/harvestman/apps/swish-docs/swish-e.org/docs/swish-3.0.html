@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+    ***** GENERATED FILE *** DO NOT EDIT DIRECTLY - any changes will be LOST ******
+
+    swish-e.org mockup based on http://www.oswd.org/design/1773/prosimii/index2.html 
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="../swish.css" media="screen" title="swish css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+        <link rel="Last" href="../docs/filter.html" />
+    
+        <link rel="Prev" href="../docs/swish-bugs.html" />
+    
+        <link rel="Up" href="../docs/index.html" />
+    
+        <link rel="Next" href="../docs/swish-library.html" />
+    
+        <link rel="Start" href="../index.html" />
+    
+        <link rel="First" href="../docs/readme.html" />
+    
+
+    <title>Swish-e :: Proposed changes for Swish-e 3.0</title>
+
+
+  </head>
+
+
+<body>
+    
+
+    <!-- noindex -->
+
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+        <span>Related Sites:</span>
+            <a href="http://swishewiki.org/" title="swishe wiki">swish-e wiki</a> |
+            <a href="http://www.xmlsoft.org/" title="libxml2 home page">libxml2</a> |
+            <a href="http://www.zlib.net/" title="zlib home page">zlib</a> |
+            <a href="http://www.foolabs.com/xpdf/" title="xpdf home page">xpdf</a> |
+            <a href="http://dev.swish-e.org/browser" title="browse source code">Subversion</a>
+      </div>
+
+      <div class="midHeader">
+        <h1 class="headerTitle" lang="la">Swish-e</h1>
+        <div class="headerSubTitle">Simple Web Indexing System for Humans - Enhanced</div>
+
+        <br class="doNotDisplay doNotPrint" />
+
+        <div class="headerLinks">
+          <span class="doNotDisplay">Tools:</span>
+
+              <!-- don't know what platform, so link to download page -->
+
+              <a href="../download/index.html">download latest version</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- index -->
+
+<!-- noindex -->
+<div class="subHeader">
+    <table width='100%'>
+        <tr>
+            <td align='left'>
+                <a href="../index.html">home</a> |
+                <a href="../support.html">support</a> |
+                <a href="../download/index.html">download</a>
+            </td>
+
+
+            
+            <td align='right'>
+
+                <form method="get"
+                    action="../search/index.html"
+                    enctype="application/x-www-form-urlencoded"
+                    class="srchform">
+
+                    <label for="searchfield">Search for</label>
+                    <input maxlength="200" value="" id="searchfield" size="30" name="query" type="text" alt="Search input field" />
+                    <input value="search" name="submit" type="submit" class='button' />
+                </form>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+<!-- index -->
+
+
+<div id="body-area" class="clearfix">
+
+    <div id="content-area">
+
+        <div id="main-copy">
+            
+            
+            
+            
+<h1>Proposed changes for Swish-e 3.0</h1>
+Swish-e version 2.4.5
+
+
+
+    <!-- noindex -->
+
+    
+        <h2>Table of Contents</h2>
+        <div class="toc">
+            
+    <ul class="toc">
+        
+            <li>
+                <a href="#overview">OVERVIEW</a>
+                
+            </li>
+        
+            <li>
+                <a href="#utf_8_support">UTF-8 support</a>
+                
+            </li>
+        
+            <li>
+                <a href="#drop_expat_based_parsers_require_libxml2">drop expat-based parsers, require libxml2</a>
+                
+            </li>
+        
+            <li>
+                <a href="#support_incremental_indexing">Support Incremental Indexing</a>
+                
+            </li>
+        
+            <li>
+                <a href="#split_code_into_search_and_indexing_code">Split code into Search and Indexing code</a>
+                
+            </li>
+        
+            <li>
+                <a href="#switch_to_content_types">Switch to Content-Types</a>
+                
+            </li>
+        
+            <li>
+                <a href="#enhanced_the_propertynames_directive">Enhanced the PropertyNames directive</a>
+                
+            </li>
+        
+            <li>
+                <a href="#apache_xml_style_configuration">Apache/XML style configuration</a>
+                
+            </li>
+        
+            <li>
+                <a href="#document_info">Document Info</a>
+                
+            </li>
+        
+    </ul>
+
+        </div>
+    
+    <!-- index -->
+
+
+
+
+
+<hr />
+
+
+    <div class="sub-section">
+        
+<h1><a name="overview"></a>OVERVIEW</h1>
+
+<p>This pages is intended to give users of Swish-e an idea of the changes
+to come, to foster discussion of the direction of Swish-e, and a place
+where developers can map out new ideas.</p>
+<p>None of this is written in stone.  Any of the developers can write their
+ideas in this document, but that doesn't mean it will actually happen ;).</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="utf_8_support"></a>UTF-8 support</h1>
+
+<p>Supporting Unicode basically requires a full re-write of all the code.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="drop_expat_based_parsers_require_libxml2"></a>drop expat-based parsers, require libxml2</h1>
+
+<p>This might simplify the code somewhat as well.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="support_incremental_indexing"></a>Support Incremental Indexing</h1>
+
+<p>The Swish-e index structure currently makes it difficult to do incremental
+indexing, range limiting, and presents limits to indexing due to memory
+requirements.  A database may solve some of these issues, at possibly
+a cost of performance.</p>
+<p>Swish-e has been linked with Berkeley DB.  Although much slower in
+indexing, this may allow incremental indexing.  Currently, the idea is
+to offer both database backends.</p>
+<p>UPDATE: Mon Nov  8 15:07:59 CST 2004 (karman@cray.com)</p>
+<p>This feature is in the 2.5 branch already. What kind of requirements do we
+have to label it 'stable'?</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="split_code_into_search_and_indexing_code"></a>Split code into Search and Indexing code</h1>
+
+<p>There may be a small benefit from creating a smaller search-only program.
+CGI scripts may be faster, and the code would be smaller for those that
+want to embed Swish-e in to other applications.</p>
+<p>Currently, linking libswish-e into a program adds about 720K.  Not real
+significant, but it could be if a number of processes are running with
+Swish-e.  Another option is to build libswish-e as a shared library.</p>
+<p>UPDATE: Mon Nov  8 15:09:12 CST 2004 (karman@cray.com)</p>
+<p>This seems done in the 2.4 release. Is that true?</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="switch_to_content_types"></a>Switch to Content-Types</h1>
+
+<p>Moseley: Dec 28, 2000</p>
+<p>I'm wondering if it might be smart to switch from the current "Document
+Types" to Content-Types.  Currently, Swish-e know how to parse three
+types of documents TXT, HTML, and XML.  There's currently two new
+configuration directives DefaultContents and IndexContents that map
+file extensions to one of the three types.  This doesn't really work
+when spidering since it's the content-type that describes the document
+and not the file extension.</p>
+<p>It's an issue that can wait, but I'm concerned about backward compatiblity
+before people start using the IndexContents and DefaultContents config
+directives and then we change to content-type in the future.  There's
+probably not that many people using those, but it might be work noting
+in the documentation that it will change, if we agree.</p>
+<p>The main reason to use content-type instead is for http processing where
+you can't depend on the file extension to determine the document type,
+so with http we have to use content-type to determine how to deal with
+the file.  This is somewhat moot, as mapping can now be done with -S prog.</p>
+<p>I'd propose that Swish-e uses a mime.types file to map from extension
+to content-type.  You could add or override mappings in the config file:</p>
+<pre class="pre-section">   AddType text/plain .doc .log
+
+   DefaultType text/html  # like DefaultContents currently</pre>
+<p>The file source "plug-in" (whatever that ends up being) would return a
+content-type, but if not returned then Swish-e would map the type from
+the file name using the mime.types file or any AddType directives.</p>
+<p>Again, internally Swish-e only knows about text/[TXT|HTML|XML], so there
+should be a way to map other types, otherwise Swish-e might ignore
+the file.  We could continue to use the three type names or switch
+completely to content-types.</p>
+<p>For example, if we continued to use [TXT|HTML|XML]</p>
+<pre class="pre-section">    MapType TXT  text/directory text/logfile
+    MapType HTML text/html</pre>
+<p>Or maybe just extend the current directives</p>
+<pre class="pre-section">    IndexContents HTML .htm .html text/html</pre>
+<p>Where the content-type would have precedence over the file extensions.    </p>
+<p>This would tell Swish-e that those types are handled by those internal
+handlers.</p>
+<p>Then as I've mentioned before, you might specify filters as such</p>
+<pre class="pre-section">   FilterDocument application/msword /path/to/word-to-text</pre>
+<p>And word-to-text would convert to text and return one of the three
+content-types that Swish-e knows how to parse, or a different content
+type if were to chain filters.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="enhanced_the_propertynames_directive"></a>Enhanced the PropertyNames directive</h1>
+
+<p>Moseley: Updated Jan 13, 2001</p>
+<p>If the PropertyNames directive was enhanced to be able to limit the number
+of characters stored, optionally extract text from HTML, and was able
+to define what type of docs (text, XML, HTML) it applied to, then the
+existing PropertyNames feature would work like the new StoreDescription
+feature but be useful for more than just one use.</p>
+<p>I'm not clear how to enhance the syntax of Properties and/or Metanames,
+but here's some ideas.  Rainer suggested that an xml-type of format
+might be best and commonly understood.  That's a good idea.  Below are
+some older ideas that I had.  But you will get the idea...</p>
+<p>The metaname structure could have flags for properties:</p>
+<pre class="pre-section">    1 - limiting to a length
+    2 - stripping HTML
+    3 - encoding HTML entities on output</pre>
+<p>Oct 9, 2001 - The code is now in Swish-e to limit a string property to
+a length.  The stripping of HTML is an issue for discussion.  And encoding
+entities on output should be a result_outpu.c issue.</p>
+<p>UPDATE: Mon Nov  8 15:13:26 CST 2004 (karman@cray.com)</p>
+<p>Is this fully supported in 2.4?</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="apache_xml_style_configuration"></a>Apache/XML style configuration</h1>
+
+<p>This would be to allow some directives to be set per directory, or perl
+file extenstion (or content-type).</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="document_info"></a>Document Info</h1>
+
+<p>$Id: SWISH-3.0.pod,v 1.8 2005/02/02 22:53:39 whmoseley Exp $</p>
+<p>.</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div><!-- /#main-copy  -->
+
+    </div><!-- /#content-area -->
+
+
+    <div id="side-bar">
+        <!-- noindex -->
+<ul class="menu"><li class="">
+
+    <a class="menu" 
+    href="../index.html"
+    >home</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../news.html"
+    >news</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../download/index.html"
+    >download</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../license.html"
+    >license</a>
+
+</li><li class="menuparent">
+
+    <a class="menu" 
+    href="../docs/index.html"
+    >documentation</a>
+
+<!-- noindex -->
+<ul class="submenu"><li class="">
+
+    <a class="submenu" 
+    href="../docs/readme.html"
+     title="First time users">README</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/install.html"
+     title="Installation and usage overview">Install</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/changes.html"
+     title="Important changes from previous versions">Changes</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-config.html"
+     title="Directives that go in your Swish-e configuration file">Configuration</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-run.html"
+     title="Command line options for Swish-e binary">Running</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-search.html"
+     title="Swish-e's search language">Searching</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-faq.html"
+    >FAQ</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-bugs.html"
+    >Known issues</a>
+
+</li><li class="">
+
+    <a class="thisfile" 
+    href="../docs/swish-3.0.html"
+    >The Future &#187;</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-library.html"
+     title="Swish-e C API">C API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/api.html"
+     title="Perl interface to the Swish-e library">Perl API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish.cgi.html"
+     title="Example CGI/mod_perl script">Swish.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/search.cgi.html"
+     title="Example Perl script using SWISH::API">Search.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/spider.html"
+     title="The Swish-e HTTP spider">Spider.pl</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/filter.html"
+     title="How to index non-text documents">Filters</a>
+
+</li></ul>
+<!-- index -->
+
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../support.html"
+    >support</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../discuss.html"
+     title="email list and list archive">discuss</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../graphics/index.html"
+    >graphics</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../scripts.html"
+    >related projects</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../devel/index.html"
+     title="CVS, daily builds and development documentation">development</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../who.html"
+    >who uses it</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../demos.html"
+    >demos</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../search/index.html"
+    >Search</a>
+
+</li></ul>
+<!-- index -->
+
+
+
+    </div><!-- /#side-bar -->
+
+
+</div><!-- /#body-area -->
+
+
+
+<div id="footer">
+    <!-- noindex -->
+<span class="doNotPrint">
+    Swish-e is distributed with <strong>no warranty</strong> under the terms of the <br />
+    <a href='http://swish-e.org/license.html'>Swish-e License</a>.<br />
+    Questions may be posted to the 
+    <a href="../discuss.html" title="email list and list archive">Swish-e Discussion list</a>.
+</span>
+
+
+
+<p>
+    <strong>URI &raquo;</strong> http://swish-e.org/ 
+    &bull;
+
+    <strong>Generated &raquo;</strong>Tue, 16 Sep 2008 02:40:14 UTC</p>
+<!-- index -->
+
+</div><!-- /#footer -->
+
+
+</body>
+</html>

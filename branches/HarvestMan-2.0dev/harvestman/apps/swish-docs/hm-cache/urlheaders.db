@@ -1,0 +1,70 @@
+(dp1
+Vhttp://swish-e.org/docs/swish-faq.html
+p2
+S'{\'content-length\': \'84115\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:13 GMT\', \'etag\': \'"2418cf-14893-45667d40"\', \'date\': \'Tue, 16 Sep 2008 06:48:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p3
+sVhttp://swish-e.org/docs/swish-library.html
+p4
+S'{\'content-length\': \'37148\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:14 GMT\', \'etag\': \'"2418d2-911c-4575bf80"\', \'date\': \'Tue, 16 Sep 2008 06:48:44 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p5
+sVhttp://swish-e.org/docs/swish-bugs.html
+p6
+S'{\'content-length\': \'11252\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:14 GMT\', \'etag\': \'"2418d0-2bf4-4575bf80"\', \'date\': \'Tue, 16 Sep 2008 06:48:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p7
+sVhttp://swish-e.org/docs/swish-run.html
+p8
+S'{\'content-length\': \'56410\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:12 GMT\', \'etag\': \'"2418cd-dc5a-45573b00"\', \'date\': \'Tue, 16 Sep 2008 06:48:44 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p9
+sVhttp://swish-e.org/docs/api.html
+p10
+S'{\'content-length\': \'35329\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:15 GMT\', \'etag\': \'"2418d3-8a01-458501c0"\', \'date\': \'Tue, 16 Sep 2008 06:48:40 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p11
+sVhttp://swish-e.org/docs/search.cgi.html
+p12
+S'{\'content-length\': \'21367\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:15 GMT\', \'etag\': \'"2418d5-5377-458501c0"\', \'date\': \'Tue, 16 Sep 2008 06:48:39 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p13
+sVhttp://swish-e.org/docs/swish-config.html
+p14
+S'{\'content-length\': \'120422\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:12 GMT\', \'etag\': \'"2418cc-1d666-45573b00"\', \'date\': \'Tue, 16 Sep 2008 06:48:41 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p15
+sVhttp://swish-e.org/docs/index.html
+p16
+S'{\'content-length\': \'14483\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:17 GMT\', \'etag\': \'"2418d8-3893-45a38640"\', \'date\': \'Tue, 16 Sep 2008 06:48:43 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p17
+sVhttp://swish-e.org/docs/swish-search.html
+p18
+S'{\'content-length\': \'25339\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:13 GMT\', \'etag\': \'"2418ce-62fb-45667d40"\', \'date\': \'Tue, 16 Sep 2008 06:48:49 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p19
+sVhttp://swish-e.org/docs/swish.cgi.html
+p20
+S'{\'content-length\': \'60867\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:15 GMT\', \'etag\': \'"2418d4-edc3-458501c0"\', \'date\': \'Tue, 16 Sep 2008 06:48:49 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p21
+sVhttp://swish-e.org/docs/filter.html
+p22
+S'{\'content-length\': \'34558\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:16 GMT\', \'etag\': \'"2418d7-86fe-45944400"\', \'date\': \'Tue, 16 Sep 2008 06:48:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p23
+sVhttp://swish-e.org/swish.css
+p24
+S'{\'content-length\': \'9915\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:05 GMT\', \'etag\': \'"2418dd-26bb-44ec6b40"\', \'date\': \'Tue, 16 Sep 2008 06:48:51 GMT\', \'content-type\': \'text/css\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p25
+sVhttp://swish-e.org/docs/spider.html
+p26
+S'{\'content-length\': \'63550\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:16 GMT\', \'etag\': \'"2418d6-f83e-45944400"\', \'date\': \'Tue, 16 Sep 2008 06:48:40 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p27
+sVhttp://swish-e.org/docs/readme.html
+p28
+S'{\'content-length\': \'19183\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:08 GMT\', \'etag\': \'"2418c9-4aef-451a3200"\', \'date\': \'Tue, 16 Sep 2008 06:48:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p29
+sVhttp://swish-e.org/docs/changes.html
+p30
+S'{\'content-length\': \'74251\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:11 GMT\', \'etag\': \'"2418cb-1220b-4547f8c0"\', \'date\': \'Tue, 16 Sep 2008 06:48:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p31
+sVhttp://swish-e.org/docs/swish-3.0.html
+p32
+S'{\'content-length\': \'15813\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:14 GMT\', \'etag\': \'"2418d1-3dc5-4575bf80"\', \'date\': \'Tue, 16 Sep 2008 06:48:49 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p33
+sVhttp://swish-e.org/docs/install.html
+p34
+S'{\'content-length\': \'73078\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'MISS from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.0.54 (Fedora) mod_python/3.1.4 Python/2.4.3 DAV/2 SVN/1.2.3\', \'last-modified\': \'Tue, 16 Sep 2008 02:40:09 GMT\', \'etag\': \'"2418ca-11d76-45297440"\', \'date\': \'Tue, 16 Sep 2008 06:48:48 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'MISS from anand-laptop:3128\'}'
+p35
+s.

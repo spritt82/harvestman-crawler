@@ -1,0 +1,114 @@
+(dp1
+S'http://www.python.org/doc/current/tut/node11.html'
+p2
+S'{\'content-length\': \'43198\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138015-a8be-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:01 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p3
+sS'http://www.python.org/doc/current/tut/node13.html'
+p4
+S'{\'content-length\': \'23624\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138010-5c48-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:52 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p5
+sS'http://www.python.org/doc/current/icons/up.png'
+p6
+S'{\'content-length\': \'577\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"148004-241-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:47 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p7
+sS'http://www.python.org/doc/current/tut/node1.html'
+p8
+S'{\'content-length\': \'7498\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138012-1d4a-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p9
+sS'http://www.python.org/doc/current/tut/node19.html'
+p10
+S'{\'content-length\': \'13837\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:08 GMT\', \'etag\': \'"138005-360d-c6177800"\', \'date\': \'Mon, 07 Jul 2008 14:43:01 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p11
+sS'http://www.python.org/doc/current/tut/node7.html'
+p12
+S'{\'content-length\': \'32148\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"13800a-7d94-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:50 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p13
+sS'http://www.python.org/doc/current/tut/node18.html'
+p14
+S'{\'content-length\': \'23434\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"13800b-5b8a-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:50 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p15
+sS'http://www.python.org/doc/current/icons/previous.png'
+p16
+S'{\'content-length\': \'511\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"148006-1ff-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:48 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p17
+sS'http://www.python.org/doc/current/tut/node20.html'
+p18
+S'{\'content-length\': \'6146\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:08 GMT\', \'etag\': \'"13800e-1802-c6177800"\', \'date\': \'Mon, 07 Jul 2008 14:43:58 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p19
+sS'http://www.python.org/doc/current/tut/node5.html'
+p20
+S'{\'content-length\': \'30019\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"13800f-7543-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:00 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p21
+sS'http://www.python.org/doc/current/tut/node4.html'
+p22
+S'{\'content-length\': \'18353\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138018-47b1-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:58 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p23
+sS'http://www.python.org/doc/current/tut/node9.html'
+p24
+S'{\'content-length\': \'21407\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138008-539f-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:44 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p25
+sS'http://www.python.org/doc/current/icons/blank.png'
+p26
+S'{\'content-length\': \'1031\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"148002-407-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:46 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p27
+sS'http://www.python.org/doc/current/icons/contents.png'
+p28
+S'{\'content-length\': \'649\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"14800e-289-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:48 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p29
+sS'http://www.python.org/doc/current/tut/node10.html'
+p30
+S'{\'content-length\': \'22765\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138006-58ed-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:57 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p31
+sS'http://www.python.org/doc/current/tut/node8.html'
+p32
+S'{\'content-length\': \'33583\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138017-832f-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:37 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p33
+sS'http://www.python.org/doc/current/tut/node2.html'
+p34
+S'{\'content-length\': \'15406\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138013-3c2e-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:48 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p35
+sS'http://www.python.org/doc/current/tut/about.html'
+p36
+S'{\'content-length\': \'6146\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:08 GMT\', \'etag\': \'"138011-1802-c6177800"\', \'date\': \'Mon, 07 Jul 2008 14:42:56 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p37
+sS'http://www.python.org/doc/current/tut/node14.html'
+p38
+S'{\'content-length\': \'8352\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138016-20a0-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:44 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p39
+sS'http://www.python.org/doc/current/tut/node3.html'
+p40
+S'{\'content-length\': \'9097\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138009-2389-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:00 GMT\', \'age\': \'4\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p41
+sS'http://www.python.org/doc/current/tut/node12.html'
+p42
+S'{\'content-length\': \'19625\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138004-4ca9-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:42 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p43
+sS'http://www.python.org/doc/current/tut/tut.css'
+p44
+S'{\'content-length\': \'9779\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:08 GMT\', \'etag\': \'"138002-2633-c6177800"\', \'date\': \'Mon, 07 Jul 2008 14:43:48 GMT\', \'content-type\': \'text/css\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p45
+sS'http://www.python.org/doc/current/tut/node16.html'
+p46
+S'{\'content-length\': \'14401\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138003-3841-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:43 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p47
+sS'http://www.python.org/doc/current/icons/next.png'
+p48
+S'{\'content-length\': \'511\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"14800c-1ff-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:48 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p49
+sS'http://www.python.org/doc/current/tut/node6.html'
+p50
+S'{\'content-length\': \'28150\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"13800c-6df6-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:00 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p51
+sS'http://www.python.org/doc/current/tut/node15.html'
+p52
+S'{\'content-length\': \'12166\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"138014-2f86-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:42:54 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p53
+sS'http://www.python.org/doc/current/tut/node17.html'
+p54
+S'{\'content-length\': \'42940\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Fri, 22 Feb 2008 12:58:07 GMT\', \'etag\': \'"13800d-a7bc-c60835c0"\', \'date\': \'Mon, 07 Jul 2008 14:43:38 GMT\', \'content-type\': \'text/html\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p55
+sS'http://www.python.org/doc/current/icons/index.png'
+p56
+S'{\'content-length\': \'529\', \'via\': \'1.0 anand-laptop:3128 (squid/2.6.STABLE18)\', \'proxy-connection\': \'close\', \'x-cache\': \'HIT from anand-laptop\', \'accept-ranges\': \'bytes\', \'server\': \'Apache/2.2.3 (Debian) DAV/2 SVN/1.4.2 mod_ssl/2.2.3 OpenSSL/0.9.8c\', \'last-modified\': \'Thu, 21 Feb 2008 12:55:16 GMT\', \'etag\': \'"14800b-211-9dff9500"\', \'date\': \'Mon, 07 Jul 2008 14:43:45 GMT\', \'content-type\': \'image/png\', \'x-cache-lookup\': \'HIT from anand-laptop:3128\'}'
+p57
+s.

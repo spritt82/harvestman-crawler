@@ -1,0 +1,1221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+    ***** GENERATED FILE *** DO NOT EDIT DIRECTLY - any changes will be LOST ******
+
+    swish-e.org mockup based on http://www.oswd.org/design/1773/prosimii/index2.html 
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="../swish.css" media="screen" title="swish css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+        <link rel="Last" href="../docs/filter.html" />
+    
+        <link rel="Prev" href="../docs/swish-config.html" />
+    
+        <link rel="Up" href="../docs/index.html" />
+    
+        <link rel="Next" href="../docs/swish-search.html" />
+    
+        <link rel="Start" href="../index.html" />
+    
+        <link rel="First" href="../docs/readme.html" />
+    
+
+    <title>Swish-e :: SWISH-RUN - Running Swish-e and Command Line Switches</title>
+
+
+  </head>
+
+
+<body>
+    
+
+    <!-- noindex -->
+
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+        <span>Related Sites:</span>
+            <a href="http://swishewiki.org/" title="swishe wiki">swish-e wiki</a> |
+            <a href="http://www.xmlsoft.org/" title="libxml2 home page">libxml2</a> |
+            <a href="http://www.zlib.net/" title="zlib home page">zlib</a> |
+            <a href="http://www.foolabs.com/xpdf/" title="xpdf home page">xpdf</a> |
+            <a href="http://dev.swish-e.org/browser" title="browse source code">Subversion</a>
+      </div>
+
+      <div class="midHeader">
+        <h1 class="headerTitle" lang="la">Swish-e</h1>
+        <div class="headerSubTitle">Simple Web Indexing System for Humans - Enhanced</div>
+
+        <br class="doNotDisplay doNotPrint" />
+
+        <div class="headerLinks">
+          <span class="doNotDisplay">Tools:</span>
+
+              <!-- don't know what platform, so link to download page -->
+
+              <a href="../download/index.html">download latest version</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- index -->
+
+<!-- noindex -->
+<div class="subHeader">
+    <table width='100%'>
+        <tr>
+            <td align='left'>
+                <a href="../index.html">home</a> |
+                <a href="../support.html">support</a> |
+                <a href="../download/index.html">download</a>
+            </td>
+
+
+            
+            <td align='right'>
+
+                <form method="get"
+                    action="../search/index.html"
+                    enctype="application/x-www-form-urlencoded"
+                    class="srchform">
+
+                    <label for="searchfield">Search for</label>
+                    <input maxlength="200" value="" id="searchfield" size="30" name="query" type="text" alt="Search input field" />
+                    <input value="search" name="submit" type="submit" class='button' />
+                </form>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+<!-- index -->
+
+
+<div id="body-area" class="clearfix">
+
+    <div id="content-area">
+
+        <div id="main-copy">
+            
+            
+            
+            
+<h1>SWISH-RUN - Running Swish-e and Command Line Switches</h1>
+Swish-e version 2.4.5
+
+
+
+    <!-- noindex -->
+
+    
+        <h2>Table of Contents</h2>
+        <div class="toc">
+            
+    <ul class="toc">
+        
+            <li>
+                <a href="#overview">OVERVIEW</a>
+                
+            </li>
+        
+            <li>
+                <a href="#indexing">INDEXING</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#indexing_command_line_arguments">Indexing Command Line Arguments</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#searching">SEARCHING</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#searching_command_line_arguments">Searching Command Line Arguments</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#other_switches">OTHER SWITCHES</a>
+                
+            </li>
+        
+            <li>
+                <a href="#merging_index_files">Merging Index Files</a>
+                
+            </li>
+        
+            <li>
+                <a href="#document_info">Document Info</a>
+                
+            </li>
+        
+    </ul>
+
+        </div>
+    
+    <!-- index -->
+
+
+
+
+
+<hr />
+
+
+    <div class="sub-section">
+        
+<h1><a name="overview"></a>OVERVIEW</h1>
+
+<p>The Swish-e program is controlled by command line arguments (called
+<i>switches</i>).  Often, it is run manually from a shell (command
+prompt), or from a program such as a CGI script that passes the command
+line arguments to swish.</p>
+<p>Note: A number of the command line switches may be specified in the
+Swish-e configuration file specified with the <code>-c</code> command line argument.
+Please see <a href="swish-config.html">SWISH-CONFIG</a> for a complete description of
+available configuration file directives.</p>
+<p>There are two basic operating modes of Swish-e: indexing and searching.
+There are command line arguments that are unique to each mode, and
+others that apply to both (yet may have different meaning depending on
+the operating mode).  These command line arguments are listed below,
+grouped by:</p>
+<p><a href="#indexing">INDEXING</a> -- describes the command line arguments used
+while indexing.</p>
+<p><a href="#searching">SEARCHING</a> -- lists the command line arguments used while
+searching.</p>
+<p><a href="#other_switches">OTHER SWITCHES</a> -- lists switches that don't apply
+to searching or indexing.</p>
+<p>Beginning with Swish-e version 2.1, you may embed its search engine into
+your applications.  Please see <a href="swish-library.html">SWISH-LIBRARY</a>.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="indexing"></a>INDEXING</h1>
+
+<p>Swish-e indexing is initiated by passing <i>command line arguments</i> to
+swish.  The command line arguments used for <i>searching</i> are described
+in <a href="#searching">SEARCHING</a>.  Also, see <a href="swish-search.html">SWISH-SEARCH</a>
+for examples of searching with Swish-e.</p>
+<p>Swish-e usage:</p>
+<pre class="pre-section">    swish-e [-i dir file ... ] [-c file] [-f file] [-l] \
+            [-v (num)] [-S method(fs|http|prog)] [-N path]</pre>
+<p>The <code>-h</code> switch (help) will list the available Swish-e command line
+arguments:</p>
+<pre class="pre-section">    swish-e -h</pre>
+<p>Typically, most if not all indexing settings are placed in a configuration
+file (specified with the <code>-c</code> switch).  Once the configuration file is
+setup indexing is initiated as:</p>
+<pre class="pre-section">    swish-e -c /path/to/config/file</pre>
+<p>See <a href="swish-config.html">SWISH-CONFIG</a> for information on the configuration
+file.</p>
+<p>Security Note: If the swish binary is named <i>swish-search</i> then swish
+will not allow any operation that would cause swish to write to the
+index file.</p>
+<p>When indexing it may be advisable to index to a temporary file, and
+then after indexing has successfully completed rename the file to the
+final location.  This is especially important when replacing an index
+that is currently in use.</p>
+<pre class="pre-section">    swish-e -c swish.config -f index.tmp
+    [check return code from swish or look for err: output]
+    mv index.tmp index.swish-e</pre>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="indexing_command_line_arguments"></a>Indexing Command Line Arguments</h2>
+
+<ul>
+<li><a name="item__i"></a><a name="_i"></a><b>-i *directories and/or files* (input file)</b>
+<p>This specifies the directories and/or files to index. Directories will be
+indexed recursively.  This is typically specified in the <a href="swish-config.html">configuration file</a> with the <b>IndexDir</b> directive instead of on the
+command line.  Use of this switch overrides the configuration file
+settings.</p>
+</li>
+<li><a name="item__s"></a><a name="_s"></a><b>-S [fs|http|prog] (document source/access mode)</b>
+<p>This specifies the method to use for accessing documents to index.
+Can be either <code>fs</code> for local indexing via the file system (the default),
+<code>http</code> for spidering, or <code>prog</code> for reading documents from an external program.</p>
+<p>Located in the <code>conf</code> directory are example configuration files that demonstrate
+indexing with the different document source methods.</p>
+<p>See the <a href="swish-faq.html">SWISH-FAQ</a> for a discussion on the different indexing methods, and the difference
+between spidering with the http method vs. using the file system method.</p>
+<ul>
+<li><a name="item_fs"></a><a name="fs"></a><b>fs - file system </b>
+<p>The <code>fs</code> method simply reads files from a local (or networked) drive.  This is the default
+method if the <code>-S</code> switch is not specified.
+See <a href="swish-config.html">SWISH-CONFIG</a> for configuration
+directives specific to the <code>fs</code> method.</p>
+</li>
+<li><a name="item_http"></a><a name="http"></a><b>http - spider a web server</b>
+<p>The <code>http</code> method is used to spider web servers.  It uses an included helper
+program called <i>swishspider</i>.  See <a href="swish-config.html">SWISH-CONFIG</a> for configuration
+directives specific to the <code>http</code> method.</p>
+<p>Security Note: Under Windows swish passes the URLs fetched from remote documents through the shell (swish
+uses the system() command for running <i>swishspider</i> under Windows), and this may be considered
+an additional security risk.</p>
+<p>The <code>http</code> method is deprecated (or at least not very well appreciated).  Consider using
+the <code>prog</code> method described below for spidering.  There's a spider program available in the
+<i>prog-bin</i> directory for use with the <code>prog</code> method.  Here's a number of limitation with 
+this method that are solved with the <code>prog</code> method:</p>
+<ul>
+<li>
+<p>swishspider only spiders standard &lt;a href="..."&gt; links.  Frames and other links are 
+not followed.  </p>
+</li>
+<li>
+<p>By default, this method of spidering only indexes files that have a content type of "text/*"
+(e.g. text/plain, text/html, text/xml).  You should use <code>DefaultContents</code> and <code>IndexContents</code> to
+map file extensions to parsers used by swish (e.g.  <code>IndexContents HTML* .html .htm</code>), but 
+this will fail where a document does not have a file extension.</p>
+</li>
+<li>
+<p>Swish-e's <code>FileFilter</code> directive can be used with the <code>http</code> access method, although it 
+requires a separate process (in addition to the swsihspider process) for each document 
+filtered.</p>
+</li>
+<li>
+<p>The SWISH::Filter modules can be used with the swishspider program.  SWISH::Filter provides 
+a general purpose filtering system (see SWISH::Filter documentation).  To use SWISH::Filter 
+set PERL5LIB to point to the location of the SWISH module name space (typically 
+/usr/local/lib/swish-e under Unix).  For example:</p>
+<pre class="pre-section">   export PERL5LIB=/usr/local/lib/swish-e  # bash, bourne shells
+   setenv PERL5LIB /usr/local/lib/swish-e  # csh, tcsh</pre>
+<p>or under Windows</p>
+<pre class="pre-section">   set PERL5LIB=c:\program files\swish-e2.4\lib\swish-e</pre>
+<p>SWISH::Filter is not enabled by default due to the overhead of loading the modules for every
+document fetched.</p>
+<p>The Swish-e distribution includes perl modules in the SWISH::Filters::* namespace to make
+converting non-text documents into a format that Swish-e can parse easy.  As mentioned 
+above, the helper script
+<i>swishspider</i> will use these modules if can be found via PERL5LIB.  These modules only 
+provide an interface
+to programs that do the conversion.  For example, you will need to download and install the
+"catdoc" program to convert MSWord documents into text for indexing. Please see
+<i>filters/README</i> to see how to use this filter system.</p>
+</li>
+</ul>
+</li>
+<li><a name="item_prog"></a><a name="prog"></a><b>prog - general purpose access method</b>
+<p>The <code>prog</code> method is new to Swish-e version 2.2.  It's designed as a general
+purpose method to feed documents to swish from an external program.</p>
+<p>For example, the external program can read a database (e.g. MySQL), spider a web
+server, or convert documents from one format to another (e.g. pdf to html).  Or,
+you can simply use it to read the files of the file system (like <code>-S fs</code>), yet provide
+you with full control of what files are indexed.</p>
+<p>The external program name to run is passed to swish either by the
+<a href="swish-config.html#item_indexdir">IndexDir</a> directive, or via the <code>-i</code> option.  </p>
+<p>The program specified should be an absolute path as swish-e will attempt to stat() the
+program to make sure it exists.  Swish does this to help in error reporting.</p>
+<p>If the program specified with -i or IndexDir is not an absolute path (i.e. 
+does not include "/" ) then swish-e will append the "libexecdir" directory
+defined during configuration.  Typically, libexecdir is set to
+"$prefix/lib/swish-e" (/usr/local/lib/swish-e), but is platform and
+installation dependent.  Running swish-e -h will report the directory.</p>
+<p>For example, the -S prog program "spider.pl" is a Perl helper program for use with -S prog
+and is installed in libexecdir.</p>
+<pre class="pre-section">    IndexDir spider.pl
+    SwishProgParameters default http://localhost/index.html</pre>
+<p>and swish-e will find spider.pl in libexecdir.</p>
+<p>Additional parameters may be passed to the external program via the
+<a href="swish-config.html#item_swishprogparameters">SwishProgParameters</a> directive.
+In the example above swish-e will pass two parameters to spider.pl, "default" and 
+"<a href="http://localhost/index.html">http://localhost/index.html</a>".</p>
+<p>A special name "stdin" may be used with <code>-i</code> or <a href="swish-config.html#item_indexdir">IndexDir</a>
+which tells swish to read from standard input instead of from an external program.  See
+example below.</p>
+<p>The external program prints to standard output (which swish captures)
+a set of headers followed by the content of the file to index.  The output looks similar to
+an email message or a HTTP document returned by a web server in that it includes name/value pairs
+of headers, a blank line, and the content.</p>
+<p>The content length is determined by a content-length header supplied to swish by the
+program; there is no "end of record" character or flag sent between documents. Therefore, it
+is critical that the content-length header is correct.  This is a common source of errors.</p>
+<p>One advantage of this method (over using filters, for example) is that the external program
+is run only once for the entire indexing job, instead of once for every document.  This
+avoids forking and creating a new process for every document, and makes a huge difference
+when your external program is something like perl that has a large startup cost.</p>
+<p>Here's a simple example written in Perl:</p>
+<pre class="pre-section">    #!/usr/local/bin/perl -w
+    use strict;
+
+    # Build a document
+    my $doc = &lt;&lt;EOF;
+    &lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Document Title&lt;/title&gt;
+    &lt;/head&gt;
+        &lt;body&gt;
+            This is the text.
+        &lt;/body&gt;
+    &lt;/html&gt;
+    EOF
+
+    # Prepare the headers for swish
+    my $path = 'Example.file';
+    my $size = length $doc;
+    my $mtime = time;
+
+    # Output the document (to swish)
+    print &lt;&lt;EOF;
+    Path-Name: $path
+    Content-Length: $size
+    Last-Mtime: $mtime
+    Document-Type: HTML*
+
+    EOF
+
+        print $doc;</pre>
+<p>The external program passes to swish a header.  The header is separated from
+the body of the document with a blank line.  The available headers are:</p>
+<ul>
+<li><a name="item_path_name_"></a><a name="path_name_"></a><b>Path-Name:</b>
+<p>This is the name of the file you are indexing. This can be any string, so for example it could
+be an ID of a record in a database, a URL or a simple file name.</p>
+<p>This header is required.</p>
+</li>
+<li><a name="item_content_length_"></a><a name="content_length_"></a><b>Content-Length:</b>
+<p>This header specifies the length in bytes of the document that follows the header.
+This length must be exactly the length of the document -- do not make the mistake of adding
+an extra line feed at the end of the document.</p>
+<p>This header is required.</p>
+</li>
+<li><a name="item_last_mtime_"></a><a name="last_mtime_"></a><b>Last-Mtime:</b>
+<p>Thi parameter is the last modification time of the file, and must
+be a time stamp (seconds since the Epoch on your platform).</p>
+<p>This header is not required.</p>
+</li>
+<li><a name="item_document_type_"></a><a name="document_type_"></a><b>Document-Type:</b>
+<p>You may override swish's determination of document type (<code>Indexcontents</code>)
+by using the <code>Document-Type:</code> header.  The document type is used to select which
+parser Swish-e uses to parse the document's contents.</p>
+<p>For example, a spider program might map the content-type returned from a web server to
+one of the types Swish-e understands.  For example,</p>
+<pre class="pre-section">    my $doc_type = 'HTML*' if $response-&gt;content_type =~ m!text/html!'</pre>
+<p>This header is not required.</p>
+</li>
+<li><a name="item_update_mode_"></a><a name="update_mode_"></a><b>Update-Mode:</b>
+<p>When updating an incremental index this header can be used to select the mode
+for updating the index.  There are three possible values:</p>
+<pre class="pre-section">    Update
+    Remove
+    Index</pre>
+<p>"Update" will update the index with the given file if the date of the given file is
+newer than the date of the file already in the index.  Setting to "Update"
+is the same as using -u on the command line.</p>
+<p>"Remove" mode will remove the file specified by the Path-Name header.
+Setting "Remove" is the same as using -r on the command line.</p>
+<p>"Index" will add the file to the index. NOTE: swish-e will not check to see if the file
+already exists.</p>
+<p>If this header is not specified, the default is the mode specified on
+the command line (-u, -r, or none).</p>
+<p>This option is still experimental and is subject to change in the future.
+Ask on the Swish-e list before using.</p>
+</li>
+</ul>
+<p>The above example program only returns one document and exits, which is not very useful.  Normally,
+your program would read data from some source, such as files or a database, format as
+XML, HTML, or text, and pass them to swish, one after another.  The <code>Content-Length:</code> header
+tells swish where each document ends -- there is not any special "end of record" character or
+marker.</p>
+<p>To index with the above example you need to make sure that the program is executable
+(and that the path to perl is correct), and then call swish telling to run in <code>prog</code>
+mode, and the name of the program to use for input.</p>
+<pre class="pre-section">    % chmod 755 example.pl
+    % ./swish-e -S prog -i ./example.pl</pre>
+<p>Programs can and should be tested prior to running swish. For example:</p>
+<pre class="pre-section">    % ./example.pl &gt; test.out</pre>
+<p>A few more useful example programs are provided in the swish-e distribution
+located in the <i>prog-bin</i> directory.  Some include documentation:</p>
+<pre class="pre-section">    % cd prog-bin
+    % perldoc spider.pl</pre>
+<p>Others are small examples that include comments:</p>
+<pre class="pre-section">    % cd prog-bin
+    % less DirTree.pl</pre>
+<p>The <i>spider.pl</i> program can be used as a replacement for the <i>-S http</i> method.  It is
+far more feature-rich and offers much more control over indexing.</p>
+<p>If you use the special program name "stdin" with <code>-i</code> or <a href="swish-config.html#item_indexdir">IndexDir</a>
+then swish-e will read from standard input instead of from a program.  For example:</p>
+<pre class="pre-section">    % ./example.pl --count=1000 /path/to/data | ./swish-e -S prog -i stdin</pre>
+<p>This is basically the same as using a swish-e configuration file of:</p>
+<pre class="pre-section">    SwishProgParameters --count=1000 /path/to/data
+    IndexDir ./example.pl</pre>
+<p>in a config file and running</p>
+<pre class="pre-section">    % ./swish-e -S prog -c swish.conf</pre>
+<p>This gives an easy way to run swish without a configuration file with a <code>-S prog</code> program
+that requires parameters.  It also means you can capture data to a file and then index
+more once with the same data:</p>
+<pre class="pre-section">    % ./example.pl /path/to/data --count=1000 &gt; docs.txt
+    % cat docs.txt | ./swish-e -S prog -i stdin -c normal_index
+    % cat docs.txt | ./swish-e -S prog -i stdin -c fuzzy_index</pre>
+<p>Using "stdin" might also be useful for programs that call swish (instead of swish calling the
+program).</p>
+<p>(The reason "stdin" is used instead of the more common "-" dash is due to the rotten way
+swish parses the command line.  This should be fixed in the future.)</p>
+<p>The <code>prog</code> method bypasses some of the configuration parameters available
+to the file system method -- settings such as
+<code>IndexOnly</code>, <code>FileRules</code>, <code>FileMatch</code> and <code>FollowSymLinks</code>
+are ignored when using the <code>prog</code> method.  It's expected that these operations
+are better accomplished in the external program before passing the document onto swish.  In
+other words, when using the <code>prog</code> method, only send the documents to swish
+that you want indexed.</p>
+<p>You may use swish's filter feature with the <code>prog</code> method, but performance will be better if you
+run filtering programs from within your external program.  See also <i>filters/README</i> for an example
+how to easily add document converstion and filtering into your Perl-based programs.</p>
+<p><b>Notes when using -S prog on MS Windows</b></p>
+<p>Windows does not use the shebang (#!) line of a program to determine the
+program to run.  So, when running, for example, a perl program you may need
+to specify the perl.exe binary as the program, and use the
+<code>SwishProgParameters</code> to name the file.</p>
+<pre class="pre-section">    IndexDir e:/perl/bin/perl.exe
+    SwishProgParameters read_database.pl</pre>
+<p>Swish will replace the forward slashes with backslashes before running the command specified with
+<code>IndexDir</code>.  Swish uses the popen(3) command which passes the command through the shell.</p>
+</li>
+</ul>
+</li>
+<li><a name="item__f"></a><a name="_f"></a><b>-f *indexfile* (index file)</b>
+<p>If you are indexing, this specifies the file to save the generated index in,
+and you can only specify one file.  See also <b>IndexFile</b> in the <a href="swish-config.html">configuration file</a>.</p>
+<p>If you are searching, this specifies the index
+files (one or more) to search from. The default index file is index.swish-e in the current directory.</p>
+</li>
+<li><a name="item__c"></a><a name="_c"></a><b>-c *file ...* (configuration files)</b>
+<p>Specify the configuration file(s) to use for indexing.  This file contains many directives that
+control how Swish-e proceeds.
+See <a href="swish-config.html">SWISH-CONFIG</a> for a complete listing of configuration file directives.</p>
+<p>Example:</p>
+<pre class="pre-section">    swish-e -c docs.conf</pre>
+<p>If you specify a directory to index, an index file, or the verbose option on the command-line,
+these values will override any specified in the configuration file.</p>
+<p>You can specify multiple configuration files.  For example, you may have one configuration file
+that has common site-wide settings, and another for a specific index.</p>
+<p>Examples:</p>
+<pre class="pre-section">    1) swish-e -c swish-e.conf
+    2) swish-e -i /usr/local/www -f index.swish-e -v -c swish-e.conf
+    3) swish-e -c swish-e.conf stopwords.conf</pre>
+<ol>
+<li><a name="item_1"></a><a name="1"></a><b>1</b>
+<p>The settings in the configuration file will be used to index a site.</p>
+</li>
+<li><a name="item_2"></a><a name="2"></a><b>2</b>
+<p>These command-line options will override anything in the configuration file.</p>
+</li>
+<li><a name="item_3"></a><a name="3"></a><b>3</b>
+<p>The variables in swish-e.conf will be read, then the variable in stopwords.conf will be read.
+Note that if the same variables occur in both files, older values may be written over.</p>
+</li>
+</ol>
+</li>
+<li><a name="item__e"></a><a name="_e"></a><b>-e (economy mode)</b>
+<p>For large sites indexing may require more RAM than is available.  The <code>-e</code> switch tells swish to use
+disk space to store data structures while indexing, saving memory.  This option is recommended if
+swish uses so much RAM that the computer begins to swap excessively, and you cannot increase available
+memory.  The trade-off is slightly longer indexing times, and a busy disk drive.  </p>
+</li>
+<li><a name="item__l"></a><a name="_l"></a><b>-l (symbolic links)</b>
+<p>Specifying this option tells swish to follow symbolic links when indexing.
+The configuration file value <b>FollowSymLinks</b> will override the command-line value.</p>
+<p>The default is not to follow symlinks.  A small improvement in indexing time my result
+from enabling FollowSymLinks since swish does not need to stat every directory and file
+processed to determine if it is a symbolic link.</p>
+</li>
+<li><a name="item__n"></a><a name="_n"></a><b>-N path (index only newer files)</b>
+<p>The <code>-N</code> option takes a path to a file, and only files <i>newer</i> than the specified
+file will be indexed.  This is helpful for creating incremental indexes -- that is,
+indexes that contain just files added since the last full index was created of all files.</p>
+<p>Example (bad example)</p>
+<pre class="pre-section">    swish-e -c config.file -N index.swish-e -f index.new</pre>
+<p>This will index as normal, but only files with a modified date newer
+than <i>index.swish-e</i> will be indexed.</p>
+<p>This is a bad example because it uses <i>index.swish-e</i> which one might assume
+was the date of last indexing.  The problem is that files might have been added
+between the time indexing read the directory and when the <i>index.swish-e</i> file
+was created -- which can be quite a bit of time for very large indexing jobs.</p>
+<p>The only solution is to prevent any new file additions while full indexing is running.
+If this is impossible then it will be slightly better to do this:</p>
+<p>Full indexing:</p>
+<pre class="pre-section">    touch indexing_time.file
+    swish-e -c config.file -f index.tmp
+    mv index.tmp index.full</pre>
+<p>Incremental indexing:</p>
+<pre class="pre-section">    swish-e -c config.file -N indexing_time.file -f index.tmp
+    mv index.tmp index.incremental</pre>
+<p>Then search with</p>
+<pre class="pre-section">    swish-e -w foo -f index.full index.incremental</pre>
+<p>or merge the indexes</p>
+<pre class="pre-section">    swish-e -M index.full index.incremental index.tmp
+    mv index.tmp index.swish-e
+    swish-e -w foo</pre>
+</li>
+<li><a name="item__r"></a><a name="_r"></a><b>-r</b>
+<p><b>**incremental index format only**</b>
+The <code>-r</code> option puts swish-e into "removal" mode. Any input files (given with <code>-i</code>
+or the <code>IndexDir</code> parameter) are removed from an existing index.</p>
+<p>Example:</p>
+<pre class="pre-section">  swish-e -r -i file.html</pre>
+<p>would remove <i>file.html</i> from the existing index.</p>
+</li>
+<li><a name="item__u"></a><a name="_u"></a><b>-u</b>
+<p><b>**incremental index format only**</b>
+The <code>-u</code> option puts swish-e into "update" mode. The timestamp of each input 
+file is compared against the corresponding file in the existing index. 
+If swish-e encounters an input file that either
+does not exist yet in the index or exists with a timestamp older than the input file,
+the input file is updated in the index. Any words in the input file
+that have been added or removed are reflected as such in the index.</p>
+<p>Example:</p>
+<pre class="pre-section">  swish-e -i file.html -u</pre>
+<p>would update the index.swish-e index with the contents of file.html. If file.html
+was new, it would be added. If file.html already existed in the index, its contents
+would be updated in the index.</p>
+</li>
+<li><a name="item__v"></a><a name="_v"></a><b>-v [0|1|2|3] (verbosity level)</b>
+<p>The <code>-v</code> option can take a numerical value from 0 to 3.
+Specify 0 for completely silent operation and 3 for detailed reports.</p>
+<p>If no value is given then 1 is assumed.
+See also <b>IndexReport</b> in the <a href="swish-config.html">configuration file</a>.</p>
+<p>Warnings and errors are reported regardless of the verbosity level.  In addition,
+all error and warnings are written to standard out.  This is for historical reasons (many
+scripts exist that parse standard out for error messages).</p>
+</li>
+<li><a name="item__w"></a><a name="_w"></a><b>-W (0|1|2|3) (parser warning level)</b>
+<p>If using the libxml2 parser, the default parser warning level is set at <code>2</code>. Use the <code>-W</code>
+option to override that default. Most often, you might want to turn it off altogether:</p>
+<pre class="pre-section">  swish-e -W0 -i path/to/files</pre>
+<p>would fail silently if the parser encountered any errors.</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="searching"></a>SEARCHING</h1>
+
+<p>The following command line arguments are available when searching with Swish-e.  These switches are used
+to select the index to search, what fields to search, and how and what to print as results.</p>
+<p>This section just lists the available command line arguments and their usage.
+Please see <a href="swish-search.html">SWISH-SEARCH</a> for detailed searching instructions.</p>
+<p><b>Warning</b>: If using Swish-e via a CGI interface, please see <a href="swish-search.html#cgi_danger_">CGI Danger!</a></p>
+<p>Security Note: If the swish binary is named <i>swish-search</i> then swish will not allow any operation that
+would cause swish to write to the index file.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="searching_command_line_arguments"></a>Searching Command Line Arguments</h2>
+
+<ul>
+<li><a name="item__w"></a><a name="_w"></a><b>-w *word1 word2 ...*  (query words)</b>
+<p>This performs a case-insensitive search using a number of keywords.
+If no index file to search is specified (via the <code>-f</code> switch), swish-e will try to search a file called
+index.swish-e in the current directory.</p>
+<pre class="pre-section">    swish-e -w word</pre>
+<p>Phrase searching is accomplished by placing the quote delimiter (a double-quote by default) around
+the search phrase.</p>
+<pre class="pre-section">    swish-e -w 'word or "this phrase"'</pre>
+<p>Search would should be protected from the shell by quotes.  Typically, this is single quotes when
+running under Unix.</p>
+<p>Under Windows <i>command.com</i> you may not need to use quotes, but you will need to
+backslash the quotes used to delimit phrases:</p>
+<pre class="pre-section">    swish-e -w \"a phrase\"</pre>
+<p>The phrase delimiter can be set with the <code>-P</code> switch.</p>
+<p>The search may be limited to a <i>MetaName</i>.
+For example:</p>
+<pre class="pre-section">    swish-e -w meta1=(foo or baz)</pre>
+<p>will only search within the <b>meta1</b> tag.</p>
+<p>Please see <a href="swish-search.html">SWISH-SEARCH</a> for a description of MetaNames</p>
+</li>
+<li><a name="item__f"></a><a name="_f"></a><b>-f *file1 file2 ...* (index files)</b>
+<p>Specifies the index file(s) used while searching.  More than one file may be listed, and each
+file will be searched.  If no <code>-f</code> switch is specified then the file <i>index.swish-e</i> in the current
+directory will be used as the index file.</p>
+</li>
+<li><a name="item__m"></a><a name="_m"></a><b>-m *number* (max results)</b>
+<p>While searching, this specifies the maximum number of results to return.
+The default is to return all results.</p>
+<p>This switch is often used in conjunction with the <code>-b</code> switch to return results one
+page at a time (strongly recommended for large indexes).</p>
+</li>
+<li><a name="item__b"></a><a name="_b"></a><b>-b *number* (beginning result)</b>
+<p>Sets the <i>begining</i> search result to return (records are numbered from 1).  This switch can be used
+with the <code>-m</code> switch to return results in groups or pages.</p>
+<p>Example:</p>
+<pre class="pre-section">    swish-e -w 'word' -b 1 -m 20    # first 'page'
+    swish-e -w 'word' -b 21 -m 20   # second 'page'</pre>
+</li>
+<li><a name="item__t"></a><a name="_t"></a><b>-t HBthec (context searching)</b>
+<p>The <code>-t</code> option allows you to search for words that exist only
+in specific HTML tags. Each character in the string you
+specify in the argument to this option represents a
+different tag in which to search for the word. H means all HEAD
+tags, B stands for BODY tags, t is all TITLE tags, h is H1
+to H6 (header) tags, e is emphasized tags (this may be B, I,
+EM, or STRONG), and c is HTML comment tags</p>
+<p>search only in header (&lt;H*&gt;) tags</p>
+<pre class="pre-section">    swish-e -w word -t h</pre>
+</li>
+<li><a name="item__d"></a><a name="_d"></a><b>-d *string* (delimiter)</b>
+<p>Set the delimiter used when printing results.  By default, Swish-e separates
+the output fields by a space, and places double-quotes around the document
+title.  This output may be hard to parse, so it is recommended to use <code>-d</code> to
+specify a character or string used as a separator between fields.</p>
+<p>The string <code>dq</code> means "double-quotes".</p>
+<pre class="pre-section">    swish-e -w word -d ,    # single char
+    swish-e -w word -d ::   # string
+    swish-e -w word -d '"'  # double quotes under Unix
+    swish-e -w word -d \"   # double quotes under Windows
+    swish-e -w word -d dq   # double quotes</pre>
+<p>The following control characters may also be specified: <code>\t \r \n \f</code>.</p>
+<p>Warning: This string is passed directly to sprintf() and therefore exposes a securty
+hole.  Do not allow user data to set -d format strings directly.</p>
+</li>
+<li><a name="item__p"></a><a name="_p"></a><b>-P *character*</b>
+<p>Sets the delimiter used for phrase searches.  The default is double quotes <code>"</code>.</p>
+<p>Some examples under bash: (be careful about you shell metacharacters)</p>
+<pre class="pre-section">    swish-e -P ^ -w 'title=^words in a phrase^'
+    swish-e -P \' -w "title='words in a pharse"'</pre>
+</li>
+<li><a name="item__p"></a><a name="_p"></a><b>-p *property1 property2 ...*  (display properties)</b>
+<p>This causes swish to print the listed property in the search results.  The properties
+are returned in the order they are listed in the <code>-p</code> argument.</p>
+<p>Properties are defined by the <b>ProperNames</b> directive in the configuration file (see <a href="swish-config.html">SWISH-CONFIG</a>)
+and properties must also be defined in <b>MetaNames</b>.  Swish stores the text of the meta name as a <i>property</i>, and
+then will return this text while searching if this option is used.</p>
+<p>Properties are very useful for returning data included in a source documnet without having to re-read
+the source document while searching.  For example, this could be used to return a short document description.
+See also see <b>Document Summeries</b> and <a href="swish-config.html#item_propertynames">PropertyNames</a> in <a href="swish-config.html">SWISH-CONFIG</a>.</p>
+<p>To return the subject and category properties while indexing.</p>
+<pre class="pre-section">    swish-e -w word -p subject category</pre>
+<p>Properties are returned in double quotes.   If a property contains a double quote it is HTML escaped (&amp;quot;).
+See the <code>-x</code> switch for a more advanced method of returning a list of properties.</p>
+<p>NOTE: it is necessary to have indexed with the proper
+PropertyNames directive in the user config file in order to
+use this option.</p>
+</li>
+<li><a name="item__s"></a><a name="_s"></a><b>-s *property [asc|desc] ...*  (sort)</b>
+<p>Normally, search results are printed out in order of relevancy, with the most relevant listed first.
+The <code>-s</code> sort switch allows you to sort results in order of a specified <i>property</i>, where a <i>property</i>
+was defined using the <b>MetaNames</b> and <b>PropertyNames</b> directives during indexing
+(see <a href="swish-config.html">SWISH-CONFIG</a>).</p>
+<p>The string passed can include the strings <code>asc</code> and <code>desc</code> to specify the sort order, and more than
+one property may be specified to sort on more than one key.</p>
+<p>Examples:</p>
+<p>sort by title property ascending order</p>
+<pre class="pre-section">    -s title</pre>
+<p>sort descending by title, ascending by name</p>
+<pre class="pre-section">    -s title desc name asc</pre>
+<p>Note: Swish limits sort keys to 100 characters.  This limit can be changed
+by changing MAX_SORT_STRING_LEN in src/config.h and rebuilding swish-e.</p>
+</li>
+<li><a name="item__l"></a><a name="_l"></a><b>-L limit to a range of property values (Limit)</b>
+<p><b>This is an experimental feature!</b></p>
+<p>The <code>-L</code> switch can be used to limit search results to a range of property values</p>
+<p>Example:</p>
+<pre class="pre-section">    swish-e -w foo -L swishtitle a m</pre>
+<p>finds all documents that contain the word <code>foo</code>, and where the
+document's title is in the range of <code>a</code> to <code>m</code>, inclusive.
+By default, the case of the property is ignored, but this can be
+changed by using <a href="swish-config.html#item_propertynamescomparecase">PropertyNamesCompareCase</a>
+configuation directive.</p>
+<p>Limiting may be done with user-defined properties, as well.</p>
+<p>For example, if you indexed documents that contain a created timestamp in a meta tag:</p>
+<pre class="pre-section">    &lt;meta name="created_on" content="982648324"&gt;</pre>
+<p>Then you tell Swish that you have a property called <code>created_on</code>, and that
+it's a timestamp.</p>
+<pre class="pre-section">    PropertyNamesDate created_on</pre>
+<p>After indexing you will be able to limit documents to a range of timestamps:</p>
+<pre class="pre-section">    -w foo -L created_on  946684800 949363199</pre>
+<p>will find documents containing the word foo and that have a created_on
+date from the start of Jan 1, 2000 to the end of Jan 31, 2000.</p>
+<p>Note: swish currently does not parse dates; Unix timestamps must be used.</p>
+<p>Two special formats can be used:</p>
+<pre class="pre-section">    -L swishtitle &lt;= m
+    -L swishtitle &gt;= m</pre>
+<p>Finds titles less than or equal, or grater than or equal to the letter <code>m</code>.</p>
+<p>This feature will not work with <code>swishrank</code> or <code>swishdbfile</code> properties.</p>
+<p>This feature takes advantages of the pre-sorted tables built by swish during indexing to
+make this feature fast while searching.  
+You should see in the indexing output a line such as:</p>
+<pre class="pre-section">   6 properties sorted.</pre>
+<p>That indicates that six pre-sorted tables were built during indexing.   
+By default, all properties are presorted while indexing.
+What properties are pre-sorted can be controlled by the configuration parameter <code>PreSortedIndex</code>.</p>
+<p>Using the <code>-L</code> switch on a property that was not pre-sorted will still work, but may be <i>much</i>
+slower during searching.</p>
+<p>Note that the PropertyNamesSortKeyLength setting is used for sorting properties.
+Using too small a PropertyNamesSortKeyLength could result in -L selecting
+the wrong properties due to incomplete sorting.</p>
+<p>This is an experimental feature, and its use and interface are subject to change.</p>
+</li>
+<li><a name="item__x"></a><a name="_x"></a><b>-x formatstring (extended output format)</b>
+<p>The <code>-x</code> switch defines the output format string.  The format string can
+contain plain text and property names (including swish-defined internal
+property names) and is used to generate the output for every result.  In
+addition, the output format of the property name can be controlled with C-like
+printf format strings.  This feature overrides the cmdline switches <code>-d</code> and
+<code>-p</code>, and a warning will be generated if <code>-d</code> or <code>-p</code> are used with <code>-x</code>.</p>
+<p>Warning: The format string (fmt) is passed directly to sprintf() and therefore exposes a securty
+hole.  Do not allow user data to set -x format strings directly.</p>
+<p>For example, to return just the title, one per line, in the search results:</p>
+<pre class="pre-section">    swish-e  -w ...   -x '&lt;swishtitle&gt;\n' ...</pre>
+<p>Note: the <code>\n</code> may need to be protected from your shell.</p>
+<p>See also <a href="swish-config.html#item_resultextformatname">ResultExtFormatName</a> for a way to define <i>named</i>
+format strings in the swish configuration file.</p>
+<p><b>Format of "formatstring":</b></p>
+<pre class="pre-section">    "text&lt;propertyname&gt;text&lt;propertyname fmt=propfmtstr&gt;text..."</pre>
+<p>Where <b>propertyname</b> is:</p>
+<ul>
+<li>
+<p>the name of a user property as specified with the config file
+directive "PropertyNames"</p>
+</li>
+<li>
+<p>the name of a swish Auto property (see below).  These properties are
+defined automatically by swish -- you do not need to specify them
+with PropertyNames directive.  (This may change in the future.)</p>
+</li>
+</ul>
+<p>propertynames must be placed within "&lt;" and "&gt;".</p>
+<p><b>User properties:</b></p>
+<p>Swish-e allows you to specify certain META tags within your documents that can be used as <b>document properties</b>.
+The contents of any META tag that has been identified as a document property can be returned as
+part of the search results.  Doucment properties must be defined while indexing using the <b>PropertyNames</b>
+configuration directive (see <a href="swish-config.html#item_propertynames">SWISH-CONFIG</a>).</p>
+<p>Examples of user-defined PropertyNames:</p>
+<pre class="pre-section">    &lt;keywords&gt;
+    &lt;author&gt;
+    &lt;deliveredby&gt;
+    &lt;reference&gt;
+    &lt;id&gt;</pre>
+<p><b>Auto properties:</b></p>
+<p>Swish defines a number of "Auto" properties for each document indexed.
+These are available for output when using the <code>-x</code> format.</p>
+<pre class="pre-section">    Name               Type     Contents
+    --------------     -------  ----------------------------------------------
+    swishreccount      Integer  Result record counter
+    swishtitle         String   Document title
+    swishrank          Integer  Result rank for this hit
+    swishdocpath       String   URL or filepath to document
+    swishdocsize       Integer  Document size in bytes
+    swishlastmodified  Date     Last modified date of document
+    swishdescription   String   Description of document (see:StoreDescription)
+    swishdbfile        String   Path of swish database indexfile</pre>
+<p>The Auto properties can also be specified using shortcuts:</p>
+<pre class="pre-section">    Shortcut    Property Name        
+    --------    --------------
+      %c        swishreccount
+      %d        swishdescription
+      %D        swishlastmodified
+      %I        swishdbfile
+      %p        swishdocpath
+      %r        swishrank
+      %l        swishdocsize
+      %t        swishtitle</pre>
+<p>For example, these are equivalent:</p>
+<pre class="pre-section">   -x '&lt;swishrank&gt;:&lt;swishdocpath&gt;:&lt;swishtitle&gt;\n'
+   -x '%r:%p:%t\n'</pre>
+<p>Use a double percent sign "%%" to enter a literal percent sign in the output.</p>
+<p><b>Formatstrings of properties:</b></p>
+<p>Properties listed in an <code>-x</code> format string can include format control strings.
+These "propertyformats" are used to control how the contents of the associated property are printed.
+Property formats are used like C-language printf formats.
+The property format is specified by including the attribute "fmt" within the property tag.</p>
+<p>Format strings cannot be used with the "%" shortcuts described above.</p>
+<p>General syntax:</p>
+<pre class="pre-section">    -x '&lt;propertyname fmt="propfmtstr"&gt;'</pre>
+<p>where <code>subfmt</code> controls the output format of <code>propertyname</code>.    </p>
+<p>Examples of property format strings:</p>
+<pre class="pre-section">        date type:    &lt;swishlastmodified fmt="%d.%m.%Y"&gt;
+        string type:  &lt;swishtitle fmt="%-40.35s"&gt;
+        integer type: &lt;swishreccount fmt=/%8.8d/&gt;</pre>
+<p>Please see the manual pages for strftime(3) and sprintf(3) for an explanation of
+format strings.  Note: some versions of strftime do not offer the %s format string
+(number of seconds since the Epoch), so swish provides a special format string "%ld"
+to display the number of seconds since the Epoch.</p>
+<p>The first character of a property format string defines the delimiter for the format string.
+For example,</p>
+<pre class="pre-section">    -x  "&lt;author  fmt=[%20s]&gt; ...\n"
+    -x  "&lt;author  fmt='%20s'&gt; ...\n"
+    -x  "&lt;author  fmt=/%20s/&gt; ...\n"</pre>
+<p><b>Standard predefined formats:</b></p>
+<p>If you ommit the sub-format, the following formats are used:</p>
+<pre class="pre-section">    String type:       "%s"  (like printf char *)
+    Integer type:      "%d"  (like printf int)
+    Float type:        "%f"  (like printf double) 
+    Date type:         "%Y-%m-%d %H:%M:%S" (like strftime)</pre>
+<p><b>Text in "formatstring" or "propfmtstr":</b></p>
+<p>Text will be output as-is in format strings (and property format strings).
+Special characters can be escaped with a backslash.
+To get a new line for each result hit, you have to include
+the Newline-Character "\n" at the end of "fmtstr".</p>
+<pre class="pre-section">    -x "&lt;swishreccount&gt;|&lt;swishrank&gt;|&lt;swishdocpath&gt;\n"
+    -x "Count=&lt;swishreccount&gt;, Rank=&lt;swishrank&gt;\n"
+    -x "Title=\&lt;b\&gt;&lt;swishtitle&gt;\&lt;/b\&gt;"
+    -x 'Date: &lt;swishlastmodified fmt="%m/%d/%Y"&gt;\n'
+    -x 'Date in seconds: &lt;swishlastmodified fmt=/%ld/&gt;\n'</pre>
+<p><b>Control/Escape charcters:</b></p>
+<p>you can use C-like control escapes in the format string:</p>
+<pre class="pre-section">   known controls:      \a, \b, \f, \n, \r, \t, \v,
+   digit escapes:       \xhexdigits   \0octaldigits
+   character escapes:   \anychar  </pre>
+<p>Example,</p>
+<pre class="pre-section">    swish -x "%c\t%r\t%p\t\"&lt;swishtitle fmt=/%40s/&gt;\"\n"</pre>
+<p><b>Examples of -x format strings:</b></p>
+<pre class="pre-section">    -x "%c|%r|%p|%t|%D|%d\n"
+    -x "%c|%r|%p|%t|&lt;swishdate fmt=/%A, %d. %B %Y/&gt;|%d\n"
+    -x "&lt;swishrank&gt;\t&lt;swishdocpath&gt;\t&lt;swishtitle&gt;\t&lt;keywords&gt;\n
+    -x "xml_out: \&lt;title\&gt;&lt;swishtitle&gt;\&gt;\&lt;/title\&gt;\n"
+    -x "xml_out: &lt;swishtitle fmt='&lt;title&gt;%s&lt;/title&gt;'&gt;\n"</pre>
+</li>
+<li><a name="item__h"></a><a name="_h"></a><b>-H [0|1|2|3|&lt;n&gt;]  (header output verbosity)</b>
+<p>The <code>-H n</code> switch generates extened <i>header</i> output.  This is most useful when searching more than one
+index file at a time by specifying more than one index file with the <code>-f</code> switch.
+<code>-H 2</code> will generate a set of headers specific to each index file.
+This gives access to the settings used to generate each index file.</p>
+<p>Even when searching a single index file, <code>-H n</code> will provided additional information about the index file,
+how it was indexed, and how swish is interperting the query.</p>
+<pre class="pre-section">    -H 0 : print no header information, output only search result entries.
+    -H 1 : print standard result header (default).
+    -H 2 : print additional header information for each searched index file.
+    -H 3 : enhanced header output (e.g. print stopwords).
+    -H 9 : print diagnostic information in the header of the results (changed from: C&lt;-v 4&gt;)</pre>
+</li>
+<li><a name="item__r"></a><a name="_r"></a><b>-R [0|1] (Ranking Scheme)</b>
+<p><b>This is an experimental feature!</b></p>
+<p>The default ranking scheme in SWISH-E evaluates each word in a query in terms of its frequency
+and position in each document. The default scheme is 0.</p>
+<p>New in version 2.4.3 you may optionally select an experimental ranking scheme that, in addition
+to document frequency and position, uses Inverse Document Frequency (IDF), 
+or the relative frequency of each word across all the indexes
+being searched, and Relative Density, or the normalization of the frequency of a word
+in relationship to the number of words in the document.</p>
+<p><b>NOTE:</b> IgnoreTotalWordCountWhenRanking must be set to <b>no</b> or <b>0</b> in your index(es)
+for -R 1 to work.</p>
+<p>Specify -R 1 to turn on IDF ranking. See the API documentation for how to set
+the ranking scheme in your Perl or C program.</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="other_switches"></a>OTHER SWITCHES</h1>
+
+<ul>
+<li><a name="item__v"></a><a name="_v"></a><b>-V (version)</b>
+<p>Print the current version.</p>
+</li>
+<li><a name="item__k"></a><a name="_k"></a><b>-k *letter* (print out keywords)</b>
+<p>The <code>-k</code> switch is used for testing and will cause swish to print out all keywords
+in the index beginning with that letter.  You may enter <code>-k '*'</code> to generate a list of all words indexed
+by swish.</p>
+</li>
+<li><a name="item__d"></a><a name="_d"></a><b>-D *index file*  (debug index)</b>
+<p>The -D option is no longer supported in version 2.2.</p>
+</li>
+<li><a name="item__t"></a><a name="_t"></a><b>-T *options* (trace/debug swish)</b>
+<p>The -T option is used to print out information that may be helpful when debugging swish-e's
+operation.  This option replaced the <code>-D</code> option of previous versions.</p>
+<p>Running <code>-T help</code> will print out a list of available *options*</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="merging_index_files"></a>Merging Index Files</h1>
+
+<p>In previous versions of Swish-e indexing would require a very large amount of memory and the indexing
+process could be very slow.  Merging provided a way to index in chunks and then combine the indexes together
+into a single index.</p>
+<p>Indexing is much faster now and uses much less memory, and with the <code>-e</code> switch very little memory is
+needed to index a large site.</p>
+<p>Still, at times it can be useful to merge different index files into one file for searching.
+This could be because you want to keep separate site indexes and a common one for a global search, or
+you have separate collections of documents that you wish to search all at one time, but manage separately.</p>
+<ul>
+<li><a name="item__m"></a><a name="_m"></a><b>-M *index1 index2 ... indexN out_index</b>
+<p>Merges the indexes specified on the command line -- the last file name entered is the output file.
+The output index must not exist (otherwise merge will not proceed).</p>
+<p>Only indexes that were indexed with common settings may be merged.
+(e.g. don't mix stemming and non-stemming indexes, or indexes with different WordCharacter settings, etc.).</p>
+<p>Use the <code>-e</code> switch while merging to reduce memory usage.</p>
+<p>Merge generates progress messages regardless of the setting of <code>-v</code>.</p>
+</li>
+<li><a name="item__c"></a><a name="_c"></a><b>-c *configuration file*</b>
+<p>Specify a configuration file while indexing to add administrative information to the output index file.</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="document_info"></a>Document Info</h1>
+
+<p>$Id: SWISH-RUN.pod,v 1.40 2005/05/17 02:22:40 karman Exp $</p>
+<p>.</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div><!-- /#main-copy  -->
+
+    </div><!-- /#content-area -->
+
+
+    <div id="side-bar">
+        <!-- noindex -->
+<ul class="menu"><li class="">
+
+    <a class="menu" 
+    href="../index.html"
+    >home</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../news.html"
+    >news</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../download/index.html"
+    >download</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../license.html"
+    >license</a>
+
+</li><li class="menuparent">
+
+    <a class="menu" 
+    href="../docs/index.html"
+    >documentation</a>
+
+<!-- noindex -->
+<ul class="submenu"><li class="">
+
+    <a class="submenu" 
+    href="../docs/readme.html"
+     title="First time users">README</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/install.html"
+     title="Installation and usage overview">Install</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/changes.html"
+     title="Important changes from previous versions">Changes</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-config.html"
+     title="Directives that go in your Swish-e configuration file">Configuration</a>
+
+</li><li class="">
+
+    <a class="thisfile" 
+    href="../docs/swish-run.html"
+     title="Command line options for Swish-e binary">Running &#187;</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-search.html"
+     title="Swish-e's search language">Searching</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-faq.html"
+    >FAQ</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-bugs.html"
+    >Known issues</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-3.0.html"
+    >The Future</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-library.html"
+     title="Swish-e C API">C API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/api.html"
+     title="Perl interface to the Swish-e library">Perl API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish.cgi.html"
+     title="Example CGI/mod_perl script">Swish.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/search.cgi.html"
+     title="Example Perl script using SWISH::API">Search.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/spider.html"
+     title="The Swish-e HTTP spider">Spider.pl</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/filter.html"
+     title="How to index non-text documents">Filters</a>
+
+</li></ul>
+<!-- index -->
+
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../support.html"
+    >support</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../discuss.html"
+     title="email list and list archive">discuss</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../graphics/index.html"
+    >graphics</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../scripts.html"
+    >related projects</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../devel/index.html"
+     title="CVS, daily builds and development documentation">development</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../who.html"
+    >who uses it</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../demos.html"
+    >demos</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../search/index.html"
+    >Search</a>
+
+</li></ul>
+<!-- index -->
+
+
+
+    </div><!-- /#side-bar -->
+
+
+</div><!-- /#body-area -->
+
+
+
+<div id="footer">
+    <!-- noindex -->
+<span class="doNotPrint">
+    Swish-e is distributed with <strong>no warranty</strong> under the terms of the <br />
+    <a href='http://swish-e.org/license.html'>Swish-e License</a>.<br />
+    Questions may be posted to the 
+    <a href="../discuss.html" title="email list and list archive">Swish-e Discussion list</a>.
+</span>
+
+
+
+<p>
+    <strong>URI &raquo;</strong> http://swish-e.org/ 
+    &bull;
+
+    <strong>Generated &raquo;</strong>Tue, 16 Sep 2008 02:40:12 UTC</p>
+<!-- index -->
+
+</div><!-- /#footer -->
+
+
+</body>
+</html>

@@ -1,0 +1,759 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- 
+    ***** GENERATED FILE *** DO NOT EDIT DIRECTLY - any changes will be LOST ******
+
+    swish-e.org mockup based on http://www.oswd.org/design/1773/prosimii/index2.html 
+-->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="../swish.css" media="screen" title="swish css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+        <link rel="Last" href="../docs/filter.html" />
+    
+        <link rel="Prev" href="../docs/swish-run.html" />
+    
+        <link rel="Up" href="../docs/index.html" />
+    
+        <link rel="Next" href="../docs/swish-faq.html" />
+    
+        <link rel="Start" href="../index.html" />
+    
+        <link rel="First" href="../docs/readme.html" />
+    
+
+    <title>Swish-e :: SWISH-SEARCH - Swish-e Searching Instructions</title>
+
+
+  </head>
+
+
+<body>
+    
+
+    <!-- noindex -->
+
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+        <span>Related Sites:</span>
+            <a href="http://swishewiki.org/" title="swishe wiki">swish-e wiki</a> |
+            <a href="http://www.xmlsoft.org/" title="libxml2 home page">libxml2</a> |
+            <a href="http://www.zlib.net/" title="zlib home page">zlib</a> |
+            <a href="http://www.foolabs.com/xpdf/" title="xpdf home page">xpdf</a> |
+            <a href="http://dev.swish-e.org/browser" title="browse source code">Subversion</a>
+      </div>
+
+      <div class="midHeader">
+        <h1 class="headerTitle" lang="la">Swish-e</h1>
+        <div class="headerSubTitle">Simple Web Indexing System for Humans - Enhanced</div>
+
+        <br class="doNotDisplay doNotPrint" />
+
+        <div class="headerLinks">
+          <span class="doNotDisplay">Tools:</span>
+
+              <!-- don't know what platform, so link to download page -->
+
+              <a href="../download/index.html">download latest version</a>
+
+        </div>
+      </div>
+    </div>
+    <!-- index -->
+
+<!-- noindex -->
+<div class="subHeader">
+    <table width='100%'>
+        <tr>
+            <td align='left'>
+                <a href="../index.html">home</a> |
+                <a href="../support.html">support</a> |
+                <a href="../download/index.html">download</a>
+            </td>
+
+
+            
+            <td align='right'>
+
+                <form method="get"
+                    action="../search/index.html"
+                    enctype="application/x-www-form-urlencoded"
+                    class="srchform">
+
+                    <label for="searchfield">Search for</label>
+                    <input maxlength="200" value="" id="searchfield" size="30" name="query" type="text" alt="Search input field" />
+                    <input value="search" name="submit" type="submit" class='button' />
+                </form>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+<!-- index -->
+
+
+<div id="body-area" class="clearfix">
+
+    <div id="content-area">
+
+        <div id="main-copy">
+            
+            
+            
+            
+<h1>SWISH-SEARCH - Swish-e Searching Instructions</h1>
+Swish-e version 2.4.5
+
+
+
+    <!-- noindex -->
+
+    
+        <h2>Table of Contents</h2>
+        <div class="toc">
+            
+    <ul class="toc">
+        
+            <li>
+                <a href="#overview">OVERVIEW</a>
+                
+            </li>
+        
+            <li>
+                <a href="#searching_syntax_and_operations">Searching Syntax and Operations</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#boolean_operators">Boolean Operators</a>
+                
+            </li>
+        
+            <li>
+                <a href="#wildcards">Wildcards</a>
+                
+            </li>
+        
+            <li>
+                <a href="#order_of_evaluation">Order of Evaluation</a>
+                
+            </li>
+        
+            <li>
+                <a href="#meta_tags">Meta Tags</a>
+                
+            </li>
+        
+            <li>
+                <a href="#phrase_searching">Phrase Searching</a>
+                
+            </li>
+        
+            <li>
+                <a href="#context">Context</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#searching_with_perl">Searching with Perl</a>
+                
+    <ul class="toc">
+        
+            <li>
+                <a href="#cgi_danger_">CGI Danger!</a>
+                
+            </li>
+        
+            <li>
+                <a href="#perl_modules">Perl Modules</a>
+                
+            </li>
+        
+    </ul>
+
+            </li>
+        
+            <li>
+                <a href="#document_info">Document Info</a>
+                
+            </li>
+        
+    </ul>
+
+        </div>
+    
+    <!-- index -->
+
+
+
+
+
+<hr />
+
+
+    <div class="sub-section">
+        
+<h1><a name="overview"></a>OVERVIEW</h1>
+
+<p>This page describes the process of searching with Swish-e.  Please see
+the <a href="swish-config.html">SWISH-CONFIG</a> page for information the Swish-e
+configuration file directives, and <a href="swish-run.html">SWISH-RUN</a> for a complete
+list of command line arguments.</p>
+<p>Searching a Swish-e index involves passing <a href="swish-run.html">command line arguments</a> to it that specify the index file to use, and
+the <a href="#searching_syntax_and_operations">query</a> (or search words) to
+locate in the index.  Swish-e returns a list of file names (or URLs)
+that contain the matched search words.  <a href="#searching_with_perl">Perl</a>
+is often used as a front-end to Swish-e such as in CGI applications,
+and <a href="#perl_modules">perl modules</a> exist to for interfacing with Swish-e.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="searching_syntax_and_operations"></a>Searching Syntax and Operations</h1>
+
+<p>The <code>-w</code> command line argument is used specify the search query to Swish-e.</p>
+<pre class="pre-section">    swish-e -w airplane</pre>
+<p>will find all documents that contain the word <b>airplane</b>.</p>
+<p>When running Swish-e from a shell prompt, be careful to protect your query from
+shell metacharacters and shell expansions. This often means placing single or
+double quotes around your query. See <a href="#searching_with_perl">Searching with Perl</a> if you plan to use
+Perl as a front end to Swish-e.  In the examples below single quotes are used
+to protect the search from the shell.</p>
+<p>The following section describes various aspects of searching with Swish-e.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="boolean_operators"></a>Boolean Operators</h2>
+
+<p>You can use the Boolean operators <b>and</b>, <b>or</b>, <b>near</b> or <b>not</b> in searching.
+Without these Boolean operators Swish-e will assume you're <b>and</b>'ing
+the words together.  The operators are not case sensitive.  These three
+searches are the same:</p>
+<pre class="pre-section">    swish-e -w foo bar
+    swish-e -w bar foo
+    swish-e -w foo AND bar</pre>
+<p>[Note: you can change the default to <b>or</b>ing by changing the variable
+DEFAULT_RULE in the config.h file and recompiling Swish-e.]</p>
+<p>The <b>not</b> operator inverts the results of a search.</p>
+<pre class="pre-section">   swish-e -w not foo</pre>
+<p>finds all the documents that do not contain the word foo.</p>
+<p>Parentheses can be used to group searches.</p>
+<pre class="pre-section">   swish-e -w 'not (foo and bar)'</pre>
+<p>The result is all documents that have none or one term, but not both.</p>
+<p>To search for the words <b>and</b>, <b>or</b>, <b>near</b> or <b>not</b>, place them in a double quotes.
+Remember to protect the quotes from the shell:</p>
+<pre class="pre-section">    swish-e -w '"not"'
+    swish-e -w \"not\"</pre>
+<p>will search for the word "not".</p>
+<p>Other examples:</p>
+<pre class="pre-section">     swish-e -w smilla or snow</pre>
+<p>Retrieves files containing either the words "smilla" or "snow".</p>
+<pre class="pre-section">     swish-e -w smilla snow not sense 
+     swish-e -w '(smilla and snow) and not sense'  (same thing)</pre>
+<p>retrieves first the files that contain both the words "smilla" and
+"snow"; then among those the ones that do not contain the word "sense".</p>
+<p>The <b>near</b> keyword is similar to <b>and</b> but implies a proximity between the
+words. The <b>near</b> keyword takes a integer argument as well, indicating
+the maximum distance between two words to consider a valid match.</p>
+<p>Example:</p>
+<pre class="pre-section"> swish-e -w smilla near5 snow</pre>
+<p>would match the document if the words <code>smilla</code> and <code>snow</code> appeared within 5
+positions of one another.</p>
+<p>A <b>near</b> search with no argument or argument of 0 is the same as an <b>and</b> search.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="wildcards"></a>Wildcards</h2>
+
+<p>Two different wildcard characters are available, each evoking different behaviour.</p>
+<p>The <code>*</code> means "match zero or more characters."</p>
+<p>The <code>?</code> means "match exactly one character."</p>
+<p>The wildcard <code>*</code> may only be used at the end
+of a word. Otherwise <code>*</code> is considered a normal character (i.e. can be
+searched for if included in the WordCharacters directive).</p>
+<p>Example:</p>
+<pre class="pre-section">    swish-e -w librarian</pre>
+<p>this query only retrieves files which contain the given word.</p>
+<p>On the other hand:</p>
+<pre class="pre-section">    swish-e -w 'librarian*'</pre>
+<p>retrieves "librarians", "librarianship", etc. along with "librarian".</p>
+<p>Note that wildcard searches combined with word stemming can lead
+to unexpected results.  If stemming is enabled, a search term with a
+wildcard will be stemmed internally before searching.  So searching for
+<code>running*</code> will actually be a search for <code>run*</code>, so <code>running*</code> would
+find <code>runway</code>.  Also, searching for <code>runn*</code> will not find <code>running</code>
+as you might expect, since <code>running</code> stems to <code>run</code> in the index,
+and thus <code>runn*</code> will not find <code>run</code>.</p>
+<p>The <code>?</code> wildcard matches exactly one character, but may not be used
+at the start of a word.</p>
+<p>Example:</p>
+<pre class="pre-section">    swish-e -w 's?ow'</pre>
+<p>will match <code>snow</code>, <code>slow</code> and <code>show</code> but <b>not</b> <code>strow</code>.</p>
+<p>This:</p>
+<pre class="pre-section">    swish-e -w '?how'</pre>
+<p>will throw an error.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="order_of_evaluation"></a>Order of Evaluation</h2>
+
+<p>In general, the order of evaluation is not important.  Internally swish-e
+processes the search terms from left to right.  Parenthesis can be used
+to group searches together, effectively changing the order of evaluation.
+For example these three are the same:</p>
+<pre class="pre-section">    swish-e -w foo not bar baz
+    swish-e -w not bar foo baz
+    swish-e -w baz foo not bar</pre>
+<p>but these two are <b>not</b> the same:</p>
+<pre class="pre-section">    swish-e -w foo not bar baz
+    swish-e -w foo not (bar baz)</pre>
+<p>The first finds all documents that contain both foo and baz, but do not
+contain bar.  The second finds all that contain foo, and contain either bar or
+baz, but not both.</p>
+<p>It is often helpful in understanding searches to use the boolean terms and
+parenthesis. So the above two become:</p>
+<pre class="pre-section">    swish-e -w foo AND (not bar) AND baz
+    swish-e -w foo AND (not (bar AND baz))</pre>
+<p>These four examples are all the same search (assuming that AND is the default
+search type):</p>
+<pre class="pre-section">    swish-e -w 'juliet not ophelia and pac'
+    swish-e -w '(juliet) AND (NOT ophelia) AND (pac)'
+    swish-e -w 'juliet not ophelia pac'
+    swish-e -w 'pac and juliet and not ophelia'</pre>
+<p>Looking at the the first three searches, first Swish-e finds all the documents
+with "juliet".  Then it finds all documents that do not contain "ophelia".
+Those two lists are then combined with the boolean AND operator resulting with
+a list of documents that include "juliet" but not "ophelia".  Finally, that
+list is ANDed with the list of documents that contain "pac" resulting.</p>
+<p>However it is always possible to force the order of evaluation by using
+parenthesis.  For example:</p>
+<pre class="pre-section">    swish-e -w 'juliet not (ophelia and pac)'</pre>
+<p>retrieves files with "juliet" that do not contain both words "ophelia" and
+"pac".</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="meta_tags"></a>Meta Tags</h2>
+
+<p>MetaNames are used to represent <i>fields</i> (called <i>columns</i> in a
+database) and provide a way to search in only parts of a document.
+See <a href="swish-config.html#document_contents_directives">SWISH-CONFIG</a> for
+a description of MetaNames, and how they are specified in the source
+document.</p>
+<p>To limit a search to words found in a meta tag you prefix the keywords
+with the name of the meta tag, followed by the equal sign:</p>
+<pre class="pre-section">    metaname = word
+    metaname = (this or that)
+    metaname = ( (this or that) or "this phrase" )</pre>
+<p>It is not necessary to have spaces at either side of the "=", consequently
+the following are equivalent:</p>
+<pre class="pre-section">    swish-e -w "metaName=word"
+    swish-e -w "metaName = word"
+    swish-e -w "metaName= word"</pre>
+<p>To search on a word that contains a "=", precede the "=" with a "\"
+(backslash).</p>
+<pre class="pre-section">    swish-e -w "test\=3 = x\=4 or y\=5"</pre>
+<p>this query returns the files where the word "x=4" is associated with
+the metaName "test=3" or that contains the word "y=5" not associated
+with any metaName.</p>
+<p>Queries can be also constructed using any of the usual search features,
+moreover metaName and plain search can be mixed in a single query.</p>
+<pre class="pre-section">     swish-e -w "metaName1 = (a1 or a4) not (a3 and a7)"</pre>
+<p>This query will retrieve all the files in which "a1" or "a2" are found
+in the META tag "metaName1" and that do not contain the words "a3" and
+"a7", where "a3" and "a7" are not associated to any meta name.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="phrase_searching"></a>Phrase Searching</h2>
+
+<p>To search for a phrase in a document use double-quotes to delimit your
+search terms.  (The phrase delimiter is set in src/swish.h.)</p>
+<p>You must protect the quotes from the shell.</p>
+<p>For example, under Unix:</p>
+<pre class="pre-section">    swish-e -w '"this is a phrase" or (this and that)'
+    swish-e -w 'meta1=("this is a phrase") or (this and that)'</pre>
+<p>Or under Windows:</p>
+<pre class="pre-section">    swish-e -w \"this is a phrase\" or (this and that)</pre>
+<p>You can not use boolean search terms inside a phrase.  That is:</p>
+<pre class="pre-section">    swish-e -w 'this and that'</pre>
+<p>finds documents with both words "this" and "that", but:</p>
+<pre class="pre-section">    swish-e -w '"this and that"'</pre>
+<p>finds documents that have the phrase "that and that".  A phrase can consist of
+a single word, so this is how to search for the words used as boolean
+operators:</p>
+<pre class="pre-section">   swish-e -w 'this "and" that'</pre>
+<p>finds documents that contain all three words, but in any order.</p>
+<p>You can use the <code>-P</code> switch to set the phrase delimiter character.
+See <a href="swish-run.html">SWISH-RUN</a> for examples.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="context"></a>Context</h2>
+
+<p>At times you might not want to search for a word in every part of
+your files since you know that the word(s) are present in a particular
+tag. The ability to search according to context greatly increases the
+chances that your hits will be relevant, and Swish-e provides a mechanism
+to do just that.</p>
+<p>The -t option in the search command line allows you to search for words
+that exist only in specific HTML tags. Each character in the string
+you specify in the argument to this option represents a different tag
+in which the word is searched; that is you can use any combinations of
+the following characters:</p>
+<pre class="pre-section">    H means all&lt;HEAD&gt; tags
+    B stands for &lt;BODY&gt; tags
+    t is all &lt;TITLE&gt; tags
+    h is &lt;H1&gt; to &lt;H6&gt; (header) tags
+    e is emphasized tags (this may be &lt;B&gt;, &lt;I&gt;, &lt;EM&gt;, or &lt;STRONG&gt;)
+    c is HTML comment tags (&lt;!-- ... --&gt;)
+
+    # This search will look for files with these two words in their titles only.
+    swish-e -w "apples oranges" -t t
+
+    # This search will look for files with these words in comments only.
+    swish-e -w "keywords draft release" -t c
+
+    This search will look for words in titles, headers, and emphasized tags.
+    swish-e -w "world wide web" -t the</pre>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="searching_with_perl"></a>Searching with Perl</h1>
+
+<p>Perl ( <a href="http://www.perl.com/">http://www.perl.com/</a> ) is probably the most common programming
+language used with Swish-e, especially in CGI interfaces.  Perl makes
+searching and parsing results with Swish-e easy, but if not done properly
+can leave your server vulnerable to attacks.</p>
+<p>When designing your CGI scripts you should carefully screen user input,
+and include features such as paged results and a timer to limit time
+required for a search to complete.  These are to protect your web site
+against a denial of service (DoS) attack.</p>
+<p>Included with every distribution of Perl is a document called perlsec --
+Perl Security.  <i>Please</i> take time to read and understand that document
+before writing CGI scripts in perl.</p>
+<p>Type at your shell/command prompt:</p>
+<pre class="pre-section">    perldoc perlsec</pre>
+<p>If nothing else, start every CGI program in perl as such:</p>
+<pre class="pre-section">    #!/usr/local/bin/perl -wT
+    use strict;</pre>
+<p>That alone won't make your script secure, but may help you find insecure
+code.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="cgi_danger_"></a>CGI Danger!</h2>
+
+<p>There are many examples of CGI scripts on the Internet.  Many are poorly
+written and insecure.  A commonly seen way to execute Swish-e from a
+perl CGI script is with a <i>piped open</i>.  For example, it is common to
+see this type of <code>open()</code>:</p>
+<pre class="pre-section">    open(SWISH, "$swish -w $query -f $index|");</pre>
+<p>This <code>open()</code> gives shell access to the entire Internet!  Often an
+attempt is made to strip <code>$query</code> of <i>bad</i> characters.  But, this
+often fails since it's hard to guess what every <i>bad</i> character is.
+Would you have thought about a null?  A better approach is to only allow
+<i>in</i> known safe characters.</p>
+<p>Even if you can be sure that any user supplied data is safe, this
+<i>piped open</i> still passes the command parameters through the shell.
+If nothing else, it's just an extra unnecessary step to running Swish-e.</p>
+<p>Therefore, the recommended approach is to fork and exec <code>swish-e</code> directly
+without passing through the shell.  This process is described in the
+perl man page <code>perlipc</code> under the appropriate heading <b>Safe Pipe Opens</b>.</p>
+<p>Type:</p>
+<pre class="pre-section">    perldoc perlipc</pre>
+<p>If all this sounds complicated you may wish to use a Perl module that
+does all the hard work for you.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h2><a name="perl_modules"></a>Perl Modules</h2>
+
+<p>The Swish-e distribution includes a Perl module called SWISH::API.
+SWISH::API provides access to the Swish-e C Library.</p>
+<p>The SWISH::API module is <i>not</i> installed by default.</p>
+<p>The SWISH::API module will <i>embed</i> Swish-e into your perl program so that searching does
+not require running an external program.  Embedding the Swish-e program into your perl
+program results in faster Swish-e searches, especially when running under a
+persistent environment like mod_perl since it avoids the cost of opening the
+index file for every request (mod_perl is much also much faster than CGI because it
+avoids the need to compile Perl code for every request).</p>
+<p>See the README file in the <i>perl</i> directory of the Swish-e distribution for installation
+instructions.  Documentation for the SWISH::API module is available at
+<a href="http://swish-e.org">http://swish-e.org</a> and is installed along with other HTML documentation on your computer.</p>
+
+    </div>
+
+    <div class="sub-section">
+        
+<h1><a name="document_info"></a>Document Info</h1>
+
+<p>$Id: SWISH-SEARCH.pod,v 1.8 2006/08/27 20:22:53 karman Exp $</p>
+<p>.</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div><!-- /#main-copy  -->
+
+    </div><!-- /#content-area -->
+
+
+    <div id="side-bar">
+        <!-- noindex -->
+<ul class="menu"><li class="">
+
+    <a class="menu" 
+    href="../index.html"
+    >home</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../news.html"
+    >news</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../download/index.html"
+    >download</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../license.html"
+    >license</a>
+
+</li><li class="menuparent">
+
+    <a class="menu" 
+    href="../docs/index.html"
+    >documentation</a>
+
+<!-- noindex -->
+<ul class="submenu"><li class="">
+
+    <a class="submenu" 
+    href="../docs/readme.html"
+     title="First time users">README</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/install.html"
+     title="Installation and usage overview">Install</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/changes.html"
+     title="Important changes from previous versions">Changes</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-config.html"
+     title="Directives that go in your Swish-e configuration file">Configuration</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-run.html"
+     title="Command line options for Swish-e binary">Running</a>
+
+</li><li class="">
+
+    <a class="thisfile" 
+    href="../docs/swish-search.html"
+     title="Swish-e's search language">Searching &#187;</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-faq.html"
+    >FAQ</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-bugs.html"
+    >Known issues</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-3.0.html"
+    >The Future</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish-library.html"
+     title="Swish-e C API">C API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/api.html"
+     title="Perl interface to the Swish-e library">Perl API</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/swish.cgi.html"
+     title="Example CGI/mod_perl script">Swish.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/search.cgi.html"
+     title="Example Perl script using SWISH::API">Search.cgi</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/spider.html"
+     title="The Swish-e HTTP spider">Spider.pl</a>
+
+</li><li class="">
+
+    <a class="submenu" 
+    href="../docs/filter.html"
+     title="How to index non-text documents">Filters</a>
+
+</li></ul>
+<!-- index -->
+
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../support.html"
+    >support</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../discuss.html"
+     title="email list and list archive">discuss</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../graphics/index.html"
+    >graphics</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../scripts.html"
+    >related projects</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../devel/index.html"
+     title="CVS, daily builds and development documentation">development</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../who.html"
+    >who uses it</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../demos.html"
+    >demos</a>
+
+</li><li class="">
+
+    <a class="menu" 
+    href="../search/index.html"
+    >Search</a>
+
+</li></ul>
+<!-- index -->
+
+
+
+    </div><!-- /#side-bar -->
+
+
+</div><!-- /#body-area -->
+
+
+
+<div id="footer">
+    <!-- noindex -->
+<span class="doNotPrint">
+    Swish-e is distributed with <strong>no warranty</strong> under the terms of the <br />
+    <a href='http://swish-e.org/license.html'>Swish-e License</a>.<br />
+    Questions may be posted to the 
+    <a href="../discuss.html" title="email list and list archive">Swish-e Discussion list</a>.
+</span>
+
+
+
+<p>
+    <strong>URI &raquo;</strong> http://swish-e.org/ 
+    &bull;
+
+    <strong>Generated &raquo;</strong>Tue, 16 Sep 2008 02:40:13 UTC</p>
+<!-- index -->
+
+</div><!-- /#footer -->
+
+
+</body>
+</html>
