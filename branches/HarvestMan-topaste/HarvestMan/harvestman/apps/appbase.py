@@ -42,7 +42,7 @@ class HarvestManAppBase(object):
     def process_plugins(self):
         """ Loads any plugin modules specified in configuration and process them """
 
-        from lib import hooks
+        from harvestman.lib import hooks
         
         plugin_dir = os.path.abspath(os.path.join(os.path.dirname(__init__.__file__), '..', 'ext'))
         # print plugin_dir

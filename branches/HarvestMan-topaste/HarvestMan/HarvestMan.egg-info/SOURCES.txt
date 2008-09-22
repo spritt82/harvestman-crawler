@@ -187,10 +187,17 @@ harvestman/lib/js/samples/fail/typedtooltip.js
 harvestman/lib/js/samples/fail/vardump.js
 harvestman/lib/js/samples/fail/xpath.js
 harvestman/test/__init__.py
+harvestman/test/fail.html
+harvestman/test/pass.css
+harvestman/test/pass.html
 harvestman/test/run_tests.py
 harvestman/test/test_base.py
 harvestman/test/test_connector.py
+harvestman/test/test_logger.py
+harvestman/test/test_pageparser.py
+harvestman/test/test_urlcollections.py
 harvestman/test/test_urlparser.py
+harvestman/test/test_urltypes.py
 harvestman/tools/__init__.py
 harvestman/tools/genconfig.py
 harvestman/tools/printstats.py
