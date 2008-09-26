@@ -27,8 +27,11 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       url='http://code.google.com/p/harvestman-crawler/',
       license='GPLv2',
       #find_packages replaces package_dir and packages
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      #packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       #package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
+      packages=find_packages(exclude=['ez_setup', 'examples']),
+      include_package_data = True,    # include everything in source control
+      package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
       #packages = ['harvestman',
       #           'harvestman.apps',
       #           'harvestman.lib',

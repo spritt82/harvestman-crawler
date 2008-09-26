@@ -221,7 +221,7 @@ class HarvestManStateObject(dict, Singleton):
         mydir = os.path.dirname(globals()["__file__"])
         global module_path
         module_path = os.path.dirname(mydir)
-        
+        print 'module_path',module_path
         self._init1()
         self._init2()
         self.set_system_params()
@@ -1292,8 +1292,12 @@ class HarvestManStateObject(dict, Singleton):
         if os.name == 'posix':
             #We might have to use find_packager() if somebody will use py2app py2exe
             #print os.path.split(os.path.dirname(__main__.__file__))[0]
-            basefolder=os.path.split(os.path.dirname(__main__.__file__))[0]
+            #basefolder=os.path.split(os.path.dirname(__main__.__file__))[0]
             #print os.path.join(basefolder, 'etc', 'harvestman', 'config.xml')
+            if sys.prefix=='/usr':
+                basefolder='/'
+            else:
+                basefolder=sys.prefix
             self.etcdir=os.path.join(basefolder, 'etc', 'harvestman')
             #self.etcdir = '/etc/harvestman'
         elif os.name == 'nt':
