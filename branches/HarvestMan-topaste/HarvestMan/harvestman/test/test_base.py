@@ -3,6 +3,9 @@
 
 Created: Anand B Pillai <abpillai@gmail.com> Apr 17 2007
 
+20080925- Lukasz - Setup path should no longer be required with the paste tools.
+
+
 Copyright (C) 2007, Anand B Pillai.
 """
 
@@ -25,19 +28,20 @@ def setUp():
     global flag
     if flag: return
     
-    setUpPaths()
+    #With new paster we don't need to setup path. it should know where harvestman is.
+    #setUpPaths()
 
-    from lib.common.common import SetAlias
+    from harvestman.lib.common.common import SetAlias
     
-    from lib import config
+    from harvestman.lib import config
     SetAlias(config.HarvestManStateObject())
 
-    from lib import datamgr
-    from lib import rules
-    from lib import connector
-    from lib import urlqueue
-    from lib import logger
-    from lib import event
+    from harvestman.lib import datamgr
+    from harvestman.lib import rules
+    from harvestman.lib import connector
+    from harvestman.lib import urlqueue
+    from harvestman.lib import logger
+    from harvestman.lib import event
 
     log=logger.HarvestManLogger()
     log.make_logger()
@@ -68,7 +72,7 @@ def setUp():
     flag = True
     
 def clean_up():
-    from lib.common.common import objects
+    from harvestman.lib.common.common import objects
     objects.datamgr.clean_up()
 
 def run_test(testklass, result):
