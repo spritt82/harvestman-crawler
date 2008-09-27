@@ -1291,15 +1291,16 @@ class HarvestManStateObject(dict, Singleton):
         # Directory for system wide configuration files...
         if os.name == 'posix':
             #We might have to use find_packager() if somebody will use py2app py2exe
+            #print sys.prefix
+            if sys.prefix!='/usr':
+                self.etcdir=os.path.join(sys.prefix, 'etc', 'harvestman')
+                #basefolder=sys.prefix
+            else:
+                basefolder='/etc/harvestman'
+                self.etcdir=basefolder
             #print os.path.split(os.path.dirname(__main__.__file__))[0]
             #basefolder=os.path.split(os.path.dirname(__main__.__file__))[0]
             #print os.path.join(basefolder, 'etc', 'harvestman', 'config.xml')
-            if sys.prefix=='/usr':
-                basefolder='/'
-            else:
-                basefolder=sys.prefix
-            self.etcdir=os.path.join(basefolder, 'etc', 'harvestman')
-            #self.etcdir = '/etc/harvestman'
         elif os.name == 'nt':
             self.etcdir = os.path.join(os.environ.get("ALLUSERSPROFILE"),
                                        "Application Data", "HarvestMan", "conf")

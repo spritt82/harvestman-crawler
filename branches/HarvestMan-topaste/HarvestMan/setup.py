@@ -59,7 +59,10 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       """,
       )
 
-print os.path
+#Create config.xml
+#print sys.prefix
+#if sys.prefix!='/usr':
+#    pass
 
 from harvestman.lib.config import HarvestManStateObject
 cfg = HarvestManStateObject()
