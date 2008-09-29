@@ -44,7 +44,6 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       #           ],
       #Package_data is for none-py files
       package_data = {'harvestman' : ['ui/templates/*.html', 'ui/templates/content/*']},
-      include_package_data=True,
       zip_safe=False,
       install_requires=[
       "sgmlop >= 1.1.1",
