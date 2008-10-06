@@ -38,7 +38,7 @@ Initialize the instance. (This has to be done explicitly when running the crawle
 }}}
 
 Now, get the configuration of the crawler. This is done by the "get_config" method.
-(The config object is an instance of _harvestman.lib.config.HarvestManStateObject_).
+(The config object is an instance of _harvestman.lib.config.HarvestManStateObject).
 {{{
 >>> cfg = spider.get_config()
 >>> type(cfg)
