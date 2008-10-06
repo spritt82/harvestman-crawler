@@ -1,0 +1,18 @@
+#labels Featured,Phase-Deploy
+=World's Simplest Crawler=
+
+==Crawling the web from Python interpreter prompt using HarvestMan==
+
+Once you install HarvestMan, it is very easy to do a quick crawl
+of a web-site or URL from the Python interpreter prompt. This page
+explains how.
+
+First start up Python.
+
+{{{[anand@localhost ~]$ python
+Python 2.5.1 (r251:54863, Jul 17 2008, 13:21:31) 
+[GCC 4.3.1 20080708 (Red Hat 4.3.1-4)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+}}} 
+
