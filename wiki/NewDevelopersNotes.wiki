@@ -1,4 +1,13 @@
 #summary Notes about file structure and logic flow for particular file
 #labels Phase-Design,Phase-Implementation
 
+== Standards ==
+ *When adding modifying code make sure you use the base imports
+{{{
+[good]from harvestman.lib import *
+[good]from harvestman.lib import xyz
+[good]from hasvestman.lib.common import *
+[bad]import xyz
+[bad]import *
+}}}
 == files ==
