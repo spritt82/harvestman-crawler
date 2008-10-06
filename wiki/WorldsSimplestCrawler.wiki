@@ -169,5 +169,8 @@ Watch this space. More cool tutorials are coming on custom crawling the web with
 HarvestMan!
 
 
+*NOTE: This works only with the most recent trunk code, since the code
+referencing the application classes have changed in the last few days*
+
 ----
 _Please send your feedbacks regarding this tutorial to the project owner(s)_.
