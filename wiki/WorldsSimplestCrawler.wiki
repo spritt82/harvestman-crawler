@@ -1,4 +1,6 @@
+#summary Crawl a website from python interactive prompt in 6 lines of code
 #labels Featured,Phase-Deploy
+
 ==World's Simplest Crawler - Crawling the Web from Python prompt with HarvestMan==
 
 Once you install HarvestMan, it is very easy to do a quick crawl
