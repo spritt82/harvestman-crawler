@@ -1,7 +1,5 @@
 #labels Featured,Phase-Deploy
-=World's Simplest Crawler=
-
-==Crawling the web from the Python prompt using HarvestMan==
+==World's Simplest Crawler - Crawling the web from the Python prompt using HarvestMan==
 
 Once you install HarvestMan, it is very easy to do a quick crawl
 of a web-site or URL from the Python interpreter prompt. This page
