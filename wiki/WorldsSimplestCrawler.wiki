@@ -110,7 +110,64 @@ Ain't that cool. So summarizing the steps, the world's simplest (and coolest!) c
 
 That is about 6 lines of code excluding the import line. Guess it does not get simpler than that ;)
 
+Now, what if you want to re-crawl the same site. Ok, let us try the 
+same crawl again.
+
+{{{
+>>> spider.main()
+[]
+Starting HarvestMan 2.0 alpha 1... 
+Copyright (C) 2004, Anand B Pillai 
+  
+[17:38:37] *** Log Started ***
+ 
+Traceback (most recent call last):
+  File "/usr/lib64/python2.5/logging/__init__.py", line 750, in emit
+    self.stream.write(fs % msg)
+ValueError: I/O operation on closed file
+[17:38:37] Starting project pytut ...
+Traceback (most recent call last):
+  File "/usr/lib64/python2.5/logging/__init__.py", line 750, in emit
+    self.stream.write(fs % msg)
+ValueError: I/O operation on closed file
+...
+}}}
+
+Oops, something has gone wrong!
+
+The problem is that the crawler state has to be reset, before you attempt to recrawl again using the same instance of the crawler. This is automatically done if you run the
+program non-interactively, but in the interactive prompt, this has to be done manually.
+
+But there is no problem, since it just boils down to a single line of code...!
+
+{{{
+>>> spider.reset()   
+}}}
+
+That is it! This resets the state, so now you can crawl to your heart's content :)
+
+Let us crawl again...
+
+{{{
+>>> spider.main()
+[]
+Starting HarvestMan 2.0 alpha 1... 
+Copyright (C) 2004, Anand B Pillai 
+  
+[17:41:01] *** Log Started ***
+ 
+[17:41:01] Starting project pytut ...
+[17:41:01] Writing Project Files... 
+[17:41:01] Starting download of url http://docs.python.org/tutorial/index.html ...
+[17:41:01] Reading Project Cache... 
+[17:41:01] Downloading file for url http://docs.python.org/tutorial/index.html
+...
+}}}
+
+
+Watch this space. More cool tutorials are coming on custom crawling the web with
+HarvestMan!
+
 
 ----
-Please send your feedbacks regarding this tutorial to the project owner(s).
-
+_Please send your feedbacks regarding this tutorial to the project owner(s)_.
