@@ -28,5 +28,5 @@ dist/HarvestMan-2.0.2dev_r107-py2.4.egg
 easy_install HarvestMan-2.0.2dev_r107-py2.4.egg
 }}}
 
-== Making win32 package
+== Making win32 package ==
  *Environment:Windows XP SP2 running Python 2.5.2, py2exe 0.6.8 
