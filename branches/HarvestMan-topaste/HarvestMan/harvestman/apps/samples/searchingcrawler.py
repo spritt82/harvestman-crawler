@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-datacrawler.py - Demonstrating custom crawler writing by
+searchingcrawler.py - Demonstrating custom crawler writing by
 subscribing to events. This is a crawler which downloads
 and crawls only pages which mention a certain keyword.
 
@@ -13,7 +13,7 @@ Copyright (C) 2008 Anand B Pillai
 import sys
 import re
 import __init__
-from apps.harvestmanimp import HarvestMan
+from harvestman.apps.spider import HarvestMan
 
 class SearchingCrawler(HarvestMan):
     """ A crawler which fetches pages by searching for specific data

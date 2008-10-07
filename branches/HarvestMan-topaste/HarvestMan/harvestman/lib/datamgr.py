@@ -107,30 +107,35 @@ class HarvestManDataManager(object):
         # has only one entry.
         # i.e accept-ranges.
         self._serversdict = {}
-        # URL database, a BST with disk-caching
-        self._urldb = BST()
-        self._urldb.set_auto(2)
-        # Collections database, a BST with disk-caching        
-        self.collections = BST()
-        self.collections.set_auto(2)
         # byte count
         self.bytes = 0L
+        # saved bytes count
+        self.savedbytes = 0L        
         # Redownload flag
         self._redownload = False
         # Mirror manager
         self.mirrormgr = HarvestManMirrorManager.getInstance()
         # Condition object for synchronization
         self.cond = threading.Condition(threading.Lock())        
-        
+        self._urldb = None
+        self.collections = None
+
     def initialize(self):
         """ Do initializations per project """
 
         # Url thread group class for multithreaded downloads
-        if self._cfg.usethreads and self._cfg.fastmode:
+        if self._cfg.usethreads:
             self._urlThreadPool = HarvestManUrlThreadPool()
             self._urlThreadPool.spawn_threads()
         else:
             self._urlThreadPool = None
+
+        # URL database, a BST with disk-caching
+        self._urldb = BST()
+        # Collections database, a BST with disk-caching        
+        self.collections = BST()
+        self._urldb.set_auto(2)
+        self.collections.set_auto(2)
 
         # Load any mirrors
         self.mirrormgr.load_mirrors(self._cfg.mirrorfile)
@@ -215,7 +220,7 @@ class HarvestManDataManager(object):
         """ Try to read the project cache file """
 
         # Get cache filename
-        moreinfo('Reading Project Cache...')
+        info('Reading Project Cache...')
         cachereader = utils.HarvestManCacheReaderWriter(self.get_proj_cache_directory())
         obj, found = cachereader.read_project_cache()
         self._cfg.cachefound = found
@@ -259,8 +264,7 @@ class HarvestManDataManager(object):
                             f.close()
                             ret = True
                     except (IOError, zlib.error), e:
-                        moreinfo("Error:",e)
-                        debug('IO Exception', e)
+                        error("Error:",e)
                                 
         return ret
 
@@ -282,8 +286,8 @@ class HarvestManDataManager(object):
         content = self.cache._url[url]
         if content:
             rec = content[0]
-            self.cache.update(rec, checksum=csum, location=filename,content_length=contentlen, last_modified=lastmodified,
-                              etag=tag, updated=True)
+            self.cache.update(rec, checksum=csum, location=filename,content_length=contentlen, 
+                              last_modified=lastmodified,etag=tag, updated=True)
             if self._cfg.datacache:
                 self.cache.update(rec,data=zlib.compress(urldata))
         else:
@@ -319,7 +323,7 @@ class HarvestManDataManager(object):
                 try:
                     return zlib.decompress(data)
                 except zlib.error, e:
-                    extrainfo('Error:',e)
+                    error('Error:',e)
                     return ''
 
         return ''
@@ -466,16 +470,16 @@ class HarvestManDataManager(object):
         # print 'BROKEN=>', nbroken
         
         if self._cfg.retryfailed:
-            moreinfo(' ')
+            info(' ')
 
             # try downloading again
             if self._numfailed:
-                moreinfo('Redownloading failed links...',)
+                info('Redownloading failed links...',)
                 self._redownload=True
                 
                 for urlobj in failed:
                     if urlobj.fatal or urlobj.starturl: continue
-                    moreinfo('Re-downloading',urlobj.get_full_url())
+                    extrainfo('Re-downloading',urlobj.get_full_url())
                     self._numretried += 1
                     self.thread_download(urlobj)
                     
@@ -521,7 +525,7 @@ class HarvestManDataManager(object):
             
         # dump url tree (dependency tree) to a file
         if self._cfg.urltreefile:
-            self.dump_urltree(self._cfg.urltreefile)
+            self.dump_urltree()
 
         if not self._cfg.project: return
 
@@ -537,7 +541,7 @@ class HarvestManDataManager(object):
 
         numretried = self._numretried
         
-        fetchtime = float((math.modf((self._cfg.endtime-self._cfg.starttime)*100.0)[1])/100.0)
+        fetchtime = self._cfg.endtime-self._cfg.starttime
         
         statsd = { 'links' : nlinks,
                    'filtered': nfiltered,
@@ -568,6 +572,11 @@ class HarvestManDataManager(object):
         """ Update the global byte count """
 
         self.bytes += count
+
+    def update_saved_bytes(self, count):
+        """ Update the saved byte count """
+
+        self.savedbytes += count        
 
     def update_file_stats(self, urlObject, status):
         """ Add the passed information to the saved file list """
@@ -664,8 +673,9 @@ class HarvestManDataManager(object):
                 os.makedirs( directory )
                 extrainfo("Created => ", directory)
             return CREATE_DIRECTORY_OK
-        except OSError:
-            moreinfo("Error in creating directory", directory)
+        except OSError, e:
+            error("Error in creating directory", directory)
+            error(str(e))
             return CREATE_DIRECTORY_NOT_OK
 
         return CREATE_DIRECTORY_OK
@@ -678,7 +688,24 @@ class HarvestManDataManager(object):
         # dictionary, if not there
         domain = urlobj.get_full_domain()
         orig_url = urlobj.get_full_url()
+        old_urlobj = urlobj.get_original_state()
+
+        domain_changed_a_lot = False
         
+        # If this was a re-directed URL, check if there is a
+        # considerable change in the domains. If there is,
+        # there is a very good chance that the original URL
+        # is redirecting to mirrors, so we can split on
+        # the original URL and this would automatically
+        # produce a split-mirror download without us having
+        # to do any extra work!
+        if urlobj.redirected and old_urlobj != None:
+            old_domain = old_urlobj.get_domain()
+            if old_domain != domain:
+                # Check if it is somewhat similar
+                # if domain.find(old_domain) == -1:
+                domain_changed_a_lot = True
+
         try:
             self._serversdict[domain]
         except KeyError:
@@ -686,7 +713,12 @@ class HarvestManDataManager(object):
 
         if self.mirrormgr.mirrors_available(urlobj):
             return self.mirrormgr.download_multipart_url(urlobj, clength, self._cfg.numparts, self._urlThreadPool)
-        
+        else:
+            if domain_changed_a_lot:
+                urlobj = old_urlobj
+                # Set a flag to indicate this
+                urlobj.redirected_old = True
+                
         parts = self._cfg.numparts
         # Calculate size of each piece
         piecesz = clength/parts
@@ -698,7 +730,7 @@ class HarvestManDataManager(object):
         # Create a URL object for each and set range
         urlobjects = []
         for x in range(parts):
-            urlobjects.append(copy.deepcopy(urlobj))
+            urlobjects.append(copy.copy(urlobj))
 
         prev = 0
         for x in range(parts):
@@ -739,11 +771,17 @@ class HarvestManDataManager(object):
             if res != CONNECT_NO_ERROR:
                 filename = url.get_full_filename()
 
-                if res==DOWNLOAD_YES_OK:
-                    moreinfo("Saved to",filename)
-
                 self.update_file_stats( url, res )
-                data = conn.get_data()
+
+                if res==DOWNLOAD_YES_OK:
+                    info("Saved to",filename)
+
+                if url.is_webpage():
+                    if self._cfg.datamode==CONNECTOR_DATA_MODE_INMEM: 
+                        data = conn.get_data()
+                    elif os.path.isfile(filename):
+                        # Need to read data from the file...
+                        data = open(filename, 'rb').read()
 
             else:
                 fetchurl = url.get_full_url()
@@ -752,10 +790,8 @@ class HarvestManDataManager(object):
             self._urldb.update(url.index, url)
             
         else:
-            # debug("Scheduling %s for thread download: %s..." % (urlobj.get_full_url(), caller))
             # Set status to queued
             self.thread_download( url )
-            # debug("Scheduled %s for thread download: %s" % (urlobj.get_full_url(), caller))
 
         return data
 
@@ -764,26 +800,11 @@ class HarvestManDataManager(object):
         lists, dictionaries and resetting other member items"""
 
         # Reset byte count
-        self.bytes = 0L
-        #try:
-        #if 1:
-            ## moreinfo("Stats for urldb BST...")
-##             moreinfo("Size left=>", self._urldb.size_lhs())
-##             moreinfo("Size right=>", self._urldb.size_rhs())        
-##             moreinfo('BST stats=>',self._urldb.stats())
-##             moreinfo("BST diskcache stats=>",self._urldb.diskcache.get_stats())
-##             moreinfo("Stats for collections BST...")
-##             moreinfo("Size left=>", self.collections.size_lhs())
-##             moreinfo("Size right=>", self.collections.size_rhs())        
-##             moreinfo('BST stats=>',self.collections.stats())        
-##             moreinfo("BST diskcache stats=>",self.collections.diskcache.get_stats())        
-        self._urldb.clear()
-        self.collections.clear()
+        if self._urldb and self._urldb.size:
+            del self._urldb
+        if self.collections and self.collections.size:
+            del self.collections
         self.reset()
-        #except TypeError:
-        #    pass
-        #except Exception:
-        #    pass
 
     def archive_project(self):
         """ Archive project files into a tar archive file.
@@ -799,7 +820,7 @@ class HarvestManDataManager(object):
         elif self._cfg.archformat=='gzip':
             format='gz'
         else:
-            extrainfo("Archive Error: Archive format not recognized")
+            error("Archive Error: Archive format not recognized")
             return INVALID_ARCHIVE_FORMAT
 
         # Create tarfile name
@@ -830,7 +851,7 @@ class HarvestManDataManager(object):
             extrainfo("Wrote archive file",ptarf)
             return FILE_WRITE_OK
         else:
-            extrainfo("Error in writing archive file",ptarf)
+            error("Error in writing archive file",ptarf)
             return FILE_WRITE_ERROR
             
     def add_headers_to_cache(self):
@@ -901,12 +922,12 @@ class HarvestManDataManager(object):
             filename = sourceurl.get_full_filename()
 
             if (not filename in localized) and os.path.exists(filename):
-                info('Localizing links for',filename)
+                extrainfo('Localizing links for',filename)
                 if SUCCESS(self.localise_file_links(filename, childurls)):
                     count += 1
                     localized.append(filename)
 
-        extrainfo('Localised links of',count,'web pages.')
+        info('Localised links of',count,'web pages.')
 
     def localise_file_links(self, filename, links):
         """ Localise links for this file """
@@ -957,8 +978,6 @@ class HarvestManDataManager(object):
                     continue
                 
                 fullfilename = os.path.abspath( url_object.get_full_filename() )
-                #extrainfo('Url=>',url_object.get_full_url())
-                #extrainfo('Full filename=>',fullfilename)
                 urlfilename=''
 
                 # Modification: localisation w.r.t relative pathnames
@@ -1001,16 +1020,15 @@ class HarvestManDataManager(object):
                 try:
                     oldurlre = re.compile("".join((http_str,'=','\\"?',v,'\\"?')))
                 except Exception, e:
-                    debug(str(e))
+                    debug("Error:",str(e))
                     continue
                     
                 # Get the location of the link in the file
                 try:
                     if oldurl != newurl:
-                        # info('Replacing %s with %s...' % (oldurl, newurl))
                         data = re.sub(oldurlre, newurl, data,1)
                 except Exception, e:
-                    debug(str(e))
+                    debug("Error:",str(e))
                     continue
             else:
                 try:
@@ -1018,7 +1036,7 @@ class HarvestManDataManager(object):
                     oldurlre2 = "".join(('href','=','\\"?',v,'\\"?'))
                     oldurlre = re.compile("".join(('(',oldurlre1,'|',oldurlre2,')')))
                 except Exception, e:
-                    debug(str(e))
+                    debug("Error:",str(e))
                     continue
                 
                 http_strs=('href','src')
@@ -1027,7 +1045,6 @@ class HarvestManDataManager(object):
                     try:
                         oldurl = "".join((item, "=\"", v, "\""))
                         if oldurl != newurl:
-                            info('Replacing %s with %s...' % (oldurl, newurl))                            
                             data = re.sub(oldurlre, newurl, data,1)
                     except:
                         pass
@@ -1069,23 +1086,20 @@ class HarvestManDataManager(object):
         fns = map(plural, strings)
         info(' ')
 
-        if fetchtime and nfiles:
-            fps = (float(nfiles/dnldtime))
-            fps = float((math.modf(fps*100.0))[1]/100.0)
-        else:
-            fps=0.0
-
         bytes = self.bytes
-
+        savedbytes = self.savedbytes
+        
         ratespec='KB/sec'
         if bytes and dnldtime:
-            bps = (float(bytes/dnldtime))/100.0
-            bps = float((math.modf(bps*100.0))[1]/1000.0)
+            bps = float(bytes/dnldtime)/1024.0
             if bps<1.0:
                 bps *= 1000.0
                 ratespec='bytes/sec'
+            bps = '%.2f' % bps
         else:
-            bps = 0.0
+            bps = '0.0'
+
+        fetchtime = float((math.modf(fetchtime*100.0)[1])/100.0)
 
         if self._cfg.simulate:
             info("HarvestMan crawl simulation of",self._cfg.project,"completed in",fetchtime,"seconds.")
@@ -1104,7 +1118,9 @@ class HarvestManDataManager(object):
 
         if nbroken: info(nbroken,fns[9],wasOrWere(nbroken),'were broken.')
         if fatal: info(fatal,fns[5],'had fatal errors and failed to download.')
-        if bytes: info(bytes,' bytes received at the rate of',bps,ratespec,'.\n')
+        if bytes: info(bytes,' bytes received at the rate of',bps,ratespec,'.')
+        if savedbytes: info(savedbytes,' bytes were written to disk.\n')
+        
         info('*** Log Completed ***\n')
         
         # get current time stamp
@@ -1146,25 +1162,25 @@ class HarvestManDataManager(object):
             #sf.write(infostr)
             #sf.close()
 
-    def dump_urltree(self, urlfile):
+    def dump_urltree(self):
         """ Dump url tree to a file """
 
-        # This function provides a little
-        # more functionality than the plain
-        # dump_urls in the rules module.
         # This creats an html file with
         # each url and its children below
         # it. Each url is a hyperlink to
         # itself on the net if the file
         # is an html file.
 
+        # urltreefile is <projdir>/urls.html
+        urlfile = os.path.join(self._cfg.projdir, 'urltree.html')
+        
         try:
             if os.path.exists(urlfile):
                 os.remove(urlfile)
         except OSError, e:
             logconsole(e)
 
-        moreinfo('Dumping url tree to file', urlfile)
+        info('Dumping url tree to file', urlfile)
         fextn = ((os.path.splitext(urlfile))[1]).lower()        
         
         try:
@@ -1285,7 +1301,7 @@ class HarvestManController(threading.Thread):
         self._tq =  objects.queuemgr
         self._cfg = objects.config
         self._exitflag = False
-        self._conn = {}
+        self._starttime = 0
         threading.Thread.__init__(self, None, None, 'HarvestMan Control Class')
 
     def run(self):
@@ -1293,15 +1309,18 @@ class HarvestManController(threading.Thread):
         exceptional conditions """
 
         while not self._exitflag:
-            # Wake up every second and look
+            # Wake up every half second and look
             # for exceptional conditions
             time.sleep(1.0)
             if self._cfg.timelimit != -1:
-                self._manage_time_limits()
+                if self._manage_time_limits()==CONTROLLER_EXIT:
+                    break
             if self._cfg.maxfiles:
-                self._manage_file_limits()
+                if self._manage_file_limits()==CONTROLLER_EXIT:
+                    break
             if self._cfg.maxbytes:
-                self._manage_maxbytes_limits()
+                if self._manage_maxbytes_limits()==CONTROLLER_EXIT:
+                    break
             
     def stop(self):
         """ Stop this thread """
@@ -1313,8 +1332,8 @@ class HarvestManController(threading.Thread):
         in case of an exceptional condition """
 
         # This somehow got deleted in HarvestMan 1.4.5
-        self._tq.endloop()
-        
+        self._tq.endloop(True)
+
     def _manage_time_limits(self):
         """ Manage limits on time for the project """
 
@@ -1324,9 +1343,10 @@ class HarvestManController(threading.Thread):
         timemax = self._cfg.timelimit
         
         if timediff >= timemax -1:
-            moreinfo('Specified time limit of',timemax ,'seconds reached!')            
+            info('Specified time limit of',timemax ,'seconds reached!')            
             self.terminator()
-
+            return CONTROLLER_EXIT
+        
         return HARVESTMAN_OK
 
     def _manage_file_limits(self):
@@ -1335,28 +1355,25 @@ class HarvestManController(threading.Thread):
         lsaved = self._dmgr.savedfiles
         lmax = self._cfg.maxfiles
 
-        if lsaved < lmax:
-            return HARVESTMAN_FAIL
-        
-        else:
-            moreinfo('Specified file limit of',lmax ,'reached!')
+        if lsaved >= lmax:
+            info('Specified file limit of',lmax ,'reached!')
             self.terminator()
-            
+            return CONTROLLER_EXIT
+        
         return HARVESTMAN_OK
 
     def _manage_maxbytes_limits(self):
         """ Manage limits on maximum bytes a crawler should download in total per job. """
 
-        lsaved = self._dmgr.bytes
+        lsaved = self._dmgr.savedbytes
         lmax = self._cfg.maxbytes
 
-        if lsaved < lmax:
-            return HARVESTMAN_FAIL
-
-        else:
-            moreinfo('Specified maxbytes limit of',lmax ,'reached!')
+        # Let us check for a closer hit of 90%...
+        if (lsaved >=0.90*lmax):
+            info('Specified maxbytes limit of',lmax ,'reached!')
             self.terminator()   
-
+            return CONTROLLER_EXIT
+        
         return HARVESTMAN_OK
         
                     

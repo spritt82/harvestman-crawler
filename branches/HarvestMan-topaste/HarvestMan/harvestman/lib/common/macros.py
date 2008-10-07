@@ -32,6 +32,8 @@ class HarvestManMacroVariable(type):
         cls.macrodict[name] = item
         return item
 
+    def __init__(cls, name, bases=(), dct={}):
+	pass
     def __str__(self):
         return '%d' % (self.index)
 
@@ -175,6 +177,8 @@ DEFINE_ERROR_MACRO("HGET_KEYBOARD_INTERRUPT")
 DEFINE_ERROR_MACRO("HGET_DOWNLOAD_ERROR")
 DEFINE_ERROR_MACRO("MIRRORS_NOT_FOUND")
 DEFINE_ERROR_MACRO("WRITE_URL_FILTERED")
+DEFINE_ERROR_MACRO("WRITE_URL_BLOCKED")
+DEFINE_ERROR_MACRO("CONTROLLER_EXIT")
 
 if __name__ == "__main__":
     for key, val in HarvestManMacroVariable.macrodict.iteritems():

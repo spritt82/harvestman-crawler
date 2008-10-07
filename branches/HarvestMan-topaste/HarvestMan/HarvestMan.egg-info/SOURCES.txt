@@ -8,6 +8,7 @@ pydocgen.sh
 setup.cfg
 setup.py
 setup.py.org
+setup_paste.py
 tarhm.py
 HarvestMan.egg-info/PKG-INFO
 HarvestMan.egg-info/SOURCES.txt
@@ -35,8 +36,8 @@ harvestman/apps/config-sample.xml
 harvestman/apps/config-template.xml
 harvestman/apps/config.xml
 harvestman/apps/harvestman_run.py
-harvestman/apps/harvestmanimp.py
 harvestman/apps/hget.py
+harvestman/apps/spider.py
 harvestman/apps/samples/Readme.txt
 harvestman/apps/samples/__init__.py
 harvestman/apps/samples/blogger.py
@@ -79,15 +80,19 @@ harvestman/lib/datamgr.py
 harvestman/lib/db.py
 harvestman/lib/document.py
 harvestman/lib/event.py
+harvestman/lib/filters.py
 harvestman/lib/gui.py
 harvestman/lib/hooks.py
 harvestman/lib/logger.py
+harvestman/lib/logger_old.py
 harvestman/lib/methodwrapper.py
 harvestman/lib/mirrors.py
 harvestman/lib/options.py
 harvestman/lib/pageparser.py
 harvestman/lib/robotparser.py
 harvestman/lib/rules.py
+harvestman/lib/test.html
+harvestman/lib/test_urlparser.py
 harvestman/lib/urlcollections.py
 harvestman/lib/urlparser.py
 harvestman/lib/urlproc.py
@@ -100,6 +105,7 @@ harvestman/lib/common/bst.py
 harvestman/lib/common/bst_orig.py
 harvestman/lib/common/common.py
 harvestman/lib/common/dictcache.py
+harvestman/lib/common/feedparser.py
 harvestman/lib/common/keepalive.py
 harvestman/lib/common/lrucache.py
 harvestman/lib/common/macros.py

@@ -13,8 +13,9 @@ Copyright (C) 2008 Anand B Pillai
 import __init__
 import sys, os
 import PyLucene
-from apps.harvestmanimp import HarvestMan
-from lib.common.common import *
+
+from harvestman.apps.spider import HarvestMan
+from harvestman.lib.common.common import *
 from types import StringTypes
 
 # You can write pretty crazy custom crawlers by combining
@@ -31,7 +32,7 @@ class IndexingCrawler(HarvestMan):
     def create_index(self):
         """ Post download setup callback for creating a lucene index """
 
-        moreinfo("Creating lucene index")
+        info("Creating lucene index")
 
         count = 0
 
@@ -67,7 +68,7 @@ class IndexingCrawler(HarvestMan):
 
             data = ''
 
-            moreinfo('Adding index for URL',url)
+            extrainfo('Adding index for URL',url)
 
             try:
                 data = unicode(open(filename).read(), 'iso-8859-1')
@@ -87,7 +88,7 @@ class IndexingCrawler(HarvestMan):
                                            PyLucene.Field.Store.YES,
                                            PyLucene.Field.Index.TOKENIZED))
                 else:
-                    extrainfo("warning: no content in %s" % filename)
+                    warning("warning: no content in %s" % filename)
 
                 lucene_writer.addDocument(doc)
             except PyLucene.JavaError, e:
@@ -96,8 +97,8 @@ class IndexingCrawler(HarvestMan):
             
             count += 1
 
-        moreinfo('Created lucene index for %d documents' % count)
-        moreinfo('Optimizing lucene index')
+        info('Created lucene index for %d documents' % count)
+        info('Optimizing lucene index')
         lucene_writer.optimize()
         lucene_writer.close()
     

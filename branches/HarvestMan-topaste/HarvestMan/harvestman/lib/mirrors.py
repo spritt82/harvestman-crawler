@@ -196,7 +196,7 @@ class HarvestManMirrorSearch(object):
 
     def search_findfiles(self, filename):
 
-        print 'Searching site http://www.findfiles.com for mirror URLs...'
+        print 'Searching http://www.findfiles.com for mirrors of file %s...' % filename
 
         # Note: this grammar could change if the site changes its templates        
         content1 = Literal("<h1") + SkipTo(Literal("Advanced Search"))
@@ -337,6 +337,7 @@ class HarvestManMirrorManager(Singleton):
     
     def mirrors_available(self, urlobj):
         return (is_sourceforge_url(urlobj) or len(self.filemirrors) or self.mirrorsearch)
+        # return len(self.filemirrors) or (self.mirrorsearch)    
     
     def search_for_mirrors(self, urlobj, find_new = True):
 
@@ -345,10 +346,12 @@ class HarvestManMirrorManager(Singleton):
         
         if self.searcher.can_search():
             mirror_urls = self.searcher.search(urlobj)
-        
+            
             if mirror_urls:
                 print '%d mirror URLs found, queuing them for multipart downloads...' % len(mirror_urls)
                 return mirror_urls
+            else:
+                return []
         else:
             print 'Cannot search for new mirrors'
             return []
@@ -459,7 +462,7 @@ class HarvestManMirrorManager(Singleton):
         # print 'New mirrors=>',newmirrors
 
         if newmirrors:
-            moreinfo("Returning from new mirror list...")
+            extrainfo("Returning from new mirror list...")
             # Get a random one out of it...
             new_mirror = newmirrors[0]
             # Remove the old mirror and replace it with new mirror in
@@ -469,7 +472,7 @@ class HarvestManMirrorManager(Singleton):
             self.used_mirrors.append(new_mirror)
 
         elif len(self.mirrors_to_retry)>1:
-            moreinfo("Returning from mirrors_to_retry...")        
+            extrainfo("Returning from mirrors_to_retry...")        
             # We don't want to go back to same mirror!
             new_mirror = self.mirrors_to_retry.pop(0)
             self.current_mirrors.remove(mirror_url)

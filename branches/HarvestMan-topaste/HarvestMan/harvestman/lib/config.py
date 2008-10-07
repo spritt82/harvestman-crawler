@@ -38,6 +38,7 @@
    Copyright (C) 2004 Anand B Pillai.                              
 
 """
+
 __version__ = '2.0 b1'
 __author__ = 'Anand B Pillai'
 
@@ -66,8 +67,9 @@ import re
 import configparser
 import options
 import urlparser
-import __main__
+import logger
 
+# Current dir - okay
 from common.optionparser import *
 from common.macros import *
 from common.common import hexit, test_sgmlop, logconsole, objects
@@ -132,8 +134,8 @@ CONFIG_XML_TEMPLATE="""\
         <maxfiles value="%(maxfiles)s" />
         <maxfilesize value="%(maxfilesize)s" />
         <maxbytes value="%(maxbytes)s" />
-        <connections value="%(connections)s" />
-        <bandwidth value="%(bandwidthlimit)s" />
+        <maxconnections value="%(connections)s" />
+        <maxbandwidth value="%(bandwidthlimit)s" factor="%(throttlefactor)s" />
         <timelimit value="%(timelimit)s" />
       </limits>
       <rules>
@@ -175,13 +177,15 @@ CONFIG_XML_TEMPLATE="""\
     </parser>
       
     <system>
+      <useragent value="%(USER_AGENT)s" />
       <workers status="%(usethreads)s" size="%(threadpoolsize)s" timeout="%(timeout)s" />
       <trackers value="%(maxtrackers)s" timeout="%(fetchertimeout)s" />
       <timegap value="%(sleeptime)s" random="%(randomsleep)s" />
+      <connections type="%(datamodename)s" />
     </system>
     
     <files>
-      <urltreefile>%(urltreefile)s</urltreefile>
+      <urltreefile status="%(urltreefile)s" />
       <archive status="%(archive)s" format="%(archformat)s" />
       <urlheaders status="%(urlheaders)s" />
       <localise value="%(localise)s" />
@@ -200,6 +204,7 @@ param_re = re.compile(r'\S+=\S+',re.LOCALE|re.UNICODE)
 int_re = re.compile(r'\d+')
 float_re = re.compile(r'\d+\.\d*')
 maxbytes_re = re.compile(r'(\d+\s*)(kb?|mb?|gb?)?$', re.IGNORECASE)
+maxbw_re = re.compile(r'(\d+\s*)(k(b|bps)?|m(b|bps)?|g(b|bps)?)?$', re.IGNORECASE)
 
 # This will contain the absolute path of parent-folder of
 # harvestman installation...
@@ -221,7 +226,7 @@ class HarvestManStateObject(dict, Singleton):
         mydir = os.path.dirname(globals()["__file__"])
         global module_path
         module_path = os.path.dirname(mydir)
-        print 'module_path',module_path
+            
         self._init1()
         self._init2()
         self.set_system_params()
@@ -233,13 +238,13 @@ class HarvestManStateObject(dict, Singleton):
         
         self.items_to_skip=[]
         # USER-AGENT string
-        self.USER_AGENT = ''
         # Version for harvestman
         self.version='2.0'
         # Maturity for harvestman
         self.maturity="alpha 1"
         # Single appname property for hget/harvestman
         self.appname='HarvestMan'
+        self.USER_AGENT = 'v'.join((self.appname + ' ', self.version))
         self.progname="".join((self.appname," ",self.version," ",self.maturity))
         self.program = sys.argv[0]
         self.url=''
@@ -281,21 +286,27 @@ class HarvestManStateObject(dict, Singleton):
         self.retryfailed=1
         self.extdepth=0
         self.maxtrackers=4
-        self.urlfilter=''
+        # Url filter object
+        self.urlfilter = None
+        # To prevent config from breaking...
+        self.serverfilter=''
         self.wordfilter=''
+        self.regexurlfilters = []
+        self.pathurlfilters = []
+        self.extnurlfilters = []
+        # Text filter object
+        self.textfilter = None
+        self.contentfilters = []
+        self.metafilters = []
         self.inclfilter=[]
         self.exclfilter=[]
         self.allfilters=[]
-        self.serverfilter=''
-        self.serverinclfilter=[]
-        self.serverexclfilter=[]
-        self.allserverfilters=[]
         self.urlpriority = ''
         self.serverpriority = ''
         self.urlprioritydict = {}
         self.serverprioritydict = {}
-        self.verbosity=2
-        self.verbosity_default=2
+        self.verbosity=logger.INFO
+        self.verbosity_default=logger.INFO
         # timeout for worker threads is a rather
         # large 5 minutes.
         self.timeout=300.00
@@ -324,10 +335,10 @@ class HarvestManStateObject(dict, Singleton):
         self.connections=5
         # Bandwidth limit, 0 means no limit
         self.bandwidthlimit = 0
+        self.throttlefactor = 1.5
         self.cachefileformat='pickled' 
         self.testing = 0
         self.testnocrawl = 0
-        self.nocrawl = 0
         self.ignoreinterrupts = 0
         # Set to true when a kb interrupt is caught
         self.keyboardinterrupt = 0
@@ -351,7 +362,7 @@ class HarvestManStateObject(dict, Singleton):
         self.junkfilter = 1
         self.junkfilterdomains = 1
         self.junkfilterpatterns = 1
-        self.urltreefile = ''
+        self.urltreefile = 0
         self.urlfile = ''
         self.maxfilesize=5242880
         self.minfilesize=0
@@ -403,11 +414,15 @@ class HarvestManStateObject(dict, Singleton):
         # Cache size for 
         # Current progress object
         self.progressobj = TextProgress()
+        # Internal flag - show progress obj ?
+        self.showprogress = True
         # Flag for forcing multipart downloads
         self.forcesplit = 0
         # Data save mode for connectors
-        # Is in-mem by default
-        self.datamode = CONNECTOR_DATA_MODE_INMEM
+        # Is flush by default
+        self.datamode = CONNECTOR_DATA_MODE_FLUSH
+        # Name for data mode
+        self.datamodename = "flush"
         # Hget outfile - default empty string
         self.hgetoutfile = ''
         # Hget output directory - default current directory
@@ -441,7 +456,7 @@ class HarvestManStateObject(dict, Singleton):
                          'url' : ('url', 'func:set_project'),
                          'name': ('project', 'func:set_project'),
                          'basedir' : ('basedir', 'func:set_project'),
-                         'verbosity_value' : ('verbosity', 'func:set_project'),
+                         'verbosity_level' : ('verbosity', 'func:set_project'),
 
                          'proxyserver': ('proxy','str'),
                          'proxyuser': ('puser','str'),
@@ -451,9 +466,6 @@ class HarvestManStateObject(dict, Singleton):
                          'username': ('username','str'),
                          'passwd' : ('passwd','str'),
                          
-                         'urlhost' : ('urlhost','str'),
-                         'urlport_value' : ('urlport','int'),
-
                          'html_value' : ('html','int'),
                          'images_value' : ('images','int'),
                          'movies_value' : ('movies','int'),
@@ -468,7 +480,7 @@ class HarvestManStateObject(dict, Singleton):
                          'datacache_value' : ('datacache','int'),
 
                          'urllist': ('urlfile', 'str'),
-                         'urltreefile' : ('urltreefile', 'str'),
+                         'urltreefile_status' : ('urltreefile', 'int'),
                          'archive_status' : ('archive', 'int'),
                          'archive_format' : ('archformat', 'str'),
                          'urlheaders_status' : ('urlheaders', 'int'),
@@ -489,16 +501,17 @@ class HarvestManStateObject(dict, Singleton):
                          'maxfiles_value' : ('maxfiles','int'),
                          'maxfilesize_value' : ('maxfilesize','int'),
                          'maxbytes_value' : ('maxbytes', 'func:set_maxbytes'),
-                         'connections_value' : ('connections','int'),
-                         'maxbandwidth_value' : ('bandwidthlimit','float'),                         
+                         'maxconnections_value' : ('connections','int'),
+                         'maxbandwidth_value' : ('bandwidthlimit','func:set_maxbandwidth'),
+                         'maxbandwidth_factor': ('throttlefactor','float'),
                          'robots_value' : ('robots','int'),
                          'timelimit_value' : ('timelimit','float'),
                          'urlpriority' : ('urlpriority','str'),
                          'serverpriority' : ('serverpriority','str'),
-                         'urlfilter': ('urlfilter','str'),
                          'serverfilter' : ('serverfilter','str'),
                          'wordfilter' : ('wordfilter','str'),
                          'junkfilter_value' : ('junkfilter','int'),
+                         'useragent_value': ('USER_AGENT','str'),
                          'workers_status' : ('usethreads','int'),
                          'workers_size' : ('threadpoolsize','int'),
                          'workers_timeout' : ('timeout','float'),
@@ -508,6 +521,7 @@ class HarvestManStateObject(dict, Singleton):
                          'savesessions_value': ('savesessions','int'),
                          'timegap_value': ('sleeptime', 'float'),
                          'timegap_random': ('randomsleep', 'int'),
+                         'connections_type' : ('datamode', 'func:set_datamode'),
                          'feature_name' : ('htmlfeatures', 'func:set_parse_features'),
                          'simulate_value': ('simulate', 'int'),
                          'localise_value' : ('localise','int'),
@@ -516,12 +530,14 @@ class HarvestManStateObject(dict, Singleton):
                          'configfile_value': ('configfile', 'str'),
                          'projectfile_value': ('projectfile', 'str'),
 
+                         'regexp_value' : ('regexp', 'func:set_urlfilter'),
+                         'path_value': ('path', 'func:set_urlfilter'),
+                         'extension_value': ('extension', 'func:set_urlfilter'),
+                         'content_value': ('content', 'func:set_textfilter'),
+                         'meta_value': ('meta', 'func:set_textfilter'),
                          'urlfilterre_value': (('inclfilter', 'list'),
                                                ('exclfilter', 'list'),
                                                ('allfilters', 'list')),
-                         'serverfilterre_value':(('serverinclfilter', 'list'),
-                                                 ('serverexclfilter', 'list'),
-                                                 ('allserverfilters', 'list')),
                          'urlprioritydict_value': ('urlprioritydict', 'dict'),
                          'serverprioritydict_value': ('serverprioritydict', 'dict'),
                          'http_compress' : ('httpcompress', 'int'),
@@ -590,7 +606,7 @@ class HarvestManStateObject(dict, Singleton):
                     if funktion:
                         funktion(key, value, kwargs)
         else:
-            debug('Error in option value %s!' % option_val)
+            error('Error in option value %s!' % option_val)
 
     def set_option(self, option, value, negate=0):
         """ Sets the passed option in with its value as the passed value """
@@ -694,7 +710,8 @@ class HarvestManStateObject(dict, Singleton):
         option_val = self.xml_map.get(option, None)
         
         if option_val:
-            try:
+            #try:
+            if 1:
                 if type(option_val) is tuple:
                     self.assign_option(option_val, value)
                 elif type(option_val) is list:
@@ -705,13 +722,13 @@ class HarvestManStateObject(dict, Singleton):
                         if type(item) is tuple:
                             # Set it
                             self.assign_option(item, value)
-            except Exception, e:
-                print 'Error assigning option \"',option,'\"'
-                # If this is a ValueError, mostly the wrong argument was passed
-                if e.__class__==ValueError:
-                    print '(Perhaps you invoked the wrong argument ?)'
-                print 'Pass option -h for command line usage.'
-                hexit(1)
+            #except Exception, e:
+            #    print 'Error assigning option \"',option,'\"'
+            #    # If this is a ValueError, mostly the wrong argument was passed
+            #    if e.__class__==ValueError:
+            #        print '(Perhaps you invoked the wrong argument ?)'
+            #    print 'Pass option -h for command line usage.'
+            #    hexit(1)
         else:
             return CONFIG_OPTION_NOT_DEFINED
 
@@ -751,7 +768,74 @@ class HarvestManStateObject(dict, Singleton):
 
             # Set maxbytes
             self.maxbytes = limit
-                    
+
+    def set_maxbandwidth(self, key, val, attrdict):
+
+        # The value could be in any of the following forms
+        # <maxbandwidth value="5" /> - Crawl at 5 bytes per sec 
+        # <maxbandwidth value="5 k" /> - Crawl at 5 kbps
+        # <maxbandwidth value="5 kb" /> - Crawl at 5 kbps
+        # <maxbandwidth value="5 kbps" /> - Crawl at 5 kbps        
+        # <maxbandwidth value="5 m" /> - Crawl at 5 mbps
+        # <maxbandwidth value="5 mb" /> - Crawl at 5 mbps
+        # <maxbandwidth value="5 mbps" /> - Crawl at 5 mbps        
+        # Any extra spaces should also be taken care of
+        
+        # The regexp does all the above
+        items = maxbw_re.findall(val.strip())
+        if items:
+            item = items[0]
+            # First member is the number, second the
+            # specification for kb, mb, gb if any.
+            limit = int(item[0])
+            spec = item[1]
+            
+            if spec != '':
+                # Check for kb, mb, gb, kbps, mbps, gbps
+                spec = spec.strip().lower()
+                if spec.startswith('k'):
+                    limit *= 1024
+                elif spec.startswith('m'):
+                    limit *= pow(1024, 2)
+                elif spec.startswith('g'):
+                    limit *= pow(1024, 3)
+
+            # Set maxbandwidth
+            self.bandwidthlimit = float(limit)
+
+    def set_urlfilter(self, key, val, filterdict):
+
+        enable = int(filterdict.get(u'enable', 1))
+        if not enable:
+            return
+        
+        casing = int(filterdict.get(u'case',0))
+        flags = filterdict.get(u'flags','')
+
+        # Append a tuple of value, casing, flags
+        if key=='regexp':
+            self.regexurlfilters.append((val,casing,flags))
+        elif key=='path':
+            self.pathurlfilters.append((val,casing,flags))
+        elif key=='extension':
+            self.extnurlfilters.append((val,casing,flags))
+
+    def set_textfilter(self, key, val, filterdict):
+
+        enable = int(filterdict.get(u'enable', 1))
+        if not enable:
+            return
+        
+        casing = int(filterdict.get(u'case',0))
+        flags = filterdict.get(u'flags','')
+
+        # Append a tuple of value, casing, flags
+        if key=='content':
+            self.contentfilters.append((val,casing,flags))
+        elif key=='meta':
+            tags = filterdict.get(u'tags','all')
+            self.metafilters.append((val,casing,flags,tags))
+
     def set_project(self, key, val, prjdict):
         # Same function is called for url, basedir, name
         # and verbosity
@@ -782,14 +866,15 @@ class HarvestManStateObject(dict, Singleton):
                     self.projects[-1] = recent
                     recent = {}
                     new_entry = True
-            
+
         if key in ('url','basedir','project'):
             recent[key] = val
         elif key=='verbosity':
             try:
-                recent['verbosity'] = int(prjdict[u'value'])
+                recent['verbosity'] = logger.getLogLevel(prjdict[u'level'])
+                # print 'Verbosity=>',recent['verbosity']
             except KeyError:
-                recent['verbosity'] = int(val)
+                recent['verbosity'] = logger.getLogLevel(val)
 
         # If all items are present, put 'done' to True
         if len(recent)==4:
@@ -810,6 +895,23 @@ class HarvestManStateObject(dict, Singleton):
         enable = int(plugindict['enable'])
         if enable: self.plugins.append(plugin)
 
+    def set_datamode(self, key, val, modedict):
+        """ Sets the state of the connections param """
+
+        
+        mode = modedict['type']
+        if type(mode) is str:
+            if mode.lower()=='flush' :
+                self.datamode = CONNECTOR_DATA_MODE_FLUSH
+                self.datamodename == mode.lower()
+            elif mode.lower()=='mem':
+                self.datamode = CONNECTOR_DATA_MODE_INMEM
+                self.datamodename == mode.lower()
+        elif type(mode) is int:
+            self.datamode = mode
+            if self.datamode>1: 
+                self.datamode=1
+            
     def set_parse_features(self, key, val, featuredict):
         """ Sets the state of the plugins param """
 
@@ -932,7 +1034,7 @@ class HarvestManStateObject(dict, Singleton):
                         if val>=self.connections:
                             self.connections = val + 1
                 elif option=='verbosity':
-                    if SUCCESS(self.check_value(option,value)): self.set_option_xml('verbosity_value', self.process_value(value))
+                    if SUCCESS(self.check_value(option,value)): self.set_option_xml('verbosity_level', self.process_value(value))
                 elif option=='subdomain':
                     if value: self.set_option_xml('subdomain_value', 0)                    
                 #elif option=='savesessions':
@@ -1027,7 +1129,8 @@ class HarvestManStateObject(dict, Singleton):
                     if value:
                         print 'Warning: Enabling in-memory flag, data will be stored in memory!'
                         self.datamode = CONNECTOR_DATA_MODE_INMEM
-                elif option=='notempdir':
+                        self.datamodename = "mem"
+                elif option=='currentdir':
                     if value:
                         print 'Temporary files will be saved to current directory'
                         # Do not use temporary directory for saving intermediate files
@@ -1051,10 +1154,6 @@ class HarvestManStateObject(dict, Singleton):
                     if SUCCESS(self.check_value(option,value)): self.set_option_xml('passwd', self.process_value(value))
                 elif option=='username':
                     if SUCCESS(self.check_value(option,value)): self.set_option_xml('username', self.process_value(value))
-                elif option == 'single':
-                    if value:
-                        print "Single thread option set, disabling multipart downloads..."
-                        self.nomultipart = True
                 elif option == 'mirrorfile':
                     filename = value.strip()
                     if os.path.isfile(filename):
@@ -1065,6 +1164,7 @@ class HarvestManStateObject(dict, Singleton):
                 elif option == 'mirrorsearch':
                     if value:
                         print  'Mirror search turned on'
+                        print 'Warning: This is an experimental feature...'
                         self.mirrorsearch = True
                 elif option == 'relpathidx':
                     idx = int(value.strip())
@@ -1077,6 +1177,8 @@ class HarvestManStateObject(dict, Singleton):
                     if value:
                         print 'Resume mode set to off, partial downloads will not be resumed!'
                         self.canresume = False
+                elif option == 'retries':
+                    self.retryfailed = int(value)
 
             # If both mirror search and mirror file specified, mirror file is used
             # Print some information regarding mismatch of options...
@@ -1087,17 +1189,6 @@ class HarvestManStateObject(dict, Singleton):
                 print 'Ignoring mirror path index param because no mirror file is loaded'
             if not self.mirroruserelpath and not self.mirrorfile:
                 print 'Ignoring relpath flag because no mirror file is loaded'
-                
-                    
-        # print self.subdomain
-        if self.nocrawl:
-            self.pagecache = False
-            self.rawsave = True
-            self.localise = 0
-            # Set project name to ''
-            self.set_option_xml('name','')
-            # Set basedir to dot
-            self.set_option_xml('basedir','.')
         
         if args:
             # Any option without an argument is assumed to be a URL
@@ -1106,7 +1197,7 @@ class HarvestManStateObject(dict, Singleton):
                 
             # Since we set a URL from outside, we dont want to read
             # URLs from the config file - same for plugins
-            self.items_to_skip = ['url','name','basedir','verbosity_value']
+            self.items_to_skip = ['url','name','basedir','verbosity_level']
 
         # If urlfile option set, read all URLs from a file
         # and load them.
@@ -1133,13 +1224,13 @@ class HarvestManStateObject(dict, Singleton):
                             self.projects.append({'url': url,
                                                   'project': project,
                                                   'basedir': '.',
-                                                  'verbosity': 2})
+                                                  'verbosity': self.verbosity_default})
                         except urlparser.HarvestManUrlError, e:
                             continue
 
                     # We would now want to skip url, project,
                     # basedir etc in the config file
-                    self.items_to_skip = ['url','name','basedir','verbosity_value']
+                    self.items_to_skip = ['url','name','basedir','verbosity_level']
 
             except Exception, e:
                 print e
@@ -1222,7 +1313,7 @@ class HarvestManStateObject(dict, Singleton):
 
         return url
 
-    def add(self, url, name='', basedir='.', verbosity=2):
+    def add(self, url, name='', basedir='.', verbosity=logger.INFO):
         """ Adds a crawl project to the crawler. The arguments
         are the starting URL, and optional name for the project,
         a base directory for saving files and project verbosity """
@@ -1238,11 +1329,11 @@ class HarvestManStateObject(dict, Singleton):
         after fixing any errors in key config variables such as
         URL, project directory, project names etc """
 
+        
         # If there is more than one url, we
         # combine all the project related
         # variables into a dictionary for easy
         # lookup.
-        
         num=len(self.projects)
         if num==0:
             msg = 'Fatal Error: No URLs given, Aborting.\nFor command-line options run with -h option'
@@ -1270,24 +1361,23 @@ class HarvestManStateObject(dict, Singleton):
             if entry.get('basedir','')=='':
                 entry['basedir'] = '.'
 
-            if entry.get('verbosity',0)==0:
-                entry['verbosity'] = 2
+            if entry.get('verbosity',-1)==-1:
+                entry['verbosity'] = self.verbosity_default
 
         self.plugins = list(set(self.plugins))
             
         if 'swish-e' in self.plugins:
             # Disable any message output for swish-e
-            self.verbosity = 0
+            self.verbosity = logger.DISABLE
             # Set verbosity to zero for all projects
             for entry in self.projects:
-                entry['verbosity'] = 0
+                entry['verbosity'] = logger.DISABLE
 
-        objects.logger.setLogSeverity(self.verbosity)
-                
+        # objects.logger.setLogSeverity(self.verbosity)
 
     def set_system_params(self):
         """ Sets config file/directory parameters for all users """
-        
+
         # Directory for system wide configuration files...
         if os.name == 'posix':
             #We might have to use find_packager() if somebody will use py2app py2exe
@@ -1299,8 +1389,10 @@ class HarvestManStateObject(dict, Singleton):
                 basefolder='/etc/harvestman'
                 self.etcdir=basefolder
             #print os.path.split(os.path.dirname(__main__.__file__))[0]
-            #basefolder=os.path.split(os.path.dirname(__main__.__file__))[0]
+            #basefolder = os.path.dirname(sys.prefix)
             #print os.path.join(basefolder, 'etc', 'harvestman', 'config.xml')
+            #self.etcdir=os.path.join(basefolder, 'etc', 'harvestman')
+            #self.etcdir = '/etc/harvestman'            
         elif os.name == 'nt':
             self.etcdir = os.path.join(os.environ.get("ALLUSERSPROFILE"),
                                        "Application Data", "HarvestMan", "conf")
@@ -1371,6 +1463,15 @@ class HarvestManStateObject(dict, Singleton):
         # fix errors in config variables
         self.setup()
 
+    def enable_controller(self):
+        """ Return whether we need to start the controller
+        thread. This is determined by whether we have
+        any limits either on time, files or data """
+
+        return (self.timelimit != -1) or \
+               (self.maxfiles) or \
+               (self.maxbytes)
+    
     def reset_progress(self):
         """ Rests the progress bar object (used by Hget)"""
         
@@ -1435,14 +1536,14 @@ class HarvestManStateObject(dict, Singleton):
             
             project = entry.get('project')
             url = entry.get('url')
-            verb = entry.get('verbosity')
+            verb = logger.getLogLevelName(entry.get('verbosity'))
             basedir = entry.get('basedir')
             
             projcontent = '<project skip="0">\n'
             projcontent += '<url>' + url + '</url>\n'
             projcontent += '<name>' + project + '</name>\n'
             projcontent += '<basedir>' + basedir + '</basedir>\n'            
-            projcontent += '<verbosity value="' + str(verb) + '"/>\n'
+            projcontent += '<verbosity level="' + str(verb) + '"/>\n'
             projcontent += '</project>\n\n'
 
             content = content + projcontent

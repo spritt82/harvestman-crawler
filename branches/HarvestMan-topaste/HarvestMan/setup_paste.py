@@ -27,11 +27,8 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       url='http://code.google.com/p/harvestman-crawler/',
       license='GPLv2',
       #find_packages replaces package_dir and packages
-      #packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       #package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
-      packages=find_packages(exclude=['ez_setup', 'examples']),
-      include_package_data = True,    # include everything in source control
-      package_dir = {'harvestman': 'harvestman'}, #Instalation package:path
       #packages = ['harvestman',
       #           'harvestman.apps',
       #           'harvestman.lib',
@@ -44,6 +41,7 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       #           ],
       #Package_data is for none-py files
       package_data = {'harvestman' : ['ui/templates/*.html', 'ui/templates/content/*']},
+      include_package_data=True,
       zip_safe=False,
       install_requires=[
       "sgmlop >= 1.1.1",
@@ -55,13 +53,10 @@ HarvestMan is a modular, extensible and flexible web crawler program cum framewo
       [console_scripts]
         harvestman = harvestman.apps.spider:main
         hget = harvestman.apps.hget:main
-      """
+      """,
       )
 
-#Create config.xml
-#print sys.prefix
-#if sys.prefix!='/usr':
-#    pass
+print os.path
 
 from harvestman.lib.config import HarvestManStateObject
 cfg = HarvestManStateObject()

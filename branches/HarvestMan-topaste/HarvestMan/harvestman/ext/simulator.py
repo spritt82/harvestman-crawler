@@ -15,8 +15,8 @@ Copyright (C) 2007 Anand B Pillai
 __version__ = '2.0 b1'
 __author__ = 'Anand B Pillai'
 
-from lib import hooks
-from lib.common.common import *
+from harvestman.lib import hooks
+from harvestman.lib.common.common import *
 
 def save_url(self, urlobj):
 
@@ -27,7 +27,7 @@ def save_url(self, urlobj):
     # be the same.
 
     url = urlobj.get_full_url()
-    self.connect(url, urlobj, True, self._cfg.retryfailed)
+    self.connect(urlobj, True, self._cfg.retryfailed)
 
     return 6
 

@@ -104,9 +104,6 @@ class HarvestManUrl(object):
         # modified
         self.origurl = url
         
-        #if url[-1] == URLSEP:
-        #    self.url = url[:-1]
-        #else:
         self.url = url
         self.url = urlproc.modify_url(self.url)
         
@@ -181,24 +178,19 @@ class HarvestManUrl(object):
         # content.
         self.clength = 0
         self.dirpath = []
-        # Archive for self.dirpath
-        self.dirpathold = []
-        # Archive for self.filename
-        self.filenameold = 'index.html'
-        self.validfilenameold = 'index.html'
-        # Archive for self.rpath
-        self.rpathold = []
-        # Archive for self.domain
-        self.domainold = ''
         # Re-computation flag
         self.reresolved = False
         # URL redirected flag
         self.redirected = False
+        # Flag indicating we are using an old URL
+        # which was redirected, again for producing
+        # further redirections. This is used in Hget
+        # for automatic split-mirror downloading
+        # for URLs that auto-forward to mirrors.
+        self.redirected_old = False
         self.baseurl = None
         # Hash of page data
         self.pagehash = ''
-        # Flag for using old filename
-        self.useoldfilename = False
         # Flag to decide whether to recalculate get_full_url(...)
         # if flag is False, recalculate...
         self.urlflag = False
@@ -236,16 +228,18 @@ class HarvestManUrl(object):
             self.index = 0
         except KeyError:
             pass
-        
-    def re_init(self):
-        """ Reinitialize some of the attributes """
 
-        # Used by wrapper_resolveurl
-        #if self.url[-1] == URLSEP:
-        #    self.url = self.url[:-1]
-        #else:
-        #    self.url = self.url
-        # Process URL
+        # Copy of myself, this will be saved if
+        # a re-resolving is requested so that old
+        # parameters can be requested if needed
+        self.orig_state = None
+        
+    def reset(self):
+        """ Reset all the key attributes """
+
+        # Archive previous state
+        self.orig_state = copy.copy(self)
+
         self.url = urlproc.modify_url(self.url)
         self.lastpath = ''
         self.protocol = ''
@@ -259,7 +253,6 @@ class HarvestManUrl(object):
         # Recursion depth
         self.rdepth = 0
         self.dirpath = []
-        self.rpath = []
         self.filename = 'index.html'
         self.validfilename = 'index.html'
         # Set urlflag to False
@@ -270,21 +263,13 @@ class HarvestManUrl(object):
         return self.absurl
     
     def wrapper_resolveurl(self):
-        """ Called forcefully to re-resolve a URL """
+        """ Called forcefully to re-resolve a URL, typically after a re-direction
+        or change in URL has been detected """
 
-        extrainfo("Re-resolving URL: Current is %s..." % self.get_full_url())
-        # Make archives of everything
-        self.dirpathold = self.dirpath[:]
-        self.rpathold = self.rpath[:]
-        self.filenameold = self.filename[:]
-        self.validfilenameold = self.validfilename[:]
-        self.domainold = self.domain[:]
-        self.re_init()
-        
+        self.reset()
         self.anchorcheck()
         self.resolveurl()
         self.reresolved = True
-        extrainfo("Re-resolving URL: New is %s..." % self.get_full_url())
         
     def anchorcheck(self):
         """ Checking for anchor tags and processing accordingly """
@@ -322,6 +307,14 @@ class HarvestManUrl(object):
             if www_re.match(url2):
                 self.protocol = 'http://'
                 self.url =  "".join((self.protocol, self.url))
+                return True
+
+            # We accept FTP urls beginning with just
+            # ftp.<server>, and consider it as FTP over HTTP
+            if url2.startswith('ftp.'):
+                # FTP over HTTP
+                self.protocol = 'http://'
+                self.url = ''.join((self.protocol, self.url))
                 return True
             
             # Urls relative to server might
@@ -382,8 +375,13 @@ class HarvestManUrl(object):
             # Only reduce if the URL itself does not start with
             # .. - if it does our rpath algorithm takes
             # care of it.
-            if idx > 0:
-                relpaths = self.reduce_url(relpaths)
+
+            # Mod: This is commented out now, since it looks
+            # like there is no harm in allowing to reduce, even
+            # if the path starts with '..'
+            #if idx > 0:
+            
+            relpaths = self.reduce_url(relpaths)
 
             # Build relative path by checking for "." and ".." strings
             self.rindex = 0
@@ -441,10 +439,6 @@ class HarvestManUrl(object):
                 
         # Now compute local directory/file paths
 
-        # For cgi paths, add a url separator at the end 
-        #if self.cgi:
-        #    paths = "".join((paths, URLSEP))
-
         self.compute_dirpaths(paths)
         if not self.protocol.startswith('file:'):
             self.compute_domain_and_port()
@@ -455,14 +449,28 @@ class HarvestManUrl(object):
             if extn in default_directory_extns:
                 self.set_directory_url()
 
+        # print self.dirpath, self.domain
+
+        
     def reduce_url(self, paths):
         """ Remove nonsense .. and . chars from URL paths """
-        
+
         for x in range(len(paths)):
             path = paths[x]
             try:
                 nextpath = paths[x+1]
-                if nextpath == '..':
+                if nextpath in (DOT, DOTDOT):
+                    # Check if a ? occurs anywhere earlier in path.
+                    # If a ? occurs in the path, don't reduce
+                    # any paths coming after it.
+                    try:
+                        qindex = paths.index('?')
+                        if qindex < x+1:
+                            continue
+                    except ValueError:
+                        pass
+                    
+                if nextpath == DOTDOT:
                     paths.pop(x+1)
                     # Do not allow to remove the domain for
                     # stupid URLs like 'http://www.foo.com/../bar' or
@@ -476,7 +484,7 @@ class HarvestManUrl(object):
                     if self.isrel or x>0:
                         paths.remove(path)
                     return self.reduce_url(paths)
-                elif nextpath=='.':
+                elif nextpath==DOT:
                     paths.pop(x+1)
                     return self.reduce_url(paths)                    
             except IndexError:
@@ -526,37 +534,56 @@ class HarvestManUrl(object):
             # Otherwise, the url is a plain domain
             # path like www.python.org .
             self.compute_file_and_dir_paths()
-
+            # print 'Rpath=>',self.rpath
+            
             # Interprets relative path
             # ../../. Nonsense relative paths are graciously ignored,
             self.rpath.reverse()
+            # print 'Base url dirpath=>',self.baseurl.dirpath
+            # print 'Rindex=>',self.rindex
+
+            # This simple logic is fine for most paths except
+            # when a base URL has a "?" as part of its dirpath.
+            # Example: http://razor.occams.info/code/repo/?/govtrack/sec .
+            # In that case, any pieces of the base URL after the
+            # ? is to be omitted.
+            if '?' in self.baseurl.dirpath:
+                # Trim base url to the part before ?
+                qindex = self.baseurl.dirpath.index('?')
+                self.baseurl.dirpath = self.baseurl.dirpath[:qindex]
+            
             if len(self.rpath) == 0 :
                 if not self.rindex:
                     self.dirpath = self.baseurl.dirpath + self.dirpath
             else:
                 pathstack = self.baseurl.dirpath[0:]
-                
+
                 for ritem in self.rpath:
                     if ritem == DOT:
                         pathstack = self.baseurl.dirpath[0:]
                     elif ritem == DOTDOT:
                         if len(pathstack) !=0:
-                            pathstack.pop()
+                                pathstack.pop()
             
                 self.dirpath  = pathstack + self.dirpath 
-                
+
+            # print 'Dirpath2=>',self.dirpath
+
+            #if self.noreduce:
+            #    return
+            
             # Support for NONSENSE relative paths such as
             # g/../foo and g/./foo 
             # consider base = http:\\bar.com\bar1
             # then g/../foo => http:\\bar.com\bar1\..\foo => http:\\bar.com\foo
             # g/./foo  is utter nonsense and we feel free to ignore that.
-            index = 0
-            for item in self.dirpath:
-                if item in (DOT, DOTDOT):
-                    self.dirpath.remove(item)
-                if item == DOTDOT:
-                    self.dirpath.remove(self.dirpath[index - 1])
-                index += 1
+            #index = 0
+            #for item in self.dirpath:
+            #    if item in (DOT, DOTDOT):
+            #        self.dirpath.remove(item)
+            #    if item == DOTDOT:
+            #        self.dirpath.remove(self.dirpath[index - 1])
+            #    index += 1
         else:
             if len(self.dirpath) > 1:
                 self.compute_file_and_dir_paths()
@@ -841,20 +868,6 @@ class HarvestManUrl(object):
         
         return self.baseurl
 
-    def get_original_url_directory(self):
-        """ Return the directory path (url minus its filename if any) of the original URL """
-
-        # Return only if this was recomputer
-        # get the directory path of the url
-        fulldom = self.get_full_domain()
-        urldir = fulldom
-
-        if self.dirpathold:
-            newpath = "".join((URLSEP, "".join([ x+'/' for x in self.dirpathold])))
-            urldir = "".join((fulldom, newpath))
-
-        return urldir
-    
     def get_url_directory(self):
         """ Return the directory path (url minus its filename if any) of the url """
         
@@ -1161,45 +1174,14 @@ class HarvestManUrl(object):
         This is created w.r.t the local directory where we save
         the url data """
 
-        if self.useoldfilename:
-            return self.get_full_filename_old()
-        
-        if not self.__class__.TEST:
-            if objects.config and objects.config.rawsave:
-                return self.get_filename()
-            else:
-                return os.path.join(self.get_local_directory(), self.get_filename())
-        else:
-            return os.path.join(self.get_local_directory(), self.get_filename())            
-
-    def get_full_filename_old(self):
-        """ Return the old full filename of this url on the disk.
-        This is created w.r.t the local directory where we save
-        the url data """
-
-        if not self.__class__.TEST:
-            if objects.config and objects.config.rawsave:
-                return self.get_filename_old()
-            else:
-                return os.path.join(self.get_local_directory_old(), self.get_filename_old())
-        else:
-            return os.path.join(self.get_local_directory_old(), self.get_filename_old())            
+        return os.path.join(self.get_local_directory(), self.get_filename())
 
     def get_filename(self):
         """ Return the filename of this url on the disk. """
 
-        if self.useoldfilename:
-            return self.validfilenameold
-        
         # NOTE: This is just the filename, not the absolute filename path
         return self.validfilename
 
-    def get_filename_old(self):
-        """ Return the old filename of this url on the disk. """
-
-        # NOTE: This is just the filename, not the absolute filename path
-        return self.validfilenameold
-    
     def get_relative_filename(self, filename=''):
 
         # NOTE: Rewrote this method completely
@@ -1397,19 +1379,14 @@ class HarvestManUrl(object):
                     
         return os.path.normpath(rval)
 
-    def get_local_directory_old(self):
-        """ Return the old local directory path of this url w.r.t
-        the directory on the disk where we save the files of this url """
+    def get_original_state(self):
+        """ Return the original state of this URL object. This is useful
+        to obtain earlier attributes of a URL after it's state was
+        changed by a URL modification """
+
+        # It is up to the caller to check this value
+        return self.orig_state
         
-        # Gives Local Direcory path equivalent to URL Path in server
-        rval = os.path.join(self.rootdir, self.domainold)
-
-        for diry in self.dirpathold:
-            if not diry: continue
-            rval = os.path.abspath( os.path.join(rval, self.make_valid_filename(diry)))
-
-        return os.path.normpath(rval)    
-
     # ============ Begin - Set Methods =========== #
 
     def set_directory_url(self):
@@ -1552,7 +1529,7 @@ def test():
                HarvestManUrl('http://cwc2003.rediffblogs.com'),
                HarvestManUrl('/sports/2003/jun/25beck1.htm',
                                    'generic', 0, 'http://www.rediff.com', ''),
-               HarvestManUrl('ftp://ftp.gnu.org/pub/lpf.README'),
+               HarvestManUrl('http://ftp.gnu.org/pub/lpf.README'),
                HarvestManUrl('http://www.python.org/doc/2.3b2/'),
                HarvestManUrl('//images.sourceforge.net/div.png',
                                    'image', 0, 'http://sourceforge.net', ''),

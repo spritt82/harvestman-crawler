@@ -45,20 +45,20 @@ import sys, os
 import re
 import shutil
 
+from harvestman.lib import connector
+from harvestman.lib import urlparser
+from harvestman.lib import config
+from harvestman.lib import logger
+from harvestman.lib import datamgr
+from harvestman.lib import urlthread
+from harvestman.lib import mirrors
+from harvestman.lib.methodwrapper import MethodWrapperMetaClass
 
-from lib import connector
-from lib import urlparser
-from lib import config
-from lib import logger
-from lib import datamgr
-from lib import urlthread
-from lib import mirrors
-from lib.methodwrapper import MethodWrapperMetaClass
+from harvestman.lib.common.common import *
+from harvestman.lib.common.macros import *
 
-from lib.common.common import *
-from lib.common.macros import *
-
-from harvestman import HarvestMan
+# Current dir - okay
+from spider import HarvestMan
 
 VERSION='0.1'
 MATURITY='beta 1'
@@ -70,7 +70,7 @@ class Hget(HarvestMan):
 
     __metaclass__ = MethodWrapperMetaClass
     
-    USER_AGENT = "HarvestMan v2.0"
+    USER_AGENT = "Python-urllib/1.16"
 
     def grab_url(self, url, filename=None):
         """ Download the given URL and save it to the (optional) filename """
@@ -130,7 +130,7 @@ class Hget(HarvestMan):
     def clean_up(self, conn, urlobj, exception=None):
         """ Perform clean up after any exception """
         
-        reader = conn.get_reader()
+        reader = conn.get_fileobj()
         if reader: reader.stop()
         if exception==None:
             print '\n\nDownload aborted by user interrupt.'
@@ -226,8 +226,6 @@ class Hget(HarvestMan):
         objects.config.version = VERSION
         objects.config.maturity = MATURITY
         objects.config.nocrawl = True
-        # For hget, default data mode is flush
-        objects.config.datamode = CONNECTOR_DATA_MODE_FLUSH
         self._pool = None
         self._monitor = None
         
@@ -241,10 +239,9 @@ class Hget(HarvestMan):
         objects.config.socktimeout = 30.0
         # objects.config.requests = 2*objects.config.numparts
         if objects.config.hgetverbose:
-            objects.config.verbosity=logger.MOREINFO
-        else:
-            objects.config.verbosity = 1
+            objects.config.verbosity=logger.EXTRAINFO
 
+        objects.logger.make_logger()        
         objects.logger.setLogSeverity(objects.config.verbosity)
 
         self.process_plugins()
@@ -314,9 +311,13 @@ class Hget(HarvestMan):
         self.hget()
         return 0
 
+def main():
+    """ Main routine """
+
+    Hget().main()
+    
 if __name__ == "__main__":
-    h = Hget()
-    h.main()
+    main()
 
 def run():
     h = Hget()

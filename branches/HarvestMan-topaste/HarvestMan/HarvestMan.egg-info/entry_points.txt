@@ -1,5 +1,5 @@
 
       [console_scripts]
-        harvestman = harvestman.apps.harvestman_run:run
-        hget = harvestman.apps.hget:run
+        harvestman = harvestman.apps.spider:main
+        hget = harvestman.apps.hget:main
       

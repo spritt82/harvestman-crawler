@@ -19,8 +19,7 @@ def setUpPaths():
 
     f = globals()['__file__']
     parentdir = os.path.dirname(os.path.dirname(f))
-    # Add modules in prev directory
-    sys.path.append(parentdir)
+    sys.path.append(os.path.dirname(parentdir))
 
 def setUp():
     """ Set up """

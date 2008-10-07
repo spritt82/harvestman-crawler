@@ -14,6 +14,7 @@ import math
 import sys
 import os
 import shutil
+import weakref
 
 from dictcache import DictCache
 
@@ -34,7 +35,7 @@ class BSTNode(dict):
         # Number of loads
         self.cloads = 0
         # Link back to the tree
-        self.tree = tree
+        self.tree = weakref.proxy(tree)
         
     def __getitem__(self, key):
 
@@ -144,7 +145,6 @@ class BSTNode(dict):
 
         super(BSTNode, self).clear()
 
-        
 class BST(object):
     """ BST class with automated disk caching of node values """
 
@@ -175,18 +175,14 @@ class BST(object):
         self.ngets = 0
         # Total number of disk loads
         self.nloads = 0
-        # Directory for file representation
-        self.bdir = '.bidx' + str(hash(self))        
-        if not os.path.isdir(self.bdir):
-            try:
-                os.makedirs(self.bdir)
-            except Exception, e:
-                raise
-
-        self.diskcache = DictCache(10, self.bdir)
         self.root = None
         if key:
             self.root = self.insert(key, val)
+        self.bdir = ''
+        self.diskcache = None
+
+    def __del__(self):
+        self.clear()
 
     def to_cache(self, key, val):
         self.diskcache[key] = val
@@ -200,15 +196,11 @@ class BST(object):
         node = BSTNode(key, val, tree=self)
 
         if self.auto and self.autolevel and self.size>1:
-            # Check if the node has become balanced at the
-            # requested level...
-
-            if self.auto and self.autolevel:
-                # print 'Auto-dumping...', self.size
-                if self.size % self.autolevel==0:
-                    self.dump(self.autocurr_l)
-                    # Set autocurr to this node
-                    self.autocurr_l = node
+            # print 'Auto-dumping...', self.size
+            if self.size % self.autolevel==0:
+                self.dump(self.autocurr_l)
+                # Set autocurr to this node
+                self.autocurr_l = node
             
             #if self.autocurr_l and self.autocurr_l.is_balanced(self.autolevel):
             #    print 'Auto-dumping...', self.autocurr_l.key
@@ -446,18 +438,20 @@ class BST(object):
         self.ngets = 0
         self.nloads = 0
         self.root = None
-            
+        
     def clear(self):
 
         if self.root:
             self.root.clear()
 
         self.reset()
-        self.diskcache.clear()
-        # Remvoe the directory
+        if self.diskcache:
+            self.diskcache.clear()
 
+        # Remvoe the directory
         if self.bdir and os.path.isdir(self.bdir):
             try:
+                # print 'Removing folder',self.bdir
                 shutil.rmtree(self.bdir)
             except Exception, e:
                 print e
@@ -471,6 +465,15 @@ class BST(object):
         # node is root by default.
         self.auto = True
         self.autolevel = level
+        # Directory for file representation
+        self.bdir = '.bidx' + str(hash(self))        
+        if not os.path.isdir(self.bdir):
+            try:
+                os.makedirs(self.bdir)
+            except Exception, e:
+                raise
+
+        self.diskcache = DictCache(10, self.bdir)
         self.diskcache.freq = self.autolevel
         
 if __name__ == "__main__":
@@ -517,7 +520,6 @@ if __name__ == "__main__":
     root = b.root
     print root.is_balanced()    
     print root.is_balanced(2)
-    b.clear()
     
     del b
 
@@ -538,4 +540,3 @@ if __name__ == "__main__":
     print 'LHS=>',b.size_lhs()
     print 'RHS=>',b.size_rhs()    
     
-    b.clear()
