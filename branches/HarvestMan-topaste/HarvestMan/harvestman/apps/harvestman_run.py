@@ -687,7 +687,32 @@ def run():
     #pycallgraph.start_trace(filter_func=callgraph_filter)
     spider.main()
     #pycallgraph.make_dot_graph('harvestman.png')
-    
+
+#Below can be used for parsing command line options like harvestman --genconfig    
+from paste.script import command
+
+class MyCommand(command.Command):
+
+    max_args = 1
+    min_args = 1
+
+    usage = "NAME"
+    summary = "Say hello!"
+    group_name = "My Package Name"
+
+    parser = command.Command.standard_parser(verbose=True)
+    parser.add_option('--goodbye',
+                      action='store_true',
+                      dest='goodbye',
+                      help="Say 'Goodbye' instead")
+    def command(self):
+        name = self.args[0]
+        if self.verbose:
+            print "Got name: %r" % name
+        if self.options.goodbye:
+            print "Goodbye", name
+        else:
+            print "Hello", name
 
                
         
