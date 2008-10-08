@@ -10,8 +10,9 @@
 [bad]import xyz
 [bad]import *
 }}}
-== files ==
-
+== branches ==
+ *Here is a short intro on how do do merging and branching.
+ *http://kenkinder.com/svnmerge/
 = Packages =
 == python eggs ==
  *To make a python egg you can do the following:
