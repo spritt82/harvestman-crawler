@@ -51,7 +51,7 @@ deactivate
 }}}
 
 === system wide installation ===
- *If you want to do a system wide installation:
+ * If you want to do a system wide installation:
  * Go into the harvestman folder, and run setup file.
 {{{
 cd harvestman-crawler/HarvestMan/
