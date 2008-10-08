@@ -45,6 +45,11 @@ python setup.py install
 {{{
 harvestman --selftest
 }}}
+ * When done you can deactivate your virtualenv
+{{{
+deactivate
+}}}
+
 === system wide installation ===
  *If you want to do a system wide installation:
  * Go into the harvestman folder, and run setup file.
