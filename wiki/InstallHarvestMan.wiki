@@ -1,6 +1,9 @@
 #summary How to download and install Harvestman-crawler
 #labels Phase-Deploy
 
+* You have few options when installing harvestman *
+Currently the way is to download the source code from the trunk of our repository.
+ 
 = Check out code from svn =
  * First you need to checkout version of harvestman from repository.You will need '''subversion''' program to do that. When subversion is installed run this command:
 {{{
@@ -17,7 +20,8 @@ svn checkout http://harvestman-crawler.googlecode.com/svn/trunk/ harvestman-craw
  1. sgmlop,pyparsing,web.py which will get installed automatically as part of the installation.
 
 == Installation of harvestman ==
- * You have two options of installing harvestman. You can install it in a system base folder or you can use virtualenv to install it.
+ * You have two options of installing harvestman. You can install it in a system base folder or you can use virtualenv to install it in your defined folder.
+
 === Vritualenv ===
  * If you want to use virtualenv
  * Setup virtualenv folder. If you don't have virtualenv install it using *easy_install virtualenv*
@@ -49,6 +53,7 @@ harvestman --selftest
 {{{
 deactivate
 }}}
+ * See UsingHarvestman
 
 === system wide installation ===
  * If you want to do a system wide installation:
