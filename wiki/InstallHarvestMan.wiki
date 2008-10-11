@@ -2,7 +2,8 @@
 #labels Phase-Deploy
 
 * You have few options when installing harvestman *
-Currently the way is to download the source code from the trunk of our repository.
+
+Currently the best way is to download the source code from the trunk of our repository.
  
 = Check out code from svn =
  * First you need to checkout version of harvestman from repository.You will need '''subversion''' program to do that. When subversion is installed run this command:
