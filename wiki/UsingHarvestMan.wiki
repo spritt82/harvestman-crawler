@@ -51,7 +51,7 @@ Options:
                         NUMCONNECTIONS
   -c CACHE, --cache=CACHE
                         Enable/disable caching of downloaded files. If
-                        enabled(default), files will not be saved unless their
+                        enabled(default), files won't be saved unless their
                         timestamp is newer than the cache timestamp
   -d DEPTH, --depth=DEPTH
                         Set the limit on the depth of urls to DEPTH
@@ -78,26 +78,19 @@ Options:
   -o <name=value>, --option=<name=value>
                         Pass a configuration param using <name=value> syntax
   --ui                  Start HarvestMan in Web UI mode
+  --genconfig           Create Configuration File Using GenConfig Web UI mode
   --selftest            Run a self test
 }}}
 
 
 == Config.xml Options ==
- * To create config.xml you can run our configuration program. 
- * Go to a folder where you checkout the code.
+ * To create config.xml you can run our generate configuration program. 
 {{{
-cd harvestman/tools/
+harvestman --genconfig
 }}} 
- * Start genconfig.py
+ * Fill all the information and when done save the xml to myconfig.xml and run the following command:
 {{{
-python genconfig.py
-}}}
- * Then with your browser go to: 
- * [http://localhost:5940 http://localhost:5940]
- * Fill all the information. 
- * When done save the xml to the folder and run the following command:
-{{{
-harvestman -C config.xml
+harvestman -C myconfig.xml
 }}}
  * Here is how the web interface look.
 ----------------------------------------
