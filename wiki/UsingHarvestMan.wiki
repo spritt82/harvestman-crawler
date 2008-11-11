@@ -1,6 +1,6 @@
 #summary How to use HarvestMan.
 #labels Phase-Deploy,Phase-Support
-
+http://harvestman.everythingability.com/chrome/common/banner.png
 = First Time Usage =
 
 When using HarvestMan you have two options of downloading pages/files. You can either use command line options or use config.xml file. 
