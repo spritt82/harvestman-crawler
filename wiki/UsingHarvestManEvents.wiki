@@ -1,5 +1,0 @@
-#summary Using HarvestMan events to develop custom crawlers
-
-= Introduction =
-
-<Coming soon>
