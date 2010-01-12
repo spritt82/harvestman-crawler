@@ -15,7 +15,8 @@ Sometimes when you try to crawl a site, you get an error as follows.
 }}}
 
 Most of the time this is because the web-site does not accept the
-USER-AGENT string of the crawler. To w
+USER-AGENT string of the crawler. To fix this you need to 
+change the USER-AGENT of HarvestMan to a more acceptable one.
 
 = Work-around =
 
@@ -32,7 +33,7 @@ by supplying a standard browser USER-AGENT. For example,
     </system>
 }}}
 
-You can also do this directly in code as follows.
+You can also do this directly in code as follows. For example,
 
 {{{
     spider = HarvestMan()
@@ -40,3 +41,8 @@ You can also do this directly in code as follows.
     config = spider.get_config()
     config.USER_AGENT = "Firefox/v3.5"
 }}}
+
+The basic idea is to use a USER_AGENT string that is more
+popular, such as that of the Firefox web browser. This 
+works for most of the web-pages and gets rid of the HTTP
+403 error.
