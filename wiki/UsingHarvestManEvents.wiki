@@ -1,3 +1,48 @@
 #summary How to use HarvestMan events API to write custom crawlers
 
-Coming soon...!
+==HarvestMan events API==
+HarvestMan provides a very well-defined events API which can be used by developers to write custom crawlers suited for a specific crawling/data mining task. 
+
+===Events===
+Events are implemented using a callback mechanism. At different times during the program execution, HarvestMan raises events with specific names. These events can be hooked into custom functions by subscribing to the events and defining functions which process the state supplied along with the event. 
+
+In short the event API allows the developer to hook into the program flow and modify the program behavior by writing custom functions.
+
+==Illustration==
+Let us say that you want to write a custom crawler which saves only images which are larger than 128K to the disk (a practical example of this would be a crawler which ignores thumbnail images, since thumbnails are typically  of size 64-128K). This is how you would do this by subscribing to the "save_url_data" event.
+
+First you need to define a custom crawler class over-riding the "HarvestMan" class.
+
+{{{
+from harvestman.apps.spider import HarvestMan
+from harvestman.lib.common.macros import *
+
+class MyCustomCrawler(HarvestMan):
+    """ A custom crawler """
+
+    def save_this_url(self, event, **args, **kwargs):
+        """ Custom callback function which modifies behaviour
+            of saving URLs to disk """
+
+        # Get the url object
+        url = event.url
+        # If not image, save always
+        if not url.is_image():
+            return True
+        else:
+            # If image, check for content-length > 128K
+            size = url.clength
+            return (size>128*1024)
+
+# Set up the custom crawler
+if __name__ == "__main__":
+    crawler = MyCustomCrawler()
+    crawler.initialize()
+    # Get the configuration object
+    config = crawler.get_config()
+    # Register for 'save_url_data' event which will be called
+    # back just before a URL is saved to disk
+    crawler.register('save_url_data', crawler.save_this_url)
+    # Run
+    crawler.main()
+}}}
