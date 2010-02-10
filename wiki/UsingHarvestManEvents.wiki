@@ -138,14 +138,21 @@ The _document_ object is of type _HarvestManDocument_ (module _harvestman.lib.do
 ===The _config_ attribute===
 This attribute binds to the global configuration object. Instead of having to call _objects.config_ everytime, you can get global configuration in the event handler by accessing the _event.config_ attribute.
 
+===The _name_ attribute===
+This will contain the name of the event. For example in the above code, this would be _save_url_data_.
+
 ===How to use attributes of _event_ object===
 For most events, the _url_ attribute it present and is required to do any meaningful processing. The _document_ attribute is present only for the events which are dealing with a web-page with parseable content. For some events which are related to program 
 stages (such as start/end of a project), both these attributes wont be present, i.e they will be _None_.
 
 ===Additional arguments===
-Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _*args_ and keyword arguments as the _**kwargs_ variables respectively. 
+Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _*args_ and keyword arguments as the _**kwargs_ variables respectively. For example the _before_tag_parse_ event passes in the current HTML tag and its attributes using positional arguments.
 
 ==Table of Events==
-The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event.
+The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event, and the points in program flow when the events are raised.
+
+|| *Event* || *Raised at* || *Attributes* || *Module* || *Positional Arguments* || *Comments* ||
+|| before_start_project || Before starting a project || url || harvestman.apps.spider || None || The url is the starting URL ||
+
 
 
