@@ -91,6 +91,7 @@ Here are the steps involved.
  * Create a custom function which hooks into a specific event.
  * In the ___main___ section, configure the crawler to subscribe to the event by using the _register_ method.
 
+Let us take a deeper look at the function _save_this_url_.
 
 
 
