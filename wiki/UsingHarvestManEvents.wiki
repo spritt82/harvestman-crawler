@@ -6,6 +6,8 @@ HarvestMan provides a very well-defined events API which can be used by develope
 ===Events===
 Events are implemented using a callback mechanism. At different times during the program execution, HarvestMan raises events with specific names. These events can be hooked into custom functions by subscribing to the events and defining functions which process the state supplied along with the event. 
 
+Events are mainly of two types - _post_ events are those that are raised after an action is performed and _pre_ (_before_) events are those that are raised prior to performing an action. In HarvestMan, _pre_ events are more useful for controlling program flow since their return values are checked for True/False to decide rest of processing. Fore more information, read on.
+
 In short the event API allows the developer to hook into the program flow and modify the program behavior by writing custom functions.
 
 ==Illustration==
@@ -89,7 +91,7 @@ Here are the steps involved.
 
  * Create a custom crawler class inheriting the _HarvestMan_ class.
  * Create a custom function which hooks into a specific event.
- * In the {{{__main__}}} section, configure the crawler to subscribe to the event by using the _register_ method.
+ * In the {{{__main__}}} section, configure the crawler to subscribe to the event by using the _register_ method. This method takes the event name as first argument and event handler as the second argument.
 
 Let us take a deeper look at the function _save_this_url_.
 
@@ -149,7 +151,7 @@ stages (such as start/end of a project), both these attributes wont be present, 
 Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _{{{*args}}}_ and keyword arguments as the _{{{**kwargs}}}_ variables respectively. For example the _before_tag_parse_ event passes in the current HTML tag and its attributes using positional arguments.
 
 ==Table of Events==
-The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event, and the points in program flow when the events are raised.
+The following table lists the main events raised by HarvestMan and the attributes that are filled in for each event, additional arguments, points in program flow when the events are raised, module which raises the event etc.
 
 || *Event* || *Raised when* || *Attributes* || *Positional Arguments* || *Module * || *Comments* ||
 || before_start_project || Before starting a project || _url_ || None || _harvestman.apps.spider_ || _url_ is the starting URL ||
@@ -168,3 +170,23 @@ The following table lists all the current events raised by HarvestMan and the at
 || before_tag_parse || Before an HTML tag is parsed || _url_ || _tag_,_attrs_ || _harvestman.lib.pageparser || _tag_ is the tag name and _attrs_ the attributes dictionary ||
 || before_tag_data || Before CDATA of an HTML tag is parsed || _url_ || _tag_, _cdata_ || _harvestman.lib.pageparser_ || _tag_ is the tag name and _cdata_ is its CDATA ||
 || include_this_url || Before a URL is checked for rules || _url_ || None || _harvestman.lib.rules_ || This comes before a URL is crawled ||
+
+==Programming using Events==
+The key towards programming with events is that, the programmer can control the program flow by binding to any _before_ event and returning True or False depending upon his logic. 
+
+All events which are raised *before* a certain action is performed, checks for the return value of the event processing. *_If the return value is False, the rest of the processing in the function which raised the event is NOT done_*. *_If the return value is True, the function continues processing as if nothing happened_*.
+
+This can be exploited to write custom crawlers that perform specific actions. For example in the sample code illustrated previously, we return _True_ if the URL is not an image and _False_ if the URL is an image, but below the given size. This way we modify the functionality of the function which raised the event, thereby causing the program to not save image URLs below a certain size.
+
+_Post_ events (events raised after an action, check table) are also useful, but since their return values are not checked in code, they are much less useful in controlling program flow when compared to _pre_ events.
+
+_NOTE_: In the table, any event for which _Raised when_ says _before_ is a pre-event. Any event for which it says _post_ or _after_ is a post-event.
+
+==More Reading==
+For more information, check out sample custom crawler applications in the folder _harvestman/apps/samples_ in the code-base. Also read the HOWTO at _doc/events.HOWTO_.
+
+==Caveat==
+In the released versions the _register_ method is not present. Instead the method name is _bind_event_, with the same arguments. Also in released versions, positional arguments are not supported and additional arguments are always passed in as keyword arguments. This document is conformant to the current trunk-code under _HarvestMan-lite_ branch.
+
+
+ 
