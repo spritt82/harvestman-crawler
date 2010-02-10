@@ -87,11 +87,9 @@ events API.
 
 Here are the steps involved.
 
-* Create a custom crawler class inheriting the _HarvestMan_ class.
-* Create a custom function which hooks into a specific event.
-* In the ___main___ section, configure the crawler to subscribe to the event by using the _register_ method.
-
-
+ * Create a custom crawler class inheriting the _HarvestMan_ class.
+ * Create a custom function which hooks into a specific event.
+ * In the ___main___ section, configure the crawler to subscribe to the event by using the _register_ method.
 
 
 
