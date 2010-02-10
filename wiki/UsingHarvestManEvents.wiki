@@ -156,4 +156,11 @@ The following table lists all the current events raised by HarvestMan and the at
 || post_start_project || After starting a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
 || before_finish_project || Before finishing a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
 || after_finish_project || After finishing a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
-
+|| before_crawl_url || Before a URL is crawled || _url_, _document_ || None || _harvestman.lib.crawler_ || _crawled_ here means the function _crawl_url_ ||
+|| post_crawl_url || After a URL is crawled || _url_, _document_ || None || _harvestman.lib.crawler_ || _crawled_ here means the function _crawl_url_ ||
+|| before_download_url || Before a URL is downloaded || _url_ || None || _harvestman.lib.crawler_ ||  ||
+|| before_parse_url || Before a URL is parsed || _url_,_document_ || None || _harvestman.lib.crawler_ || This always comes after _before_download_url_ hook ||
+|| post_parse_url || After a URL is parsed || _url_,_document_ || _links_ || _harvestman.lib.crawler_ || _links_ stand for the child links of this URL ||
+|| before_url_connect || Before connection for a URL is done || _url_ || last_modified, etag || _harvestman.lib.connector || last_modified, etag args are valid only if there is cache for the URL ||
+|| post_url_connect || After connection for a URL is done || _url_ || None || _harvestman.lib.connector || ||
+|| save_url_data || Before saving data for a URL to disk || _url_ || None || _data_ || _harvestman.lib.connector || _data_ is the content of the URL ||
