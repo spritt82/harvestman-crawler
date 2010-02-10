@@ -112,6 +112,10 @@ Let us take a deeper look at the function _save_this_url_.
             return (size>self.size_threshold)
 }}}
 
+The function simply tells the crawler to alway save non-Image URLs, by
+returning True. For image URLs, it checks for size and returns True
+only if the size is greater than the required threshold size, else False.
+
 The main object here of interest is the *_event_* object. This object contains
 all the state the programmer needs to write the custom behavior. The _event_
 object is of type *_Event_*, a class defined in the module _harvestman.lib.event_.
@@ -150,6 +154,8 @@ stages (such as start/end of a project), both these attributes wont be present, 
 
 ===Additional arguments===
 Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _{{{*args}}}_ and keyword arguments as the _{{{**kwargs}}}_ variables respectively. For example the _before_tag_parse_ event passes in the current HTML tag and its attributes using positional arguments.
+
+
 
 ==Table of Events==
 The following table lists the main events raised by HarvestMan and the attributes that are filled in for each event, additional arguments, points in program flow when the events are raised, module which raises the event etc.
