@@ -146,7 +146,7 @@ For most events, the _url_ attribute it present and is required to do any meanin
 stages (such as start/end of a project), both these attributes wont be present, i.e they will be _None_.
 
 ===Additional arguments===
-Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _*args_ and keyword arguments as the _**kwargs_ variables respectively. For example the _before_tag_parse_ event passes in the current HTML tag and its attributes using positional arguments.
+Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _{{{*args}}}_ and keyword arguments as the _{{{**kwargs}}}_ variables respectively. For example the _before_tag_parse_ event passes in the current HTML tag and its attributes using positional arguments.
 
 ==Table of Events==
 The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event, and the points in program flow when the events are raised.
@@ -156,7 +156,7 @@ The following table lists all the current events raised by HarvestMan and the at
 || post_start_project || After starting a project || _url_ || None || _harvestman.apps.spider_  || _url_ is the starting URL ||
 || before_finish_project || Before finishing a project || _url_ || None|| _harvestman.apps.spider_ || _url_ is the starting URL ||
 || after_finish_project || After finishing a project || _url_ || None ||_harvestman.apps.spider_ || _url_ is the starting URL ||
-|| before_crawl_url || Before a URL is crawled || _url_, _document_ || _harvestman.lib.crawler_ || || _crawled_ here means the function _crawl_url_ ||
+|| before_crawl_url || Before a URL is crawled || _url_, _document_ || None || _harvestman.lib.crawler_ || _crawled_ here means the function _crawl_url_ ||
 || post_crawl_url || After a URL is crawled || _url_, _document_ || None || _harvestman.lib.crawler_ || _crawled_ here means the function _crawl_url_ ||
 || before_download_url || Before a URL is downloaded || _url_ || None || _harvestman.lib.crawler_ ||  ||
 || before_parse_url || Before a URL is parsed || _url_,_document_ || None || _harvestman.lib.crawler_ || This always comes after _before_download_url_ hook ||
