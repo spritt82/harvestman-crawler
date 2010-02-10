@@ -131,6 +131,21 @@ The attributes of the class are namely, _name_, _config_, _url_ and _document_. 
 The _url_ attribute contains the current URL object which is being processed. The URL object is of type _HarvestManUrl_ (in module _harvestman.lib.urlparser_). It keeps
 all the state of the current URL under processing. 
 
-== The _document_ attribute==
+===The _document_ attribute===
 The _document_ attribute holds information on the current web-page being crawled.
-The _document_ object 
+The _document_ object is of type _HarvestManDocument_ (module _harvestman.lib.document_). This object holds information on the URL as a document, i.e its content, etag, last modified time etc. The document object is useful for URLs which represent web-pages or documents such as PDF etc.
+
+===The _config_ attribute===
+This attribute binds to the global configuration object. Instead of having to call _objects.config_ everytime, you can get global configuration in the event handler by accessing the _event.config_ attribute.
+
+===How to use attributes of _event_ object===
+For most events, the _url_ attribute it present and is required to do any meaningful processing. The _document_ attribute is present only for the events which are dealing with a web-page with parseable content. For some events which are related to program 
+stages (such as start/end of a project), both these attributes wont be present, i.e they will be _None_.
+
+===Additional arguments===
+Additional arguments could be passed to the event handler by specific events. Positional arguments will appear as the _*args_ and keyword arguments as the _**kwargs_ variables respectively. 
+
+==Table of Events==
+The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event.
+
+
