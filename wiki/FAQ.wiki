@@ -1,6 +1,8 @@
 #summary Frequently Asked Questions About Harvestman-Crawler.
 #labels Phase-Support,Deprecated
 
+==This is still a work under progress and has been lifted verbatim from the HarvestMan web-site with little or no modifications. A lot of information is out of date and needs to be updated. Also the FAQ doesn't confirm to wiki style, so proceed with care ! ==
+
 HarvestMan - FAQ
 Version 2.0
 NOTE: The FAQ is being modified currently to be in sync with HarvestMan 1.4, so you might find that some parts of the FAQ are inconsistent with the rest of it. This is because some of the FAQ is modified, while the rest is still to be modified.
