@@ -170,11 +170,11 @@ The following table lists the main events raised by HarvestMan and the attribute
 || before_download_url || Before a URL is downloaded || _url_ || None || _harvestman.lib.crawler_ ||  ||
 || before_parse_url || Before a URL is parsed || _url_,_document_ || None || _harvestman.lib.crawler_ || This always comes after _before_download_url_ hook ||
 || post_parse_url || After a URL is parsed || _url_,_document_ || _links_ || _harvestman.lib.crawler_ || _links_ stand for the child links of this URL ||
-|| before_url_connect || Before connection for a URL is done || _url_ || last_modified, etag || _harvestman.lib.connector || last_modified, etag args are valid only if there is cache for the URL ||
-|| post_url_connect || After connection for a URL is done || _url_ || None || _harvestman.lib.connector || ||
-|| save_url_data || Before saving data for a URL to disk || _url_ || _data_ || _harvestman.lib.connector || _data_ is the content of the URL ||
-|| post_crawl_complete || After the crawl is completed || None || None || _harvestman.lib.datamgr || ||
-|| before_tag_parse || Before an HTML tag is parsed || _url_ || _tag_,_attrs_ || _harvestman.lib.pageparser || _tag_ is the tag name and _attrs_ the attributes dictionary ||
+|| before_url_connect || Before connection for a URL is done || _url_ || _last_modified_, _etag_ || _harvestman.lib.connector_ || last_modified, etag args are valid (not None) only if there is cache for the URL ||
+|| post_url_connect || After connection for a URL is done || _url_ || None || _harvestman.lib.connector_ || ||
+|| save_url_data || Before saving data for a URL to disk || _url_ || _data_ || _harvestman.lib.connector_ || _data_ is the content of the URL ||
+|| post_crawl_complete || After the crawl is completed || None || None || _harvestman.lib.datamgr_ || ||
+|| before_tag_parse || Before an HTML tag is parsed || _url_ || _tag_,_attrs_ || _harvestman.lib.pageparser_ || _tag_ is the tag name and _attrs_ the attributes dictionary ||
 || before_tag_data || Before CDATA of an HTML tag is parsed || _url_ || _tag_, _cdata_ || _harvestman.lib.pageparser_ || _tag_ is the tag name and _cdata_ is its CDATA ||
 || include_this_url || Before a URL is checked for rules || _url_ || None || _harvestman.lib.rules_ || This comes before a URL is crawled ||
 
