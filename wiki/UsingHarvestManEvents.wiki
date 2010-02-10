@@ -93,3 +93,39 @@ Here are the steps involved.
 
 Let us take a deeper look at the function _save_this_url_.
 
+{{{
+    def save_this_url(self, event, *args, **kwargs):
+        """ Custom callback function which modifies behaviour
+            of saving URLs to disk """
+
+        # Get the url object
+        url = event.url
+        # If not image, save always
+        if not url.is_image():
+            return True
+        else:
+            # If image, check for content-length > 4K
+            size = url.clength
+            return (size>self.size_threshold)
+}}}
+
+The main object here of interest is the *_event_* object. This object contains
+all the state the programmer needs to write the custom behavior. The _event_
+object is of type *_Event_*, a class defined in the module _harvestman.lib.event_.
+
+The _Event_ class is defined as follows.
+{{{
+class Event(object):
+    """ Event class for HarvestMan """
+
+    def __init__(self):
+        self.name = ''
+        self.config = objects.config
+        self.url = None
+        self.document = None
+}}}
+
+The attributes of the class are namely, _name_, _config_, _url_ and _document_. Of these the attributes of primary interest to the developer are _url_ and _document_.
+
+===The _url_ attribute==
+The _url_ attribute contains the current URL object which is being processed. The URL object 
