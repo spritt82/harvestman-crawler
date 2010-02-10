@@ -190,7 +190,7 @@ _Post_ events (events raised after an action, check table) are also useful, but 
 _NOTE_: In the table, any event for which _Raised when_ says _before_ is a pre-event. Any event for which it says _post_ or _after_ is a post-event.
 
 ==More Reading==
-For more information, check out sample custom crawler applications in the folder _harvestman/apps/samples_ in the code-base. Also read the HOWTO at _doc/events.HOWTO_.
+For more information, check out sample custom crawler applications in the folder [http://code.google.com/p/harvestman-crawler/source/browse/#svn/trunk/HarvestMan-lite/harvestman/apps/samples _harvestman/apps/samples_] in the code-base. Also read the HOWTO at [http://code.google.com/p/harvestman-crawler/source/browse/trunk/HarvestMan-lite/doc/events.HOWTO _doc/events.HOWTO_].
 
 ==Caveat==
 In the released versions, the _register_ method is not present. Instead the method name is _bind_event_, with the same arguments. Also in released versions, positional arguments are not supported and additional arguments are always passed in as keyword arguments. This document is conformant to the current trunk-code under _HarvestMan-lite_ branch.
