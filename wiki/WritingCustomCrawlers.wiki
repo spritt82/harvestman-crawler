@@ -11,8 +11,6 @@ Events are implemented using a callback mechanism. At different times during the
 
 Events are mainly of two types - _post_ events are those that are raised after an action is performed and _pre_ (_before_) events are those that are raised prior to performing an action. In HarvestMan, _pre_ events are more useful for controlling program flow since their return values are checked for True/False to decide rest of processing. Fore more information, read on.
 
-In short the event API allows the developer to hook into the program flow and modify the program behavior by writing custom functions.
-
 ==Illustration==
 Let us say that you want to write a custom crawler which saves only images which are larger than 4K to the disk (a practical example of this would be a crawler which ignores thumbnail images, since thumbnails are typically  of size 2K-4K). This is how you would do this by subscribing to the *_save_url_data_* event.
 
