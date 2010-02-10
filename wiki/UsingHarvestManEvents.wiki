@@ -151,8 +151,9 @@ Additional arguments could be passed to the event handler by specific events. Po
 ==Table of Events==
 The following table lists all the current events raised by HarvestMan and the attributes that are filled in for each event, and the points in program flow when the events are raised.
 
-|| *Event* || *Raised at* || *Attributes* || *Module* || *Positional Arguments* || *Comments* ||
-|| before_start_project || Before starting a project || url || harvestman.apps.spider || None || The url is the starting URL ||
-
-
+|| *Event* || *Raised when* || *Attributes* || *Module* || *Positional Arguments* || *Comments* ||
+|| before_start_project || Before starting a project || _url_ || _harvestman.apps.spider_ || None || _url_ is the starting URL ||
+|| post_start_project || After starting a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
+|| before_finish_project || Before finishing a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
+|| after_finish_project || After finishing a project || _url_ || _harvestman.apps.spider__ || None || _url_ is the starting URL ||
 
