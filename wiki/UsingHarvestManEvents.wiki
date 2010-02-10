@@ -9,9 +9,9 @@ Events are implemented using a callback mechanism. At different times during the
 In short the event API allows the developer to hook into the program flow and modify the program behavior by writing custom functions.
 
 ==Illustration==
-Let us say that you want to write a custom crawler which saves only images which are larger than 128K to the disk (a practical example of this would be a crawler which ignores thumbnail images, since thumbnails are typically  of size 64-128K). This is how you would do this by subscribing to the "save_url_data" event.
+Let us say that you want to write a custom crawler which saves only images which are larger than 128K to the disk (a practical example of this would be a crawler which ignores thumbnail images, since thumbnails are typically  of size 64-128K). This is how you would do this by subscribing to the *_save_url_data_* event.
 
-First you need to define a custom crawler class over-riding the "HarvestMan" class.
+First you need to define a custom crawler class over-riding the _HarvestMan_ class.
 
 {{{
 from harvestman.apps.spider import HarvestMan
@@ -20,7 +20,9 @@ from harvestman.lib.common.macros import *
 class MyCustomCrawler(HarvestMan):
     """ A custom crawler """
 
-    def save_this_url(self, event, **args, **kwargs):
+    size_threshold = 128*1024
+
+    def save_this_url(self, event, *args, **kwargs):
         """ Custom callback function which modifies behaviour
             of saving URLs to disk """
 
@@ -32,7 +34,7 @@ class MyCustomCrawler(HarvestMan):
         else:
             # If image, check for content-length > 128K
             size = url.clength
-            return (size>128*1024)
+            return (size>self.size_threshold)
 
 # Set up the custom crawler
 if __name__ == "__main__":
