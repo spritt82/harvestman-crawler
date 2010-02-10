@@ -1,0 +1,1 @@
+#summary HarvestMan is a modular, extensible pure Python web-crawler application.
