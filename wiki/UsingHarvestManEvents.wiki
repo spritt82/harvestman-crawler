@@ -128,4 +128,9 @@ class Event(object):
 The attributes of the class are namely, _name_, _config_, _url_ and _document_. Of these the attributes of primary interest to the developer are _url_ and _document_.
 
 ===The _url_ attribute==
-The _url_ attribute contains the current URL object which is being processed. The URL object 
+The _url_ attribute contains the current URL object which is being processed. The URL object is of type _HarvestManUrl_ (in module _harvestman.lib.urlparser_). It keeps
+all the state of the current URL under processing. 
+
+== The _document_ attribute==
+The _document_ attribute holds information on the current web-page being crawled.
+The _document_ object 
