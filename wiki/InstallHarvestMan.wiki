@@ -8,7 +8,7 @@ Currently the best way is to download the source code from the trunk of our repo
 = Check out code from svn =
  * First you need to checkout version of harvestman from repository.You will need '''subversion''' program to do that. When subversion is installed run this command:
 {{{
-svn checkout http://harvestman-crawler.googlecode.com/svn/trunk/ harvestman-crawler
+svn checkout http://harvestman-crawler.googlecode.com/svn/trunk/HarvestMan-lite harvestman-crawler
 }}}
 
 = Install harvestman =
